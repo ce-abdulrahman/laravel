@@ -1,0 +1,46 @@
+{
+  "GET /api/surahs": {
+    "status": "success",
+    "data": [
+      {
+        "id": 1,
+        "number": 1,
+        "name_ar": "الفاتحة",
+        "name_en": "Al-Fatihah",
+        "name_ku": null,
+        "total_ayahs": 7
+      }
+    ]
+  },
+  "GET /api/surahs/1/ayahs": {
+    "status": "success",
+    "data": {
+      "surah": {
+        "id": 1,
+        "number": 1,
+        "name_ar": "الفاتحة",
+        "name_en": "Al-Fatihah",
+        "name_ku": null,
+        "total_ayahs": 7
+      },
+      "ayahs": [
+        {
+          "id": 1,
+          "ayah_number": 1,
+          "text_uthmani": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ"
+        }
+      ]
+    }
+  },
+  "GET /api/settings": {
+    "status": "success",
+    "data": {
+      "font_size": "20",
+      "theme_mode": "system"
+    }
+  },
+  "GET /api/surahs/999/ayahs (not found)": {
+    "status": "error",
+    "message": "Surah not found."
+  }
+}

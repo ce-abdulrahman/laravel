@@ -1,0 +1,230 @@
+/* public/css/components/auth.css */
+
+/* Auth Wrapper */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--quran-primary-dark) 0%, var(--quran-primary) 100%);
+    position: relative;
+}
+
+.auth-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 15 L45 15 L37 22 L40 32 L30 26 L20 32 L23 22 L15 15 L25 15 Z' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
+    opacity: 0.5;
+}
+
+.auth-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+}
+
+/* Auth Container */
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Auth Card */
+.auth-card {
+    background: var(--quran-bg-card);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Auth Header */
+.auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.auth-logo {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    background: linear-gradient(135deg, var(--quran-primary), var(--quran-primary-light));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    box-shadow: 0 8px 16px rgba(27, 115, 64, 0.2);
+}
+
+.auth-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--quran-text-primary);
+    margin-bottom: 8px;
+}
+
+.auth-subtitle {
+    color: var(--quran-text-muted);
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+/* Auth Form */
+.auth-form {
+    width: 100%;
+}
+
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--quran-text-muted);
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+[dir="rtl"] .password-toggle {
+    right: auto;
+    left: 12px;
+}
+
+.password-toggle:hover {
+    color: var(--quran-primary);
+}
+
+/* Auth Link */
+.auth-link {
+    color: var(--quran-primary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.auth-link:hover {
+    color: var(--quran-primary-dark);
+    text-decoration: underline;
+}
+
+/* Auth Footer */
+.auth-footer {
+    text-align: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--quran-border-light);
+    font-size: 14px;
+    color: var(--quran-text-secondary);
+}
+
+/* Auth Verse */
+.auth-verse {
+    text-align: center;
+    color: white;
+    padding: 24px;
+}
+
+.auth-verse-icon {
+    font-size: 32px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 16px;
+}
+
+.auth-verse-text {
+    font-family: var(--font-arabic);
+    font-size: 22px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.auth-verse-translation {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.auth-verse-reference {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0;
+}
+
+/* Auth Language Switcher */
+.auth-language {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+[dir="rtl"] .auth-language {
+    right: auto;
+    left: 20px;
+}
+
+.auth-language .btn-link {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+}
+
+.auth-language .btn-link:hover {
+    color: white;
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: none;
+}
+
+.alert-success {
+    background: color-mix(in srgb, var(--quran-success) 15%, transparent);
+    color: var(--quran-success);
+}
+
+/* Guest Layout */
+.guest-layout {
+    background: transparent;
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .auth-wrapper {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+}
+
+[data-theme="dark"] .auth-card {
+    background: var(--quran-bg-card);
+    border-color: var(--quran-border-light);
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 24px 20px;
+    }
+
+    .auth-title {
+        font-size: 20px;
+    }
+
+    .auth-verse-text {
+        font-size: 18px;
+    }
+}

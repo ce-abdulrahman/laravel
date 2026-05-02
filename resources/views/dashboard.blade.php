@@ -1,0 +1,617 @@
+@extends('layouts.app')
+
+@section('title', __('dashboard.title'))
+@section('page-title', __('dashboard.welcome_back') . ', ' . auth()->user()->name)
+@section('page-subtitle', __('dashboard.quran_journey'))
+
+@section('breadcrumb')
+    <li class="breadcrumb-item active" aria-current="page">{{ __('dashboard.title') }}</li>
+@endsection
+
+@section('content')
+<div class="quran-dashboard">
+    <!-- Quick Stats Row -->
+    <div class="row g-4 mb-4">
+        <!-- Today's Progress Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="quran-stat-card quran-stat-primary">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <h6 class="quran-stat-label">{{ __('dashboard.today_progress') }}</h6>
+                        <h3 class="quran-stat-value">{{ $todayProgress ?? '0' }}%</h3>
+                        <span class="quran-stat-trend positive">
+                            <i class="bi bi-arrow-up"></i> +5%
+                        </span>
+                    </div>
+                    <div class="quran-stat-icon">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </div>
+                </div>
+                <div class="quran-stat-progress">
+                    <div class="progress">
+                        <div class="progress-bar" style="width: {{ $todayProgress ?? '0' }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memorization Progress Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="quran-stat-card quran-stat-success">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <h6 class="quran-stat-label">{{ __('dashboard.memorized') }}</h6>
+                        <h3 class="quran-stat-value">{{ $memorizedCount ?? '0' }}</h3>
+                        <span class="quran-stat-sub">{{ __('dashboard.surahs_memorized') }}</span>
+                    </div>
+                    <div class="quran-stat-icon">
+                        <i class="bi bi-journal-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookmarks & Favorites Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="quran-stat-card quran-stat-warning">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <h6 class="quran-stat-label">{{ __('dashboard.saved_items') }}</h6>
+                        <h3 class="quran-stat-value">{{ $bookmarksCount ?? '0' }}</h3>
+                        <span class="quran-stat-sub">{{ __('dashboard.bookmarks_favorites') }}</span>
+                    </div>
+                    <div class="quran-stat-icon">
+                        <i class="bi bi-bookmark-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Streak Card -->
+        <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="quran-stat-card quran-stat-info">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <h6 class="quran-stat-label">{{ __('dashboard.reading_streak') }}</h6>
+                        <h3 class="quran-stat-value">{{ $readingStreak ?? '0' }}</h3>
+                        <span class="quran-stat-sub">{{ __('dashboard.days_streak') }}</span>
+                    </div>
+                    <div class="quran-stat-icon">
+                        <i class="bi bi-fire"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div class="row g-4">
+        <!-- Left Column - Continue Reading & Recent Activity -->
+        <div class="col-xl-8">
+            <!-- Continue Reading Section -->
+            <div class="quran-card mb-4">
+                <div class="quran-card-header">
+                    <h5 class="quran-card-title">
+                        <i class="bi bi-book-half me-2"></i>
+                        {{ __('dashboard.continue_reading') }}
+                    </h5>
+                    <a href="{{ route('reading-history.index') }}" class="quran-card-link">
+                        {{ __('dashboard.view_all') }} <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="quran-card-body">
+                    @if(isset($lastRead) && $lastRead)
+                        <div class="quran-continue-reading-widget">
+                            <div class="quran-surah-display">
+                                <div class="quran-surah-info">
+                                    <span class="quran-surah-number">{{ $lastRead->surah->id }}</span>
+                                    <div class="quran-surah-details">
+                                        <h4 class="quran-surah-arabic">{{ $lastRead->surah->name_arabic }}</h4>
+                                        <p class="quran-surah-translation">{{ $lastRead->surah->name_translation }}</p>
+                                        <p class="quran-ayah-info">
+                                            {{ __('dashboard.ayah') }} {{ $lastRead->ayah->number }}
+                                            {{ __('dashboard.of') }} {{ $lastRead->surah->total_ayahs }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <a href="{{ route('quran.read', ['surah' => $lastRead->surah->id, 'ayah' => $lastRead->ayah->number]) }}"
+                                   class="quran-btn quran-btn-primary">
+                                    <i class="bi bi-play-fill"></i>
+                                    {{ __('dashboard.continue') }}
+                                </a>
+                            </div>
+                        </div>
+                    @else
+                        <div class="quran-empty-state">
+                            <i class="bi bi-book quran-empty-icon"></i>
+                            <h6>{{ __('dashboard.no_reading_history') }}</h6>
+                            <p>{{ __('dashboard.start_reading_quran') }}</p>
+                            <a href="#" class="quran-btn quran-btn-primary">
+                                {{ __('dashboard.browse_quran') }}
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Recent Activity & History -->
+            <div class="quran-card">
+                <div class="quran-card-header">
+                    <h5 class="quran-card-title">
+                        <i class="bi bi-clock-history me-2"></i>
+                        {{ __('dashboard.recent_activity') }}
+                    </h5>
+                    <div class="quran-card-actions">
+                        <button class="quran-btn-icon" data-bs-toggle="tooltip" title="{{ __('dashboard.refresh') }}">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="quran-card-body p-0">
+                    <div class="quran-activity-timeline">
+                        @php
+                            $recentActivities = $recentActivities ?? [];
+                        @endphp
+                        @forelse($recentActivities as $activity)
+                            <div class="quran-activity-item">
+                                <div class="quran-activity-icon {{ $activity->type }}">
+                                    @if($activity->type == 'reading')
+                                        <i class="bi bi-book"></i>
+                                    @elseif($activity->type == 'memorization')
+                                        <i class="bi bi-brain"></i>
+                                    @elseif($activity->type == 'bookmark')
+                                        <i class="bi bi-bookmark-plus"></i>
+                                    @elseif($activity->type == 'audio')
+                                        <i class="bi bi-headphones"></i>
+                                    @else
+                                        <i class="bi bi-activity"></i>
+                                    @endif
+                                </div>
+                                <div class="quran-activity-content">
+                                    <p class="quran-activity-text">{{ $activity->description }}</p>
+                                    <div class="quran-activity-meta">
+                                        <span class="quran-activity-time">
+                                            <i class="bi bi-clock"></i>
+                                            {{ $activity->created_at->diffForHumans() }}
+                                        </span>
+                                        @if(isset($activity->surah))
+                                            <span class="quran-activity-surah">
+                                                <i class="bi bi-journal-bookmark-fill"></i>
+                                                {{ $activity->surah->name }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="quran-empty-state quran-empty-small">
+                                <i class="bi bi-calendar-x"></i>
+                                <p>{{ __('dashboard.no_recent_activity') }}</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Daily Goals & Recommendations -->
+        <div class="col-xl-4">
+            <!-- Daily Goals Card -->
+            <div class="quran-card mb-4">
+                <div class="quran-card-header">
+                    <h5 class="quran-card-title">
+                        <i class="bi bi-target me-2"></i>
+                        {{ __('dashboard.daily_goals') }}
+                    </h5>
+                </div>
+                <div class="quran-card-body">
+                    <div class="quran-daily-goals">
+                        @php
+                            $dailyReadingPages = $dailyReadingPages ?? 0;
+                            $dailyReadingGoal = $dailyReadingGoal ?? 5;
+                            $dailyMemorizedAyahs = $dailyMemorizedAyahs ?? 0;
+                            $dailyMemorizationGoal = $dailyMemorizationGoal ?? 3;
+                            $dailyReviewedAyahs = $dailyReviewedAyahs ?? 0;
+                            $dailyReviewGoal = $dailyReviewGoal ?? 10;
+
+                            $readingPercentage = $dailyReadingGoal > 0 ? ($dailyReadingPages / $dailyReadingGoal) * 100 : 0;
+                            $memorizationPercentage = $dailyMemorizationGoal > 0 ? ($dailyMemorizedAyahs / $dailyMemorizationGoal) * 100 : 0;
+                            $reviewPercentage = $dailyReviewGoal > 0 ? ($dailyReviewedAyahs / $dailyReviewGoal) * 100 : 0;
+                        @endphp
+
+                        <!-- Reading Goal -->
+                        <div class="quran-goal-item">
+                            <div class="quran-goal-info">
+                                <div class="quran-goal-icon reading">
+                                    <i class="bi bi-book"></i>
+                                </div>
+                                <div class="quran-goal-details">
+                                    <h6>{{ __('dashboard.read_pages') }}</h6>
+                                    <div class="quran-goal-progress-text">
+                                        {{ $dailyReadingPages }}/{{ $dailyReadingGoal }} {{ __('dashboard.pages') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quran-goal-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-primary"
+                                         style="width: {{ $readingPercentage }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Memorization Goal -->
+                        <div class="quran-goal-item">
+                            <div class="quran-goal-info">
+                                <div class="quran-goal-icon memorization">
+                                    <i class="bi bi-brain"></i>
+                                </div>
+                                <div class="quran-goal-details">
+                                    <h6>{{ __('dashboard.memorize_ayahs') }}</h6>
+                                    <div class="quran-goal-progress-text">
+                                        {{ $dailyMemorizedAyahs }}/{{ $dailyMemorizationGoal }} {{ __('dashboard.ayahs') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quran-goal-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-success"
+                                         style="width: {{ $memorizationPercentage }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review Goal -->
+                        <div class="quran-goal-item">
+                            <div class="quran-goal-info">
+                                <div class="quran-goal-icon review">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                </div>
+                                <div class="quran-goal-details">
+                                    <h6>{{ __('dashboard.review_previous') }}</h6>
+                                    <div class="quran-goal-progress-text">
+                                        {{ $dailyReviewedAyahs }}/{{ $dailyReviewGoal }} {{ __('dashboard.ayahs') }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quran-goal-progress">
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning"
+                                         style="width: {{ $reviewPercentage }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Progress Chart -->
+            <div class="quran-card mb-4">
+                <div class="quran-card-header">
+                    <h5 class="quran-card-title">
+                        <i class="bi bi-graph-up me-2"></i>
+                        {{ __('dashboard.weekly_progress') }}
+                    </h5>
+                </div>
+                <div class="quran-card-body">
+                    <canvas id="weeklyProgressChart" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Recommended Surahs -->
+            <div class="quran-card mb-4">
+                <div class="quran-card-header">
+                    <h5 class="quran-card-title">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        {{ __('dashboard.recommended_for_you') }}
+                    </h5>
+                </div>
+                <div class="quran-card-body p-0">
+                    <div class="quran-recommended-list">
+                        @php
+                            $recommendedSurahs = $recommendedSurahs ?? [];
+                        @endphp
+                        @forelse($recommendedSurahs as $surah)
+                            <a href="{{ route('quran.surah', $surah->id) }}" class="quran-recommended-item">
+                                <div class="quran-recommended-number">{{ $surah->id }}</div>
+                                <div class="quran-recommended-info">
+                                    <h6 class="quran-recommended-name">{{ $surah->name }}</h6>
+                                    <p class="quran-recommended-meta">
+                                        {{ $surah->ayahs_count }} {{ __('dashboard.ayahs') }} •
+                                        {{ $surah->revelation_type == 'Meccan' ? __('dashboard.meccan') : __('dashboard.medinan') }}
+                                    </p>
+                                </div>
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        @empty
+                            <div class="quran-empty-state quran-empty-small">
+                                <i class="bi bi-compass"></i>
+                                <p>{{ __('dashboard.explore_quran') }}</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quran-card">
+                <div class="quran-card-header">
+                    <h5 class="quran-card-title">
+                        <i class="bi bi-lightning-charge me-2"></i>
+                        {{ __('dashboard.quick_actions') }}
+                    </h5>
+                </div>
+                <div class="quran-card-body">
+                    <div class="quran-quick-actions">
+                        <a href="#" class="quran-quick-action-btn">
+                            <i class="bi bi-book"></i>
+                            <span>{{ __('dashboard.read_quran') }}</span>
+                        </a>
+                        <a href="#" class="quran-quick-action-btn">
+                            <i class="bi bi-journal-plus"></i>
+                            <span>{{ __('dashboard.start_memorization') }}</span>
+                        </a>
+                        <a href="#" class="quran-quick-action-btn">
+                            <i class="bi bi-headphones"></i>
+                            <span>{{ __('dashboard.listen') }}</span>
+                        </a>
+                        <a href="#" class="quran-quick-action-btn">
+                            <i class="bi bi-search"></i>
+                            <span>{{ __('dashboard.study_tafsir') }}</span>
+                        </a>
+                        <a href="{{ route('bookmarks.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-bookmark"></i>
+                            <span>{{ __('dashboard.bookmarks') }}</span>
+                        </a>
+                        <a href="{{ route('reading-history.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-bar-chart"></i>
+                            <span>{{ __('dashboard.view_report') }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Memorization Plans Section -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="quran-card">
+                <div class="quran-card-header">
+                    <h5 class="quran-card-title">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        {{ __('dashboard.active_memorization_plans') }}
+                    </h5>
+                    <a href="#" class="quran-btn quran-btn-sm quran-btn-outline-primary">
+                        {{ __('dashboard.view_all_plans') }}
+                    </a>
+                </div>
+                <div class="quran-card-body">
+                    <div class="row g-4">
+                        @php
+                            $activePlans = $activePlans ?? [];
+                        @endphp
+                        @forelse($activePlans as $plan)
+                            <div class="col-lg-4 col-md-6">
+                                <div class="quran-plan-card">
+                                    <div class="quran-plan-header">
+                                        <div class="quran-plan-icon">
+                                            <i class="bi bi-calendar3"></i>
+                                        </div>
+                                        <div class="quran-plan-info">
+                                            <h6>{{ $plan->name }}</h6>
+                                            <span class="quran-plan-badge {{ $plan->status == 'active' ? 'active' : 'paused' }}">
+                                                {{ $plan->status == 'active' ? __('dashboard.active') : __('dashboard.paused') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="quran-plan-progress">
+                                        <div class="quran-plan-stats">
+                                            <span>{{ $plan->completed_ayahs }}/{{ $plan->total_ayahs }} {{ __('dashboard.ayahs') }}</span>
+                                            @php
+                                                $planProgress = $plan->total_ayahs > 0 ? round(($plan->completed_ayahs / $plan->total_ayahs) * 100) : 0;
+                                            @endphp
+                                            <span>{{ $planProgress }}%</span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar"
+                                                 style="width: {{ $planProgress }}%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="quran-plan-footer">
+                                        <div class="quran-plan-next">
+                                            <small>{{ __('dashboard.next_review') }}</small>
+                                            <strong>{{ $plan->next_review_date ?? __('dashboard.today') }}</strong>
+                                        </div>
+                                        <a href="{{ route('memorization.plan', $plan->id) }}" class="quran-btn quran-btn-sm quran-btn-primary">
+                                            {{ __('dashboard.continue_plan') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="col-12">
+                                <div class="quran-empty-state">
+                                    <i class="bi bi-journal-text quran-empty-icon"></i>
+                                    <h6>{{ __('dashboard.no_active_plans') }}</h6>
+                                    <p>{{ __('dashboard.start_memorization_journey') }}</p>
+                                    <a href="#" class="quran-btn quran-btn-primary">
+                                        {{ __('dashboard.create_plan') }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Today's Verse Widget -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="quran-verse-widget">
+                <div class="quran-verse-content">
+                    <div class="quran-verse-icon">
+                        <i class="bi bi-quote"></i>
+                    </div>
+                    @php
+                        $dailyVerse = $dailyVerse ?? null;
+                    @endphp
+                    <p class="quran-verse-arabic-text">
+                        {{ $dailyVerse->arabic_text ?? 'وَذَكِّرْ فَإِنَّ الذِّكْرَىٰ تَنفَعُ الْمُؤْمِنِينَ' }}
+                    </p>
+                    <p class="quran-verse-translation-text">
+                        {{ $dailyVerse->translation ?? 'And remind, for indeed, the reminder benefits the believers.' }}
+                    </p>
+                    <div class="quran-verse-reference">
+                        <span>{{ $dailyVerse->surah_name ?? 'Adh-Dhariyat' }} ({{ $dailyVerse->ayah_number ?? '51:55' }})</span>
+                        <button class="quran-btn-icon" onclick="copyVerse()" data-bs-toggle="tooltip" title="{{ __('dashboard.copy_verse') }}">
+                            <i class="bi bi-clipboard"></i>
+                        </button>
+                        <button class="quran-btn-icon" onclick="shareVerse()" data-bs-toggle="tooltip" title="{{ __('dashboard.share_verse') }}">
+                            <i class="bi bi-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('styles')
+<!-- Dashboard Specific CSS -->
+<link rel="stylesheet" href="{{ asset('css/components/dashboard.css') }}">
+@endpush
+
+@push('scripts')
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    // Weekly Progress Chart
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('weeklyProgressChart').getContext('2d');
+
+        // Get data from PHP - FIXED SYNTAX
+        @php
+            $defaultWeeklyData = [
+                'labels' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                'reading' => [2, 3, 1, 4, 2, 5, 3],
+                'memorization' => [1, 2, 0, 3, 1, 2, 1],
+                'review' => [3, 2, 4, 3, 5, 4, 3]
+            ];
+            $weeklyData = isset($weeklyProgress) ? $weeklyProgress : $defaultWeeklyData;
+        @endphp
+
+        const weeklyData = @json($weeklyData);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: weeklyData.labels,
+                datasets: [
+                    {
+                        label: '{{ __("dashboard.reading") }}',
+                        data: weeklyData.reading,
+                        borderColor: '#1B7340',
+                        backgroundColor: 'rgba(27, 115, 64, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '{{ __("dashboard.memorization") }}',
+                        data: weeklyData.memorization,
+                        borderColor: '#10B981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '{{ __("dashboard.review") }}',
+                        data: weeklyData.review,
+                        borderColor: '#F59E0B',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 8,
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true,
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    // Copy Verse Function
+    function copyVerse() {
+        const verseText = document.querySelector('.quran-verse-arabic-text').innerText;
+        const translationText = document.querySelector('.quran-verse-translation-text').innerText;
+        const fullText = verseText + '\n\n' + translationText;
+
+        navigator.clipboard.writeText(fullText).then(function() {
+            window.showToast('{{ __("dashboard.verse_copied") }}', 'success');
+        });
+    }
+
+    // Share Verse Function
+    function shareVerse() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ __("dashboard.verse_of_the_day") }}',
+                text: document.querySelector('.quran-verse-translation-text').innerText
+            });
+        } else {
+            window.showToast('{{ __("dashboard.share_not_supported") }}', 'info');
+        }
+    }
+
+    // Refresh Activity
+    var refreshBtn = document.querySelector('[data-bs-toggle="tooltip"][title="{{ __("dashboard.refresh") }}"]');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', function() {
+            window.showLoading();
+            setTimeout(function() {
+                window.hideLoading();
+                window.showToast('{{ __("dashboard.activity_refreshed") }}', 'success');
+            }, 1000);
+        });
+    }
+
+    // Initialize Tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>
+@endpush

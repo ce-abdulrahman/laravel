@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers\Api\V1;
+
+use App\Http\Controllers\Controller;
+use App\Models\Ayah;
+use Illuminate\Http\Request;
+
+class AyahController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = Ayah::active()->with(['surah', 'translations', 'tafsirs']);
+
+        if ($request->has('surah_id')) {
+            $query->where('surah_id', $request->surah_id);
+        }
+
+        if ($request->has('juz')) {
+            $query->where('juz_number', $request->juz);
+        }
+
+        if ($request->has('page')) {
+            $query->where('page_number', $request->page);
+        }
+
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('text_uthmani', 'like', "%{$search}%")
+                  ->orWhere('text_simple', 'like', "%{$search}%");
+            });
+        }
+
+        $ayahs = $query->orderBy('surah_id')
+                       ->orderBy('ayah_number')
+                       ->paginate($request->per_page ?? 20);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $ayahs
+        ]);
+    }
+
+    public function show($id)
+    {
+        $ayah = Ayah::active()
+                    ->with([
+                        'surah',
+                        'translations' => function ($q) {
+                            $q->where('is_active', true);
+                        },
+                        'tafsirs' => function ($q) {
+                            $q->active()->with('tafsirBook');
+                        },
+                        'tajweedSegments.tajweedRule'
+                    ])
+                    ->findOrFail($id);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $ayah
+        ]);
+    }
+
+    public function ayahsBySurah(Request $request, $surahId)
+    {
+        $ayahs = Ayah::active()
+                     ->with(['translations' => function ($q) {
+                         $q->where('is_active', true);
+                     }])
+                     ->where('surah_id', $surahId)
+                     ->orderBy('ayah_number')
+                     ->paginate($request->per_page ?? 20);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $ayahs
+        ]);
+    }
+}

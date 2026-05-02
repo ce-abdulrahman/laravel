@@ -1,0 +1,2 @@
+# Install getID3 for audio duration detection
+composer require james-heinrich/getid3
