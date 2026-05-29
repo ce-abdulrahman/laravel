@@ -19,7 +19,7 @@ class SearchController extends Controller
         $request->validate([
             'q' => 'required|string|min:2|max:100',
             'type' => 'nullable|in:all,ayah,translation,tafsir,surah',
-            'surah_id' => 'nullable|integer|exists:surahs,id',
+            'surah_id' => 'nullable|integer|exists:surahs,number',
             'language_code' => 'nullable|string|size:2',
             'per_page' => 'nullable|integer|min:1|max:100',
         ]);
@@ -39,7 +39,9 @@ class SearchController extends Controller
                 });
 
             if ($request->has('surah_id')) {
-                $ayahQuery->where('surah_id', $request->surah_id);
+                $ayahQuery->whereHas('surah', function ($q) use ($request) {
+                    $q->where('number', $request->surah_id);
+                });
             }
 
             $ayahs = $ayahQuery->orderBy('surah_id')
@@ -76,8 +78,8 @@ class SearchController extends Controller
             }
 
             if ($request->has('surah_id')) {
-                $translationQuery->whereHas('ayah', function ($q) use ($request) {
-                    $q->where('surah_id', $request->surah_id);
+                $translationQuery->whereHas('ayah.surah', function ($q) use ($request) {
+                    $q->where('number', $request->surah_id);
                 });
             }
 
@@ -112,8 +114,8 @@ class SearchController extends Controller
                 });
 
             if ($request->has('surah_id')) {
-                $tafsirQuery->whereHas('ayah', function ($q) use ($request) {
-                    $q->where('surah_id', $request->surah_id);
+                $tafsirQuery->whereHas('ayah.surah', function ($q) use ($request) {
+                    $q->where('number', $request->surah_id);
                 });
             }
 
@@ -263,7 +265,7 @@ class SearchController extends Controller
     {
         $request->validate([
             'q' => 'required|string|min:2|max:100',
-            'surah_id' => 'nullable|integer|exists:surahs,id',
+            'surah_id' => 'nullable|integer|exists:surahs,number',
             'juz_number' => 'nullable|integer|min:1|max:30',
             'page_number' => 'nullable|integer|min:1|max:604',
             'revelation_type' => 'nullable|in:meccan,medinan',
@@ -294,7 +296,9 @@ class SearchController extends Controller
 
         // Apply filters
         if ($request->has('surah_id')) {
-            $ayahQuery->where('surah_id', $request->surah_id);
+            $ayahQuery->whereHas('surah', function ($q) use ($request) {
+                $q->where('number', $request->surah_id);
+            });
         }
 
         if ($request->has('juz_number')) {

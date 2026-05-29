@@ -22,6 +22,7 @@ class SurahResource extends JsonResource
             'name_en' => $this->name_en,
             'name_ku' => $this->name_ku,
             'total_ayahs' => (int) $this->ayah_count,
+            'revelation_type' => $this->revelation_type,
         ];
     }
 }

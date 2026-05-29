@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ayah;
+use App\Models\Surah;
 use Illuminate\Http\Request;
 
 class AyahController extends Controller
@@ -13,7 +14,9 @@ class AyahController extends Controller
         $query = Ayah::active()->with(['surah', 'translations', 'tafsirs']);
 
         if ($request->has('surah_id')) {
-            $query->where('surah_id', $request->surah_id);
+            $query->whereHas('surah', function ($q) use ($request) {
+                $q->where('number', $request->surah_id);
+            });
         }
 
         if ($request->has('juz')) {
@@ -65,11 +68,19 @@ class AyahController extends Controller
 
     public function ayahsBySurah(Request $request, $surahId)
     {
+        $surah = Surah::query()->active()->where('number', $surahId)->first();
+        if (!$surah) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Surah not found.'
+            ], 404);
+        }
+
         $ayahs = Ayah::active()
                      ->with(['translations' => function ($q) {
-                         $q->where('is_active', true);
-                     }])
-                     ->where('surah_id', $surahId)
+                          $q->where('is_active', true);
+                      }])
+                     ->where('surah_id', $surah->id)
                      ->orderBy('ayah_number')
                      ->paginate($request->per_page ?? 20);
 

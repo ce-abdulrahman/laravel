@@ -21,7 +21,7 @@ class AyahController extends Controller
             return $this->error('Invalid surah id.', 422);
         }
 
-        $surahExists = Surah::query()->active()->whereKey($id)->exists();
+        $surahExists = Surah::query()->active()->where('number', $id)->exists();
         if (! $surahExists) {
             return $this->error('Surah not found.', 404);
         }
@@ -33,7 +33,8 @@ class AyahController extends Controller
             $surah = Surah::query()
                 ->active()
                 ->select(['id', 'number', 'name_ar', 'name_en', 'name_ku', 'ayah_count'])
-                ->findOrFail($id);
+                ->where('number', $id)
+                ->firstOrFail();
 
             $ayahs = $surah->ayahs()
                 ->active()
