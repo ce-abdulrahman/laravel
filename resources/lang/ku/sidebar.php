@@ -45,6 +45,7 @@ return [
     'bookmarks' => 'نیشانەکراوەکان',
     'favorites' => 'دڵخوازەکان',
     'reading_history' => 'مێژووی خوێندنەوە',
+    'leaderboard' => 'ڕیزبەندی',
 
     'settings' => 'ڕێکخستنەکان',
     'preferences' => 'هەڵبژاردەکان',

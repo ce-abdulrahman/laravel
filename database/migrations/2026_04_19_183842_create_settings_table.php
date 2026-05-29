@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('app_name')->default('Quran App');
             $table->string('app_logo')->nullable();
             $table->string('default_language')->nullable();
-            $table->foreignId('default_tafsir_book_id')->constrained('tafsir_books')->nullOnDelete();
-            $table->foreignId('default_reciter_id')->constrained('reciters')->nullOnDelete();
-            $table->foreignId('default_qiraah_id')->constrained('qiraats')->nullOnDelete();
+            $table->foreignId('default_tafsir_book_id')->nullable()->constrained('tafsir_books')->nullOnDelete();
+            $table->foreignId('default_reciter_id')->nullable()->constrained('reciters')->nullOnDelete();
+            $table->foreignId('default_qiraah_id')->nullable()->constrained('qiraats')->nullOnDelete();
             $table->text('about_text')->nullable();
             $table->string('contact_email')->nullable();
             $table->timestamps();

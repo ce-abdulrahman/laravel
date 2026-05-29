@@ -36,6 +36,7 @@ return [
     'bookmarks' => 'العلامات',
     'favorites' => 'المفضلة',
     'reading_history' => 'سجل القراءة',
+    'leaderboard' => 'لوحة الصدارة',
 
     'settings' => 'الإعدادات',
     'preferences' => 'التفضيلات',

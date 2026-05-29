@@ -115,15 +115,18 @@ class LastReadController extends Controller
                 'ayah_id' => $request->ayah_id,
             ],
             [
-                'last_read_at' => now(),
+                'last_read_at'  => now(),
                 'seconds_spent' => $request->seconds_spent ?? 0,
             ]
         );
 
+        // Award points + update streak
+        $request->user()->recordReading();
+
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Reading position saved successfully',
-            'data' => $readingHistory->load('ayah.surah'),
+            'data'    => $readingHistory->load('ayah.surah'),
         ]);
     }
 

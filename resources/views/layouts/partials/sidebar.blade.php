@@ -283,6 +283,13 @@
                 </span>
                 <span class="quran-nav-label">{{ __('sidebar.reading_history') }}</span>
             </a>
+            
+            <a href="{{ route('leaderboard.index') }}" class="quran-nav-item {{ request()->routeIs('leaderboard.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-trophy"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.leaderboard') }}</span>
+            </a>
         </div>
 
         {{-- resources/views/layouts/partials/sidebar.blade.php --}}

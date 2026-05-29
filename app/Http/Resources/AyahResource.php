@@ -15,10 +15,16 @@ class AyahResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $translations = $this->relationLoaded('translations') ? $this->translations : $this->translations()->get();
+        $textEn = $translations->firstWhere('language_code', 'en')?->content;
+        $textKu = $translations->firstWhere('language_code', 'ku')?->content;
+
         return [
             'id' => $this->id,
             'ayah_number' => (int) $this->ayah_number,
             'text_uthmani' => $this->text_uthmani,
+            'text_en' => $textEn,
+            'text_ku' => $textKu,
         ];
     }
 }

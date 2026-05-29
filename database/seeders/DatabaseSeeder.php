@@ -18,13 +18,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'status' => true,
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Admin User',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'status' => true,
+            ]
+        );
 
         $this->call([
             SurahSeeder::class,
@@ -34,6 +36,7 @@ class DatabaseSeeder extends Seeder
             ReciterSeeder::class,
             SettingSeeder::class,
             SettingEntrySeeder::class,
+            TranslationSeeder::class,
         ]);
     }
 }

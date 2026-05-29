@@ -38,6 +38,9 @@ class AyahController extends Controller
             $ayahs = $surah->ayahs()
                 ->active()
                 ->select(['id', 'surah_id', 'ayah_number', 'text_uthmani'])
+                ->with(['translations' => function ($query) {
+                    $query->whereIn('language_code', ['en', 'ku'])->where('is_active', true);
+                }])
                 ->orderBy('ayah_number')
                 ->get();
 

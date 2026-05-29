@@ -36,6 +36,7 @@ return [
     'bookmarks' => 'Bookmarks',
     'favorites' => 'Favorites',
     'reading_history' => 'Reading History',
+    'leaderboard' => 'Leaderboard',
 
     'settings' => 'Settings',
     'preferences' => 'Preferences',

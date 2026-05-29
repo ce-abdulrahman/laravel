@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\AyahController as V1AyahController;
 use App\Http\Controllers\Api\V1\BookmarkController;
 use App\Http\Controllers\Api\V1\FavoriteController;
 use App\Http\Controllers\Api\V1\LastReadController;
+use App\Http\Controllers\Api\V1\LeaderboardController;
 use App\Http\Controllers\Api\V1\MobileSyncController;
 use App\Http\Controllers\Api\V1\MemorizationPlanController;
 use App\Http\Controllers\Api\V1\MemorizationReviewController;
@@ -64,6 +65,7 @@ Route::prefix('v1')->group(function () {
     Route::get('qiraats/{id}', [QiraatController::class, 'show']);
     Route::get('qiraat-texts', [QiraatController::class, 'qiraatTexts']);
     Route::get('settings', [V1SettingController::class, 'index']);
+    Route::get('leaderboard', [LeaderboardController::class, 'index']);
 
     // Public Audio (Reader v2.1)
     Route::get('audio-files', [AudioFileController::class, 'index']);
@@ -99,6 +101,7 @@ Route::prefix('v1')->group(function () {
         Route::get('reading-progress/surah/{surahId}', [LastReadController::class, 'getSurahReadingProgress']);
         Route::get('reading-progress/overall', [LastReadController::class, 'getOverallProgress']);
         Route::get('reading-streaks', [LastReadController::class, 'getReadingStreaks']);
+        Route::get('me/stats', [LeaderboardController::class, 'myStats']);
         Route::delete('reading-history', [LastReadController::class, 'clearHistory']);
         Route::delete('reading-history/{id}', [LastReadController::class, 'deleteEntry']);
 
@@ -123,11 +126,13 @@ Route::prefix('v1')->group(function () {
 
         // Memorization Plans
         Route::get('memorization-plans/today', [MemorizationPlanController::class, 'today']);
-        Route::apiResource('memorization-plans', MemorizationPlanController::class);
+        Route::apiResource('memorization-plans', MemorizationPlanController::class)
+            ->names('api.v1.memorization-plans');
         Route::put('memorization-plans/{planId}/items/{itemId}/status', [MemorizationPlanController::class, 'updateItemStatus']);
 
         // Memorization Reviews
-        Route::apiResource('memorization-reviews', MemorizationReviewController::class);
+        Route::apiResource('memorization-reviews', MemorizationReviewController::class)
+            ->names('api.v1.memorization-reviews');
 
         // User Progress
         Route::get('user-ayah-progress', [UserAyahProgressController::class, 'index']);
@@ -152,4 +157,3 @@ Route::prefix('v1')->group(function () {
         Route::delete('favorites/{id}', [FavoriteController::class, 'destroy']);
     });
 });
-

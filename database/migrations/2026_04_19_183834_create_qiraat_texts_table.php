@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('qiraat_texts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('qiraah_id')->constrained('qiraat')->cascadeOnDelete();
+            $table->foreignId('qiraah_id')->constrained('qiraats')->cascadeOnDelete();
             $table->foreignId('ayah_id')->constrained()->cascadeOnDelete();
             $table->longText('text_variant');
             $table->text('note')->nullable();
