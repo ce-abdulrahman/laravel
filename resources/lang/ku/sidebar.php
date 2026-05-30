@@ -48,6 +48,10 @@ return [
     'leaderboard' => 'ڕیزبەندی',
 
     'settings' => 'ڕێکخستنەکان',
+    'banners' => 'بانەرەکان',
+    'adhkar_categories' => 'هاوپۆلەکانی ئەزکار',
+    'adhkars' => 'لیستی ئەزکارەکان',
+    'tasbihs' => 'ڕێکخستنی تەسبیحەکان',
     'preferences' => 'هەڵبژاردەکان',
     'dark_mode' => 'دۆخی تاریک',
 

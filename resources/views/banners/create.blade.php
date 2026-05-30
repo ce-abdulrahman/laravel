@@ -1,0 +1,45 @@
+@extends('layouts.app')
+
+@section('title', 'دروستکردنی بانەری نوێ')
+@section('page-title', 'دروستکردنی بانەری نوێ')
+
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="{{ route('banners.index') }}">بەڕێوەبردنی بانەرەکان</a></li>
+    <li class="breadcrumb-item active" aria-current="page">دروستکردنی بانەر</li>
+@endsection
+
+@section('content')
+<div class="quran-dashboard">
+    <!-- Header Section -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h1 class="h4 mb-1">دروستکردنی بانەری نوێ</h1>
+            <div class="text-muted">بانەری نوێ زیاد بکە بۆ ئەوەی لەسەر پەڕەی سەرەکی مۆبایل پیشان بدرێت.</div>
+        </div>
+        <a href="{{ route('banners.index') }}" class="quran-btn quran-btn-outline-primary">
+            <i class="bi bi-arrow-left me-1"></i>
+            گەڕانەوە بۆ لیست
+        </a>
+    </div>
+
+    <!-- Form Container -->
+    <div class="quran-form-container">
+        <form method="POST" action="{{ route('banners.store') }}">
+            @csrf
+            
+            @include('banners._form')
+
+            <!-- Form Actions -->
+            <div class="quran-form-actions mt-4">
+                <button type="submit" class="quran-btn quran-btn-primary">
+                    <i class="bi bi-save me-1"></i>
+                    پاشەکەوتکردن
+                </button>
+                <a href="{{ route('banners.index') }}" class="quran-btn quran-btn-outline-secondary">
+                    پاشگەزبوونەوە
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection

@@ -349,6 +349,34 @@
                 </span>
                 <span class="quran-nav-label">{{ __('sidebar.settings') }}</span>
             </a>
+            
+            <a href="{{ route('banners.index') }}" class="quran-nav-item {{ request()->routeIs('banners.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-image"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.banners') }}</span>
+            </a>
+            
+            <a href="{{ route('adhkar-categories.index') }}" class="quran-nav-item {{ request()->routeIs('adhkar-categories.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-tags"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.adhkar_categories') }}</span>
+            </a>
+            
+            <a href="{{ route('adhkars.index') }}" class="quran-nav-item {{ request()->routeIs('adhkars.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-chat-square-text"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.adhkars') }}</span>
+            </a>
+
+            <a href="{{ route('tasbihs.index') }}" class="quran-nav-item {{ request()->routeIs('tasbihs.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-heptagon"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.tasbihs') }}</span>
+            </a>
         </div>
         @endif
 

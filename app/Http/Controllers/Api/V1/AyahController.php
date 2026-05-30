@@ -89,4 +89,35 @@ class AyahController extends Controller
             'data' => $ayahs
         ]);
     }
+
+    public function daily()
+    {
+        $totalAyahs = Ayah::active()->count();
+
+        if ($totalAyahs === 0) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No active Ayahs found.'
+            ], 404);
+        }
+
+        $today = now()->toDateString();
+        $seed = crc32($today);
+        $offset = abs($seed) % $totalAyahs;
+
+        $ayah = Ayah::active()
+            ->with([
+                'surah',
+                'translations' => function ($q) {
+                    $q->where('is_active', true);
+                }
+            ])
+            ->skip($offset)
+            ->first();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $ayah
+        ]);
+    }
 }

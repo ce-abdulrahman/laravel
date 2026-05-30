@@ -335,7 +335,7 @@ class AudioTimingController extends Controller
         }
 
         // Prefer high > medium > low when not explicitly requested.
-        $audioFile = $query->orderByRaw("FIELD(quality, 'high', 'medium', 'low')")->first();
+        $audioFile = $query->orderByRaw("CASE quality WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END")->first();
 
         if (!$audioFile) {
             return response()->json([
@@ -351,7 +351,9 @@ class AudioTimingController extends Controller
             $ayahTimings = json_decode(Storage::get($timingPath), true);
         }
 
-        $streamUrl = url("/api/v1/audio-files/{$audioFile->id}/stream");
+        $streamUrl = (str_starts_with($audioFile->file_path, 'http://') || str_starts_with($audioFile->file_path, 'https://'))
+            ? $audioFile->file_path
+            : url("/api/v1/audio-files/{$audioFile->id}/stream");
 
         return response()->json([
             'status' => 'success',

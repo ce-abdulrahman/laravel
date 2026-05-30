@@ -21,6 +21,10 @@ use App\Http\Controllers\TafsirController;
 use App\Http\Controllers\TajweedRuleController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserAyahProgressController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\AdhkarCategoryController;
+use App\Http\Controllers\AdhkarController;
+use App\Http\Controllers\TasbihController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -45,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('tajweed-segments', AyahTajweedSegmentController::class);
     Route::resource('reciters', ReciterController::class);
     Route::resource('audio-files', AudioFileController::class);
+    Route::get('audio-files/{audioFile}/stream', [AudioFileController::class, 'stream'])->name('audio-files.stream');
+    Route::post('audio-files/upload', [AudioFileController::class, 'upload'])->name('audio-files.upload');
     Route::resource('qiraats', QiraatController::class);
     Route::resource('qiraat-texts', QiraatTextController::class);
     Route::resource('tafsir-books', TafsirBookController::class);
@@ -56,6 +62,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('memorization-reviews', MemorizationReviewController::class);
     Route::resource('user-ayah-progress', UserAyahProgressController::class);
     Route::resource('settings', SettingController::class);
+    Route::resource('banners', BannerController::class);
+    Route::resource('adhkar-categories', AdhkarCategoryController::class);
+    Route::resource('adhkars', AdhkarController::class);
+    Route::resource('tasbihs', TasbihController::class);
 
     Route::get('user-ayah-progress/dashboard', [UserAyahProgressController::class, 'dashboard'])
         ->name('user-ayah-progress.dashboard');

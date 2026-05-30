@@ -140,6 +140,9 @@ class AudioFileController extends Controller
             }
         }
 
+        $validated['surah_id'] = $validated['surah_id'] ?? null;
+        $validated['ayah_id'] = $validated['ayah_id'] ?? null;
+
         // پشکنینی دووبارە نەبوون
         $exists = AudioFile::where('reciter_id', $validated['reciter_id'])
             ->where('surah_id', $validated['surah_id'])
@@ -216,6 +219,10 @@ class AudioFileController extends Controller
      */
     public function stream(AudioFile $audioFile)
     {
+        if (str_starts_with($audioFile->file_path, 'http://') || str_starts_with($audioFile->file_path, 'https://')) {
+            return redirect()->away($audioFile->file_path);
+        }
+
         if (!Storage::disk('public')->exists($audioFile->file_path)) {
             abort(404);
         }
@@ -291,6 +298,9 @@ class AudioFileController extends Controller
             'quality' => 'nullable|string|max:50',
             'is_active' => 'boolean',
         ]);
+
+        $validated['surah_id'] = $validated['surah_id'] ?? null;
+        $validated['ayah_id'] = $validated['ayah_id'] ?? null;
 
         // پشکنینی دووبارە نەبوون
         $exists = AudioFile::where('reciter_id', $validated['reciter_id'])

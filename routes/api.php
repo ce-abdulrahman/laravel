@@ -24,6 +24,9 @@ use App\Http\Controllers\Api\V1\TafsirController;
 use App\Http\Controllers\Api\V1\TajweedRuleController;
 use App\Http\Controllers\Api\V1\TranslationController;
 use App\Http\Controllers\Api\V1\UserAyahProgressController;
+use App\Http\Controllers\Api\V1\BannerController as V1BannerController;
+use App\Http\Controllers\Api\V1\AdhkarController as V1AdhkarController;
+use App\Http\Controllers\Api\V1\TasbihController as V1TasbihController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +52,7 @@ Route::prefix('v1')->group(function () {
     // Public Routes - Quran Data
     Route::get('surahs', [V1SurahController::class, 'index']);
     Route::get('surahs/{id}', [V1SurahController::class, 'show']);
+    Route::get('ayahs/daily', [V1AyahController::class, 'daily']);
     Route::get('ayahs', [V1AyahController::class, 'index']);
     Route::get('ayahs/{id}', [V1AyahController::class, 'show']);
     Route::get('surahs/{surahId}/ayahs', [V1AyahController::class, 'ayahsBySurah']);
@@ -66,6 +70,9 @@ Route::prefix('v1')->group(function () {
     Route::get('qiraat-texts', [QiraatController::class, 'qiraatTexts']);
     Route::get('settings', [V1SettingController::class, 'index']);
     Route::get('leaderboard', [LeaderboardController::class, 'index']);
+    Route::get('banners', [V1BannerController::class, 'index']);
+    Route::get('adhkars', [V1AdhkarController::class, 'index']);
+    Route::get('tasbihs', [V1TasbihController::class, 'index']);
 
     // Public Audio (Reader v2.1)
     Route::get('audio-files', [AudioFileController::class, 'index']);

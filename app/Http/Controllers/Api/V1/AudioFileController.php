@@ -52,7 +52,11 @@ class AudioFileController extends Controller
     {
         $audioFile = AudioFile::active()->findOrFail($id);
 
-        if (!Storage::exists($audioFile->file_path)) {
+        if (str_starts_with($audioFile->file_path, 'http://') || str_starts_with($audioFile->file_path, 'https://')) {
+            return redirect()->away($audioFile->file_path);
+        }
+
+        if (!Storage::disk('public')->exists($audioFile->file_path)) {
             return response()->json([
                 'status' => 'error',
                 'success' => false,
@@ -60,16 +64,35 @@ class AudioFileController extends Controller
             ], 404);
         }
 
-        $path = Storage::path($audioFile->file_path);
-        $stream = fopen($path, 'rb');
+        $path = Storage::disk('public')->path($audioFile->file_path);
+        $size = filesize($path);
+        $mime = mime_content_type($path);
 
-        return response()->stream(function () use ($stream) {
-            fpassthru($stream);
-        }, 200, [
-            'Content-Type' => 'audio/mpeg',
-            'Content-Length' => filesize($path),
+        $stream = fopen($path, 'rb');
+        $start = 0;
+        $end = $size - 1;
+
+        if ($request->hasHeader('Range')) {
+            $range = $request->header('Range');
+            if (preg_match('/bytes=(\d+)-(\d*)/', $range, $matches)) {
+                $start = (int) $matches[1];
+                if (!empty($matches[2])) {
+                    $end = (int) $matches[2];
+                }
+            }
+        }
+
+        $length = $end - $start + 1;
+
+        return response()->stream(function () use ($stream, $start, $length) {
+            fseek($stream, $start);
+            echo fread($stream, $length);
+            fclose($stream);
+        }, 206, [
+            'Content-Type' => $mime,
+            'Content-Length' => $length,
+            'Content-Range' => "bytes $start-$end/$size",
             'Accept-Ranges' => 'bytes',
-            'Content-Disposition' => 'inline; filename="' . basename($path) . '"',
         ]);
     }
 }

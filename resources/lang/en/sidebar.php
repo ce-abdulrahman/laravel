@@ -39,6 +39,10 @@ return [
     'leaderboard' => 'Leaderboard',
 
     'settings' => 'Settings',
+    'banners' => 'Home Banners',
+    'adhkar_categories' => 'Adhkar Categories',
+    'adhkars' => 'Adhkar List',
+    'tasbihs' => 'Tasbih List',
     'preferences' => 'Preferences',
     'dark_mode' => 'Dark Mode',
 

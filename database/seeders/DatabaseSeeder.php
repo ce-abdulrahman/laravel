@@ -34,9 +34,13 @@ class DatabaseSeeder extends Seeder
             TafsirBookSeeder::class,
             TajweedRuleSeeder::class,
             ReciterSeeder::class,
+            AudioFileSeeder::class,
             SettingSeeder::class,
             SettingEntrySeeder::class,
             TranslationSeeder::class,
+            BannerSeeder::class,
+            AdhkarSeeder::class,
+            TasbihSeeder::class,
         ]);
     }
 }
