@@ -30,6 +30,17 @@
                 </button>
             </form>
 
+            @if(auth()->user()?->role === 'admin')
+            <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="bi bi-file-earmark-arrow-up me-1"></i>
+                Import JSON
+            </button>
+            <button type="button" class="quran-btn quran-btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="bi bi-code-slash me-1"></i>
+                Example JSON
+            </button>
+            @endif
+
             <a href="{{ route('surahs.create') }}" class="quran-btn quran-btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>
                 {{ __('surah.actions.create') }}
@@ -196,6 +207,62 @@
         @endif
     </div>
 </div>
+{{-- Import JSON Modal --}}
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="importModalLabel">Import JSON File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('surahs.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="json_file" class="form-label">Select .json file to import</label>
+                        <input type="file" class="form-control" id="json_file" name="file" accept=".json" required>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="quran-btn quran-btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Example JSON Modal --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="exampleModalLabel">Example JSON Format</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>The JSON file must be an array of objects structured as shown below:</p>
+                <div class="bg-dark text-light p-3 rounded-3" style="max-height: 400px; overflow-y: auto;">
+                    <pre><code class="text-info">[
+  {
+    "number": 1,
+    "name_ar": "الفاتحة",
+    "name_ku": "الفاتحة",
+    "name_en": "Al-Fatihah",
+    "revelation_type": "makki",
+    "ayah_count": 7,
+    "is_active": true
+  }
+]</code></pre>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')

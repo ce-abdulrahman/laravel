@@ -19,6 +19,14 @@
 
         <div class="d-flex gap-2">
             @if(auth()->user()?->role === 'admin')
+            <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="bi bi-file-earmark-arrow-up me-1"></i>
+                Import JSON
+            </button>
+            <button type="button" class="quran-btn quran-btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="bi bi-code-slash me-1"></i>
+                Example JSON
+            </button>
             <a href="{{ route('tajweed-segments.create') }}" class="quran-btn quran-btn-outline-primary">
                 <i class="bi bi-plus-lg me-1"></i>
                 {{ __('tajweed_segments.actions.create') }}
@@ -148,14 +156,19 @@
                         </div>
                         @endif
                         <div class="flex-grow-1">
-                            <h6 class="mb-1">{{ $rule->name }}</h6>
-                            @if($rule->category)
-                            <span class="quran-table-badge info">{{ $rule->category }}</span>
-                            @endif
+                            <h6 class="mb-1">{{ $rule->name_ku ?? $rule->name }}</h6>
+                            <div class="d-flex align-items-center gap-2">
+                                @if($rule->name_ar)
+                                <small class="text-success arabic-text" dir="rtl">{{ $rule->name_ar }}</small>
+                                @endif
+                                @if($rule->category)
+                                <span class="quran-table-badge info">{{ $rule->category }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
-                    <p class="text-muted small mb-3">{{ Str::limit($rule->description, 100) }}</p>
+                    <p class="text-muted small mb-3" style="font-family: 'Cairo';">{{ Str::limit($rule->description_ku ?? $rule->description, 100) }}</p>
 
                     @if($rule->example_text)
                     <div class="bg-light p-3 rounded-3 mb-3">
@@ -214,4 +227,63 @@
     </div>
     @endif
 </div>
+{{-- Import JSON Modal --}}
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="importModalLabel">Import JSON File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('tajweed-rules.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="json_file" class="form-label">Select .json file to import</label>
+                        <input type="file" class="form-control" id="json_file" name="file" accept=".json" required>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="quran-btn quran-btn-primary">Import</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Example JSON Modal --}}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="exampleModalLabel">Example JSON Format</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>The JSON file must be an array of objects structured as shown below:</p>
+                <div class="bg-dark text-light p-3 rounded-3" style="max-height: 400px; overflow-y: auto;">
+                    <pre><code class="text-info">[
+  {
+    "name": "Ikhfa",
+    "name_ku": "ئیخفا",
+    "name_ar": "إخفاء",
+    "category": "noon_sakinah",
+    "color_code": "#FF5733",
+    "description": "To hide the sound of Noon",
+    "description_ku": "شاردنەوەی دەنگی نوون لە کاتی خوێندنەوەدا",
+    "example_text": "مِنْ قَبْلُ",
+    "priority": 1,
+    "is_active": true
+  }
+]</code></pre>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

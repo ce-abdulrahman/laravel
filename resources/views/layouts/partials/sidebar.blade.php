@@ -377,6 +377,20 @@
                 </span>
                 <span class="quran-nav-label">{{ __('sidebar.tasbihs') }}</span>
             </a>
+
+            <a href="{{ route('hadith-categories.index') }}" class="quran-nav-item {{ request()->routeIs('hadith-categories.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-folder2"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.hadith_categories') }}</span>
+            </a>
+
+            <a href="{{ route('hadiths.index') }}" class="quran-nav-item {{ request()->routeIs('hadiths.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-book"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.hadiths') }}</span>
+            </a>
         </div>
         @endif
 

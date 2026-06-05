@@ -12,75 +12,146 @@
 <div class="quran-dashboard">
     <!-- Quick Stats Row -->
     <div class="row g-4 mb-4">
-        <!-- Today's Progress Card -->
-        <div class="col-xl-3 col-lg-6 col-md-6">
+        <!-- Users Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
             <div class="quran-stat-card quran-stat-primary">
                 <div class="quran-stat-content">
                     <div class="quran-stat-info">
-                        <h6 class="quran-stat-label">{{ __('dashboard.today_progress') }}</h6>
-                        <h3 class="quran-stat-value">{{ $todayProgress ?? '0' }}%</h3>
-                        <span class="quran-stat-trend positive">
-                            <i class="bi bi-arrow-up"></i> +5%
-                        </span>
+                        <h6 class="quran-stat-label">بەکارهێنەران</h6>
+                        <h3 class="quran-stat-value">{{ $stats['users'] ?? '0' }}</h3>
+                        <span class="quran-stat-sub">کۆی بەکارهێنەرانی ئەپ</span>
                     </div>
                     <div class="quran-stat-icon">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </div>
-                </div>
-                <div class="quran-stat-progress">
-                    <div class="progress">
-                        <div class="progress-bar" style="width: {{ $todayProgress ?? '0' }}%"></div>
+                        <i class="bi bi-people-fill"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Memorization Progress Card -->
-        <div class="col-xl-3 col-lg-6 col-md-6">
-            <div class="quran-stat-card quran-stat-success">
-                <div class="quran-stat-content">
-                    <div class="quran-stat-info">
-                        <h6 class="quran-stat-label">{{ __('dashboard.memorized') }}</h6>
-                        <h3 class="quran-stat-value">{{ $memorizedCount ?? '0' }}</h3>
-                        <span class="quran-stat-sub">{{ __('dashboard.surahs_memorized') }}</span>
-                    </div>
-                    <div class="quran-stat-icon">
-                        <i class="bi bi-journal-check"></i>
+        <!-- Hadiths Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <a href="{{ route('hadiths.index') }}" class="text-decoration-none">
+                <div class="quran-stat-card quran-stat-success">
+                    <div class="quran-stat-content">
+                        <div class="quran-stat-info">
+                            <h6 class="quran-stat-label">فەرموودەکان</h6>
+                            <h3 class="quran-stat-value">{{ $stats['hadiths'] ?? '0' }}</h3>
+                            <span class="quran-stat-sub">{{ $stats['hadith_categories'] ?? '0' }} هاوپۆل</span>
+                        </div>
+                        <div class="quran-stat-icon">
+                            <i class="bi bi-chat-quote-fill"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <!-- Bookmarks & Favorites Card -->
-        <div class="col-xl-3 col-lg-6 col-md-6">
-            <div class="quran-stat-card quran-stat-warning">
-                <div class="quran-stat-content">
-                    <div class="quran-stat-info">
-                        <h6 class="quran-stat-label">{{ __('dashboard.saved_items') }}</h6>
-                        <h3 class="quran-stat-value">{{ $bookmarksCount ?? '0' }}</h3>
-                        <span class="quran-stat-sub">{{ __('dashboard.bookmarks_favorites') }}</span>
-                    </div>
-                    <div class="quran-stat-icon">
-                        <i class="bi bi-bookmark-star"></i>
+        <!-- Adhkars Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <a href="{{ route('adhkars.index') }}" class="text-decoration-none">
+                <div class="quran-stat-card quran-stat-warning">
+                    <div class="quran-stat-content">
+                        <div class="quran-stat-info">
+                            <h6 class="quran-stat-label">ئەزکارەکان</h6>
+                            <h3 class="quran-stat-value">{{ $stats['adhkars'] ?? '0' }}</h3>
+                            <span class="quran-stat-sub">{{ $stats['adhkar_categories'] ?? '0' }} هاوپۆل</span>
+                        </div>
+                        <div class="quran-stat-icon">
+                            <i class="bi bi-sun-fill"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <!-- Reading Streak Card -->
-        <div class="col-xl-3 col-lg-6 col-md-6">
-            <div class="quran-stat-card quran-stat-info">
-                <div class="quran-stat-content">
-                    <div class="quran-stat-info">
-                        <h6 class="quran-stat-label">{{ __('dashboard.reading_streak') }}</h6>
-                        <h3 class="quran-stat-value">{{ $readingStreak ?? '0' }}</h3>
-                        <span class="quran-stat-sub">{{ __('dashboard.days_streak') }}</span>
-                    </div>
-                    <div class="quran-stat-icon">
-                        <i class="bi bi-fire"></i>
+        <!-- Tasbihs Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <a href="{{ route('tasbihs.index') }}" class="text-decoration-none">
+                <div class="quran-stat-card quran-stat-info">
+                    <div class="quran-stat-content">
+                        <div class="quran-stat-info">
+                            <h6 class="quran-stat-label">زیکرەکانی تەسبیح</h6>
+                            <h3 class="quran-stat-value">{{ $stats['tasbihs'] ?? '0' }}</h3>
+                            <span class="quran-stat-sub">ڕێکخستنی زیکرەکان</span>
+                        </div>
+                        <div class="quran-stat-icon">
+                            <i class="bi bi-fingerprint"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
+        </div>
+
+        <!-- Surahs Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <a href="{{ route('surahs.index') }}" class="text-decoration-none">
+                <div class="quran-stat-card quran-stat-success">
+                    <div class="quran-stat-content">
+                        <div class="quran-stat-info">
+                            <h6 class="quran-stat-label">سووڕەتەکان</h6>
+                            <h3 class="quran-stat-value">{{ $stats['surahs'] ?? '0' }}</h3>
+                            <span class="quran-stat-sub">سووڕەتەکانی قورئان</span>
+                        </div>
+                        <div class="quran-stat-icon">
+                            <i class="bi bi-book-half"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Ayahs Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <a href="{{ route('ayahs.index') }}" class="text-decoration-none">
+                <div class="quran-stat-card quran-stat-primary">
+                    <div class="quran-stat-content">
+                        <div class="quran-stat-info">
+                            <h6 class="quran-stat-label">ئایەتەکان</h6>
+                            <h3 class="quran-stat-value">{{ $stats['ayahs'] ?? '0' }}</h3>
+                            <span class="quran-stat-sub">ئایەتە پیرۆزەکان</span>
+                        </div>
+                        <div class="quran-stat-icon">
+                            <i class="bi bi-file-text-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Reciters Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <a href="{{ route('reciters.index') }}" class="text-decoration-none">
+                <div class="quran-stat-card quran-stat-info">
+                    <div class="quran-stat-content">
+                        <div class="quran-stat-info">
+                            <h6 class="quran-stat-label">خوێنەران و دەنگ</h6>
+                            <h3 class="quran-stat-value">{{ $stats['reciters'] ?? '0' }}</h3>
+                            <span class="quran-stat-sub">{{ $stats['audio_files'] ?? '0' }} فایلە دەنگییەکان</span>
+                        </div>
+                        <div class="quran-stat-icon">
+                            <i class="bi bi-headphones"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Banners Card -->
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12">
+            <a href="{{ route('banners.index') }}" class="text-decoration-none">
+                <div class="quran-stat-card quran-stat-warning">
+                    <div class="quran-stat-content">
+                        <div class="quran-stat-info">
+                            <h6 class="quran-stat-label">بانەرەکانی سەرەکی</h6>
+                            <h3 class="quran-stat-value">{{ $stats['banners'] ?? '0' }}</h3>
+                            <span class="quran-stat-sub">ڕیکلام و زانیارییەکان</span>
+                        </div>
+                        <div class="quran-stat-icon">
+                            <i class="bi bi-flag-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -343,29 +414,53 @@
                 </div>
                 <div class="quran-card-body">
                     <div class="quran-quick-actions">
-                        <a href="#" class="quran-quick-action-btn">
+                        <a href="{{ route('surahs.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-book"></i>
-                            <span>{{ __('dashboard.read_quran') }}</span>
+                            <span>سووڕەتەکان</span>
                         </a>
-                        <a href="#" class="quran-quick-action-btn">
-                            <i class="bi bi-journal-plus"></i>
-                            <span>{{ __('dashboard.start_memorization') }}</span>
+                        <a href="{{ route('ayahs.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-file-text-fill"></i>
+                            <span>ئایەتەکان</span>
                         </a>
-                        <a href="#" class="quran-quick-action-btn">
+                        <a href="{{ route('hadiths.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-chat-quote-fill"></i>
+                            <span>فەرموودەکان</span>
+                        </a>
+                        <a href="{{ route('hadith-categories.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-tags-fill"></i>
+                            <span>هاوپۆلی فەرموودە</span>
+                        </a>
+                        <a href="{{ route('adhkars.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-sun-fill"></i>
+                            <span>ئەزکارەکان</span>
+                        </a>
+                        <a href="{{ route('adhkar-categories.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-tags"></i>
+                            <span>هاوپۆلی ئەزکار</span>
+                        </a>
+                        <a href="{{ route('tasbihs.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-fingerprint"></i>
+                            <span>تەسبیحەکان</span>
+                        </a>
+                        <a href="{{ route('audio-files.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-music-note-beamed"></i>
+                            <span>فایلە دەنگییەکان</span>
+                        </a>
+                        <a href="{{ route('reciters.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-headphones"></i>
-                            <span>{{ __('dashboard.listen') }}</span>
+                            <span>خوێنەران</span>
                         </a>
-                        <a href="#" class="quran-quick-action-btn">
-                            <i class="bi bi-search"></i>
-                            <span>{{ __('dashboard.study_tafsir') }}</span>
+                        <a href="{{ route('banners.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-flag-fill"></i>
+                            <span>بانەرەکان</span>
                         </a>
-                        <a href="{{ route('bookmarks.index') }}" class="quran-quick-action-btn">
-                            <i class="bi bi-bookmark"></i>
-                            <span>{{ __('dashboard.bookmarks') }}</span>
+                        <a href="{{ route('settings.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-gear-fill"></i>
+                            <span>ڕێکخستنەکان</span>
                         </a>
-                        <a href="{{ route('reading-history.index') }}" class="quran-quick-action-btn">
-                            <i class="bi bi-bar-chart"></i>
-                            <span>{{ __('dashboard.view_report') }}</span>
+                        <a href="{{ route('memorization-plans.index') }}" class="quran-quick-action-btn">
+                            <i class="bi bi-calendar-check-fill"></i>
+                            <span>پلانەکانی حیفز</span>
                         </a>
                     </div>
                 </div>
@@ -483,6 +578,21 @@
 @push('styles')
 <!-- Dashboard Specific CSS -->
 <link rel="stylesheet" href="{{ asset('css/components/dashboard.css') }}">
+<style>
+    .quran-quick-actions {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+    @media (max-width: 1199.98px) {
+        .quran-quick-actions {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+    @media (max-width: 767.98px) {
+        .quran-quick-actions {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+</style>
 @endpush
 
 @push('scripts')

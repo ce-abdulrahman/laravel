@@ -280,4 +280,75 @@ class TranslationController extends Controller
             abort(403, __('common.unauthorized'));
         }
     }
+
+    public function import(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $request->validate([
+            'file' => 'required|file|mimes:json',
+        ]);
+
+        $json = file_get_contents($request->file('file')->getRealPath());
+        $translations = json_decode($json, true);
+
+        if (! is_array($translations)) {
+            return back()->with('error', 'Invalid JSON file structure.');
+        }
+
+        $ayahs = [];
+        $imported = 0;
+
+        foreach ($translations as $transData) {
+            $surahNumber = $transData['surah_number'] ?? null;
+            $ayahNumber = $transData['ayah_number'] ?? null;
+            $ayahId = $transData['ayah_id'] ?? null;
+            $languageCode = $transData['language_code'] ?? null;
+            $content = $transData['content'] ?? null;
+
+            if (empty($languageCode) || empty($content)) {
+                continue;
+            }
+
+            if (empty($ayahId)) {
+                if (empty($surahNumber) || empty($ayahNumber)) {
+                    continue;
+                }
+                $key = "{$surahNumber}_{$ayahNumber}";
+                if (!isset($ayahs[$key])) {
+                    $ayah = Ayah::whereHas('surah', function ($q) use ($surahNumber) {
+                        $q->where('number', $surahNumber);
+                    })->where('ayah_number', $ayahNumber)->first();
+
+                    if (!$ayah) {
+                        continue;
+                    }
+                    $ayahs[$key] = $ayah->id;
+                }
+                $ayahId = $ayahs[$key];
+            }
+
+            if (filter_var($transData['is_default'] ?? false, FILTER_VALIDATE_BOOLEAN)) {
+                Translation::where('ayah_id', $ayahId)
+                    ->where('language_code', $languageCode)
+                    ->update(['is_default' => false]);
+            }
+
+            Translation::updateOrCreate(
+                [
+                    'ayah_id' => $ayahId,
+                    'language_code' => $languageCode,
+                    'translator_name' => $transData['translator_name'] ?? null,
+                ],
+                [
+                    'content' => $content,
+                    'is_default' => filter_var($transData['is_default'] ?? false, FILTER_VALIDATE_BOOLEAN),
+                    'is_active' => filter_var($transData['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
+                ]
+            );
+            $imported++;
+        }
+
+        return redirect()->route('translations.index')->with('success', "Imported {$imported} Translations successfully.");
+    }
 }

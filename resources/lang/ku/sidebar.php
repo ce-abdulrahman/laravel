@@ -52,6 +52,8 @@ return [
     'adhkar_categories' => 'هاوپۆلەکانی ئەزکار',
     'adhkars' => 'لیستی ئەزکارەکان',
     'tasbihs' => 'ڕێکخستنی تەسبیحەکان',
+    'hadith_categories' => 'هاوپۆلەکانی فەرموودە',
+    'hadiths' => 'لیستی فەرموودەکان',
     'preferences' => 'هەڵبژاردەکان',
     'dark_mode' => 'دۆخی تاریک',
 

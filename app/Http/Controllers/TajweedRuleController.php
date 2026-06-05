@@ -80,9 +80,12 @@ class TajweedRuleController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:tajweed_rules,name',
+            'name_ku' => 'required|string|max:255',
+            'name_ar' => 'nullable|string|max:255',
             'category' => 'nullable|string|max:255',
             'color_code' => 'nullable|string|max:20',
             'description' => 'required|string',
+            'description_ku' => 'required|string',
             'example_text' => 'nullable|string',
             'priority' => 'integer|min:0',
             'is_active' => 'boolean',
@@ -142,9 +145,12 @@ class TajweedRuleController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:tajweed_rules,name,' . $tajweedRule->id,
+            'name_ku' => 'required|string|max:255',
+            'name_ar' => 'nullable|string|max:255',
             'category' => 'nullable|string|max:255',
             'color_code' => 'nullable|string|max:20',
             'description' => 'required|string',
+            'description_ku' => 'required|string',
             'example_text' => 'nullable|string',
             'priority' => 'integer|min:0',
             'is_active' => 'boolean',
@@ -263,5 +269,56 @@ class TajweedRuleController extends Controller
         if (auth()->user()->role !== 'admin') {
             abort(403, __('common.unauthorized'));
         }
+    }
+
+    public function import(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $request->validate([
+            'file' => 'required|file|mimes:json',
+        ]);
+
+        $json = file_get_contents($request->file('file')->getRealPath());
+        $rules = json_decode($json, true);
+
+        if (! is_array($rules)) {
+            return back()->with('error', 'Invalid JSON file structure.');
+        }
+
+        $imported = 0;
+        foreach ($rules as $ruleData) {
+            if (empty($ruleData['name'])) {
+                continue;
+            }
+
+            $slug = $ruleData['slug'] ?? Str::slug($ruleData['name']);
+            // Ensure unique slug
+            $count = 1;
+            $originalSlug = $slug;
+            while (TajweedRule::where('slug', $slug)->exists()) {
+                $slug = $originalSlug . '-' . $count;
+                $count++;
+            }
+
+            TajweedRule::updateOrCreate(
+                ['name' => $ruleData['name']],
+                [
+                    'name_ku' => $ruleData['name_ku'] ?? $ruleData['name'],
+                    'name_ar' => $ruleData['name_ar'] ?? null,
+                    'slug' => $slug,
+                    'category' => $ruleData['category'] ?? null,
+                    'color_code' => $ruleData['color_code'] ?? null,
+                    'description' => $ruleData['description'] ?? '',
+                    'description_ku' => $ruleData['description_ku'] ?? '',
+                    'example_text' => $ruleData['example_text'] ?? null,
+                    'priority' => $ruleData['priority'] ?? 0,
+                    'is_active' => filter_var($ruleData['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
+                ]
+            );
+            $imported++;
+        }
+
+        return redirect()->route('tajweed-rules.index')->with('success', "Imported {$imported} Tajweed Rules successfully.");
     }
 }

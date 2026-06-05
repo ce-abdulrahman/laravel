@@ -254,7 +254,7 @@
         </div>
         <div class="quran-card-body">
             <div class="quran-quick-actions">
-                {{--  <a href="{{ route('ayahs.index', ['surah_id' => $surah->id]) }}" class="quran-quick-action-btn">
+                <a href="{{ route('ayahs.index', ['surah_id' => $surah->id]) }}" class="quran-quick-action-btn">
                     <i class="bi bi-list-ul"></i>
                     <span>{{ __('surah.actions.view_ayahs') }}</span>
                 </a>
@@ -262,14 +262,14 @@
                     <i class="bi bi-book"></i>
                     <span>{{ __('surah.actions.view_tafsir') }}</span>
                 </a>
-                <a href="{{ route('audio.index', ['surah_id' => $surah->id]) }}" class="quran-quick-action-btn">
+                <a href="{{ route('audio-files.index', ['surah_id' => $surah->id]) }}" class="quran-quick-action-btn">
                     <i class="bi bi-headphones"></i>
                     <span>{{ __('surah.actions.listen') }}</span>
                 </a>
-                <a href="{{ route('memorization.start', ['surah_id' => $surah->id]) }}" class="quran-quick-action-btn">
+                <a href="{{ route('memorization-plans.index', ['surah_id' => $surah->id]) }}" class="quran-quick-action-btn">
                     <i class="bi bi-journal-plus"></i>
                     <span>{{ __('surah.actions.start_memorization') }}</span>
-                </a>  --}}
+                </a>
             </div>
         </div>
     </div>

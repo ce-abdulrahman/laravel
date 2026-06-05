@@ -214,4 +214,62 @@ class AyahController extends Controller
                 : __('forms.messages.ayah_deactivated'),
         ]);
     }
+
+    public function import(Request $request)
+    {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
+
+        $request->validate([
+            'file' => 'required|file|mimes:json',
+        ]);
+
+        $json = file_get_contents($request->file('file')->getRealPath());
+        $ayahs = json_decode($json, true);
+
+        if (! is_array($ayahs)) {
+            return back()->with('error', 'Invalid JSON file structure.');
+        }
+
+        $surahs = Surah::pluck('id', 'number')->toArray();
+        $imported = 0;
+
+        foreach ($ayahs as $ayahData) {
+            $surahNumber = $ayahData['surah_number'] ?? $ayahData['surah_id'] ?? null;
+            if (empty($surahNumber) || empty($ayahData['ayah_number']) || empty($ayahData['text_uthmani'])) {
+                continue;
+            }
+
+            $surahId = $surahs[$surahNumber] ?? null;
+            if (!$surahId) {
+                $surah = Surah::where('number', $surahNumber)->orWhere('id', $surahNumber)->first();
+                if (!$surah) {
+                    continue;
+                }
+                $surahId = $surah->id;
+                $surahs[$surahNumber] = $surahId;
+            }
+
+            Ayah::updateOrCreate(
+                [
+                    'surah_id' => $surahId,
+                    'ayah_number' => $ayahData['ayah_number']
+                ],
+                [
+                    'text_uthmani' => $ayahData['text_uthmani'],
+                    'text_simple' => $ayahData['text_simple'] ?? null,
+                    'page_number' => $ayahData['page_number'] ?? null,
+                    'juz_number' => $ayahData['juz_number'] ?? null,
+                    'hizb_number' => $ayahData['hizb_number'] ?? null,
+                    'rub_number' => $ayahData['rub_number'] ?? null,
+                    'sajda_flag' => filter_var($ayahData['sajda_flag'] ?? false, FILTER_VALIDATE_BOOLEAN),
+                    'is_active' => filter_var($ayahData['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
+                ]
+            );
+            $imported++;
+        }
+
+        return redirect()->route('ayahs.index')->with('success', "Imported {$imported} Ayahs successfully.");
+    }
 }

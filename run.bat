@@ -1,2 +1,1 @@
-@REM Run APIs for laravel folder
-start /b cmd /c "php artisan serve"
+php artisan serve --host=0.0.0.0 --port=8000

@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\V1\UserAyahProgressController;
 use App\Http\Controllers\Api\V1\BannerController as V1BannerController;
 use App\Http\Controllers\Api\V1\AdhkarController as V1AdhkarController;
 use App\Http\Controllers\Api\V1\TasbihController as V1TasbihController;
+use App\Http\Controllers\Api\V1\HadithController as V1HadithController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -73,6 +74,7 @@ Route::prefix('v1')->group(function () {
     Route::get('banners', [V1BannerController::class, 'index']);
     Route::get('adhkars', [V1AdhkarController::class, 'index']);
     Route::get('tasbihs', [V1TasbihController::class, 'index']);
+    Route::get('hadiths', [V1HadithController::class, 'index']);
 
     // Public Audio (Reader v2.1)
     Route::get('audio-files', [AudioFileController::class, 'index']);

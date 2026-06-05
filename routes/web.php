@@ -25,6 +25,8 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\AdhkarCategoryController;
 use App\Http\Controllers\AdhkarController;
 use App\Http\Controllers\TasbihController;
+use App\Http\Controllers\HadithCategoryController;
+use App\Http\Controllers\HadithController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -32,7 +34,20 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $stats = [
+        'users' => \App\Models\User::count(),
+        'hadiths' => \App\Models\Hadith::count(),
+        'hadith_categories' => \App\Models\HadithCategory::count(),
+        'adhkars' => \App\Models\Adhkar::count(),
+        'adhkar_categories' => \App\Models\AdhkarCategory::count(),
+        'tasbihs' => \App\Models\Tasbih::count(),
+        'surahs' => \App\Models\Surah::count(),
+        'ayahs' => \App\Models\Ayah::count(),
+        'reciters' => \App\Models\Reciter::count(),
+        'audio_files' => \App\Models\AudioFile::count(),
+        'banners' => \App\Models\Banner::count(),
+    ];
+    return view('dashboard', compact('stats'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
@@ -43,8 +58,13 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('surahs/import', [SurahController::class, 'import'])->name('surahs.import');
     Route::resource('surahs', SurahController::class);
+
+    Route::post('ayahs/import', [AyahController::class, 'import'])->name('ayahs.import');
     Route::resource('ayahs', AyahController::class);
+
+    Route::post('tajweed-rules/import', [TajweedRuleController::class, 'import'])->name('tajweed-rules.import');
     Route::resource('tajweed-rules', TajweedRuleController::class);
     Route::resource('tajweed-segments', AyahTajweedSegmentController::class);
     Route::resource('reciters', ReciterController::class);
@@ -54,7 +74,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('qiraats', QiraatController::class);
     Route::resource('qiraat-texts', QiraatTextController::class);
     Route::resource('tafsir-books', TafsirBookController::class);
+
+    Route::post('tafsirs/import', [TafsirController::class, 'import'])->name('tafsirs.import');
     Route::resource('tafsirs', TafsirController::class);
+
+    Route::post('translations/import', [TranslationController::class, 'import'])->name('translations.import');
     Route::resource('translations', TranslationController::class);
     Route::resource('bookmarks', BookmarkController::class);
     Route::resource('favorites', FavoriteController::class);
@@ -66,6 +90,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('adhkar-categories', AdhkarCategoryController::class);
     Route::resource('adhkars', AdhkarController::class);
     Route::resource('tasbihs', TasbihController::class);
+    Route::resource('hadith-categories', HadithCategoryController::class);
+    Route::resource('hadiths', HadithController::class);
 
     Route::get('user-ayah-progress/dashboard', [UserAyahProgressController::class, 'dashboard'])
         ->name('user-ayah-progress.dashboard');

@@ -39,6 +39,8 @@ return [
     'leaderboard' => 'لوحة الصدارة',
 
     'settings' => 'الإعدادات',
+    'hadith_categories' => 'تصنيفات الأحاديث',
+    'hadiths' => 'قائمة الأحاديث',
     'preferences' => 'التفضيلات',
     'dark_mode' => 'الوضع الداكن',
 

@@ -11,10 +11,13 @@ class TajweedRule extends Model
 
     protected $fillable = [
         'name',
+        'name_ku',
+        'name_ar',
         'slug',
         'category',
         'color_code',
         'description',
+        'description_ku',
         'example_text',
         'priority',
         'is_active',

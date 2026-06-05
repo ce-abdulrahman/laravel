@@ -22,10 +22,15 @@
                             border: 2px solid var(--quran-border-light);"></div>
                 @endif
                 <div>
-                    <h1 class="h4 mb-1">{{ $tajweedRule->name }}</h1>
-                    @if($tajweedRule->category)
-                    <span class="quran-table-badge info">{{ $tajweedRule->category }}</span>
-                    @endif
+                    <h1 class="h4 mb-1">{{ $tajweedRule->name_ku }} ({{ $tajweedRule->name }})</h1>
+                    <div class="d-flex align-items-center gap-2 mt-1">
+                        @if($tajweedRule->name_ar)
+                        <span class="fs-6 arabic-text text-success font-bold" dir="rtl">{{ $tajweedRule->name_ar }}</span>
+                        @endif
+                        @if($tajweedRule->category)
+                        <span class="quran-table-badge info">{{ $tajweedRule->category }}</span>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -34,8 +39,8 @@
             @if(auth()->user()?->role === 'admin')
             <a href="{{ route('tajweed-segments.create', ['tajweed_rule_id' => $tajweedRule->id]) }}" 
                class="quran-btn quran-btn-success">
-                <i class="bi bi-plus-lg me-1"></i>
-                {{ __('tajweed_segments.actions.add_segment') }}
+                 <i class="bi bi-plus-lg me-1"></i>
+                 {{ __('tajweed_segments.actions.add_segment') }}
             </a>
             <a href="{{ route('tajweed-rules.edit', $tajweedRule) }}" class="quran-btn quran-btn-primary">
                 <i class="bi bi-pencil me-1"></i>
@@ -106,7 +111,17 @@
                     </h5>
                 </div>
                 <div class="quran-card-body">
-                    <div class="quran-description">{{ $tajweedRule->description }}</div>
+                    <div class="mb-3">
+                        <label class="quran-detail-label d-block mb-1">شیکردنەوە بە کوردی</label>
+                        <div class="quran-description text-primary font-medium" style="font-family: 'Cairo'; line-height: 1.6; font-size: 14px;">
+                            {{ $tajweedRule->description_ku }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        <label class="quran-detail-label d-block mb-1">Explanation (English)</label>
+                        <div class="quran-description">{{ $tajweedRule->description }}</div>
+                    </div>
 
                     @if($tajweedRule->example_text)
                     <div class="mt-4">

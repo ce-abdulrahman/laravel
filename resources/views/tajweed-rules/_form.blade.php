@@ -14,15 +14,40 @@
                 </h6>
 
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="quran-form-label" for="name">
-                            {{ __('tajweed_rules.fields.name') }}
+                            {{ __('tajweed_rules.fields.name') }} (English)
                             <span class="text-danger">*</span>
                         </label>
                         <input type="text" name="name" id="name" 
                                class="quran-form-control @error('name') is-invalid @enderror"
                                value="{{ old('name', $tajweedRule->name) }}" required>
                         @error('name')
+                        <div class="quran-invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="quran-form-label" for="name_ku">
+                            ناو بە کوردی
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" name="name_ku" id="name_ku" 
+                               class="quran-form-control @error('name_ku') is-invalid @enderror"
+                               value="{{ old('name_ku', $tajweedRule->name_ku) }}" required>
+                        @error('name_ku')
+                        <div class="quran-invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="quran-form-label" for="name_ar">
+                            ناو بە عەرەبی
+                        </label>
+                        <input type="text" name="name_ar" id="name_ar" 
+                               class="quran-form-control @error('name_ar') is-invalid @enderror"
+                               value="{{ old('name_ar', $tajweedRule->name_ar) }}" dir="rtl">
+                        @error('name_ar')
                         <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -109,11 +134,29 @@
 
                 <div class="row g-3">
                     <div class="col-12">
-                        <textarea name="description" id="description" rows="4"
+                        <label class="quran-form-label" for="description">
+                            {{ __('tajweed_rules.fields.description') }} (English)
+                            <span class="text-danger">*</span>
+                        </label>
+                        <textarea name="description" id="description" rows="3"
                                   class="quran-form-control @error('description') is-invalid @enderror"
                                   placeholder="{{ __('tajweed_rules.placeholders.description') }}"
                                   required>{{ old('description', $tajweedRule->description) }}</textarea>
                         @error('description')
+                        <div class="quran-invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-12">
+                        <label class="quran-form-label" for="description_ku">
+                            وەسف و شیکردنەوە بە کوردی
+                            <span class="text-danger">*</span>
+                        </label>
+                        <textarea name="description_ku" id="description_ku" rows="3"
+                                  class="quran-form-control @error('description_ku') is-invalid @enderror"
+                                  placeholder="شیکردنەوەی حوکمی تەجویدەکە بە کوردی لێرە بنووسە..."
+                                  required>{{ old('description_ku', $tajweedRule->description_ku) }}</textarea>
+                        @error('description_ku')
                         <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

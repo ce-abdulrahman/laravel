@@ -88,6 +88,45 @@ class SurahController extends Controller
             ->with('success', __('surah.messages.deleted'));
     }
 
+    public function import(Request $request)
+    {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, __('common.unauthorized'));
+        }
+
+        $request->validate([
+            'file' => 'required|file|mimes:json',
+        ]);
+
+        $json = file_get_contents($request->file('file')->getRealPath());
+        $surahs = json_decode($json, true);
+
+        if (! is_array($surahs)) {
+            return back()->with('error', 'Invalid JSON file structure.');
+        }
+
+        $imported = 0;
+        foreach ($surahs as $surahData) {
+            if (empty($surahData['number']) || empty($surahData['name_ar'])) {
+                continue;
+            }
+            Surah::updateOrCreate(
+                ['number' => $surahData['number']],
+                [
+                    'name_ar' => $surahData['name_ar'],
+                    'name_ku' => $surahData['name_ku'] ?? null,
+                    'name_en' => $surahData['name_en'] ?? null,
+                    'revelation_type' => strtolower($surahData['revelation_type'] ?? 'meccan'),
+                    'ayah_count' => $surahData['ayah_count'] ?? 1,
+                    'is_active' => filter_var($surahData['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
+                ]
+            );
+            $imported++;
+        }
+
+        return redirect()->route('surahs.index')->with('success', "Imported {$imported} Surahs successfully.");
+    }
+
     /**
      * @return array<string, mixed>
      */

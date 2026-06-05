@@ -227,4 +227,87 @@ class TafsirController extends Controller
             abort(403, __('common.unauthorized'));
         }
     }
+
+    public function import(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $request->validate([
+            'file' => 'required|file|mimes:json',
+        ]);
+
+        $json = file_get_contents($request->file('file')->getRealPath());
+        $tafsirs = json_decode($json, true);
+
+        if (! is_array($tafsirs)) {
+            return back()->with('error', 'Invalid JSON file structure.');
+        }
+
+        $tafsirBooks = TafsirBook::pluck('id', 'name')->toArray();
+        $ayahs = [];
+        $imported = 0;
+
+        foreach ($tafsirs as $tafsirData) {
+            $surahNumber = $tafsirData['surah_number'] ?? null;
+            $ayahNumber = $tafsirData['ayah_number'] ?? null;
+            $ayahId = $tafsirData['ayah_id'] ?? null;
+            $tafsirBookName = $tafsirData['tafsir_book_name'] ?? null;
+            $tafsirBookId = $tafsirData['tafsir_book_id'] ?? null;
+            $content = $tafsirData['content'] ?? null;
+
+            if (empty($content)) {
+                continue;
+            }
+
+            if (empty($tafsirBookId)) {
+                if (empty($tafsirBookName)) {
+                    continue;
+                }
+                if (!isset($tafsirBooks[$tafsirBookName])) {
+                    $book = TafsirBook::create([
+                        'name' => $tafsirBookName,
+                        'name_ku' => $tafsirBookName,
+                        'language_code' => $tafsirData['language_code'] ?? 'ku',
+                        'is_active' => true,
+                    ]);
+                    $tafsirBooks[$tafsirBookName] = $book->id;
+                }
+                $tafsirBookId = $tafsirBooks[$tafsirBookName];
+            }
+
+            if (empty($ayahId)) {
+                if (empty($surahNumber) || empty($ayahNumber)) {
+                    continue;
+                }
+                $key = "{$surahNumber}_{$ayahNumber}";
+                if (!isset($ayahs[$key])) {
+                    $ayah = Ayah::whereHas('surah', function ($q) use ($surahNumber) {
+                        $q->where('number', $surahNumber);
+                    })->where('ayah_number', $ayahNumber)->first();
+
+                    if (!$ayah) {
+                        continue;
+                    }
+                    $ayahs[$key] = $ayah->id;
+                }
+                $ayahId = $ayahs[$key];
+            }
+
+            Tafsir::updateOrCreate(
+                [
+                    'ayah_id' => $ayahId,
+                    'tafsir_book_id' => $tafsirBookId,
+                ],
+                [
+                    'content' => $content,
+                    'short_content' => $tafsirData['short_content'] ?? null,
+                    'source_reference' => $tafsirData['source_reference'] ?? null,
+                    'is_active' => filter_var($tafsirData['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
+                ]
+            );
+            $imported++;
+        }
+
+        return redirect()->route('tafsirs.index')->with('success', "Imported {$imported} Tafsirs successfully.");
+    }
 }

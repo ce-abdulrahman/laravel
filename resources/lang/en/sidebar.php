@@ -43,6 +43,8 @@ return [
     'adhkar_categories' => 'Adhkar Categories',
     'adhkars' => 'Adhkar List',
     'tasbihs' => 'Tasbih List',
+    'hadith_categories' => 'Hadith Categories',
+    'hadiths' => 'Hadith List',
     'preferences' => 'Preferences',
     'dark_mode' => 'Dark Mode',
 

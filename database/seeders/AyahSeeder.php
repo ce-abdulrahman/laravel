@@ -11,17 +11,18 @@ class AyahSeeder extends Seeder
 {
     public function run(): void
     {
-        $path = database_path('data/ayahs.php');
+        $path = database_path('data/ayahs.json');
 
         if (! File::exists($path)) {
-            $this->command->error('ayahs.php file not found in database/data/');
+            $this->command->error('ayahs.json file not found in database/data/');
             return;
         }
 
-        $ayahs = require $path;
+        $json = File::get($path);
+        $ayahs = json_decode($json, true);
 
         if (! is_array($ayahs) || empty($ayahs)) {
-            $this->command->error('ayahs.php is empty or invalid.');
+            $this->command->error('ayahs.json is empty or invalid.');
             return;
         }
 
