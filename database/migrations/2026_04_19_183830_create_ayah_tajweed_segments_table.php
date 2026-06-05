@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('start_index')->nullable();
             $table->unsignedInteger('end_index')->nullable();
             $table->text('note')->nullable();
-            $table->timestamps();
+            $table->timestamps(); 
 
             $table->index(['ayah_id', 'tajweed_rule_id']);
         });

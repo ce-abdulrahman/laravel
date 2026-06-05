@@ -2,151 +2,394 @@
 
 namespace Database\Seeders;
 
-use App\Models\TajweedRule;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class TajweedRuleSeeder extends Seeder
 {
-    public function run(): void
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
     {
+        $now = Carbon::now();
+
         $rules = [
+            // ==========================================
+            // 1. NOON SAKINAH & TANWEEN
+            // ==========================================
             [
-                'name' => 'Idgham',
-                'name_ku' => 'ئیدغام (تێکەڵکردن)',
-                'name_ar' => 'الإدغام',
-                'slug' => 'idgham',
-                'category' => 'noon_sakinah',
-                'color_code' => '#22c55e',
-                'description' => 'Merging one letter into another with or without ghunnah.',
-                'description_ku' => 'تێکەڵکردنی پیتێکە بە پیتێکی ترەوە بە غوننە یان بەبێ غوننە کە پاش پیتەکانی نوونی ساکین یان تەنوین دێن.',
-                'example_text' => 'مِنْ رَبِّهِمْ',
-                'priority' => 1,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Ikhfa',
-                'name_ku' => 'ئیخفا (شاردنەوە)',
-                'name_ar' => 'الإخفاء',
-                'slug' => 'ikhfa',
-                'category' => 'noon_sakinah',
-                'color_code' => '#f59e0b',
-                'description' => 'Hiding the noon sakinah or tanween with ghunnah.',
-                'description_ku' => 'شاردنەوەی دەنگی نوونی ساکین یان تەنوینە لەگەڵ دەرکردنی دەنگی غوننە لە کاتی گەیاندنی بە پیتەکانی ئیخفا.',
-                'example_text' => 'مِنْ شَرِّ',
-                'priority' => 2,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Iqlab',
-                'name_ku' => 'ئیقلاب (گۆڕین)',
-                'name_ar' => 'الإقلاب',
-                'slug' => 'iqlab',
-                'category' => 'noon_sakinah',
-                'color_code' => '#8b5cf6',
-                'description' => 'Converting noon sakinah or tanween into meem before baa.',
-                'description_ku' => 'گۆڕینی دەنگی نوونی ساکین یان تەنوینە بۆ پیتی میم (م) لە کاتێکدا بکەوێتە پێش پیتی باء (ب).',
-                'example_text' => 'سَمِيعٌ بَصِيرٌ',
-                'priority' => 3,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Izhar',
-                'name_ku' => 'ئیزهار (دەرخستن)',
-                'name_ar' => 'الإظهار',
-                'slug' => 'izhar',
-                'category' => 'noon_sakinah',
-                'color_code' => '#3b82f6',
-                'description' => 'Clear pronunciation of noon sakinah or tanween.',
-                'description_ku' => 'خوێندنەوە و دەربڕینی ئاشکرا و ڕوونی نوونی ساکین یان تەنوینە بێ غوننە کاتێک بکەوێتە پێش پیتەکانی قورگ.',
-                'example_text' => 'مِنْ آمَنَ',
-                'priority' => 4,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Qalqalah',
-                'name_ku' => 'قەلقەلە (لەرزاندن)',
-                'name_ar' => 'القلقلة',
-                'slug' => 'qalqalah',
-                'category' => 'letters',
-                'color_code' => '#ef4444',
-                'description' => 'Echoing sound on قطب جد letters when sakin.',
-                'description_ku' => 'لەرزاندن یان لەرینەوەی دەنگی پیتەکانی (ق، ط، ب، ج، د) لە کاتی سکون یان وەستان لەسەریان.',
-                'example_text' => 'أَحَدٌ',
-                'priority' => 5,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Ghunnah',
-                'name_ku' => 'غوننە (دەنگی لووت)',
-                'name_ar' => 'الغنة',
-                'slug' => 'ghunnah',
-                'category' => 'sound',
-                'color_code' => '#14b8a6',
-                'description' => 'Nasal sound for noon and meem mushaddad.',
-                'description_ku' => 'دەرکردنی دەنگێکی خۆشە لە قورگ و لووتەوە (خەیشووم) بۆ پیتەکانی نوون و میمی توندکراو (موشەددەد).',
-                'example_text' => 'إِنَّ',
-                'priority' => 6,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Madd Tabi‘i',
-                'name_ku' => 'مەدی سروشتی',
-                'name_ar' => 'المد الطبيعي',
-                'slug' => 'madd-tabii',
-                'category' => 'madd',
-                'color_code' => '#0ea5e9',
-                'description' => 'Natural prolongation of two counts.',
-                'description_ku' => 'Natural prolongation of two counts.',
-                'example_text' => 'قَالَ',
-                'priority' => 7,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Madd Munfasil',
-                'name_ku' => 'مەدی جیاواز',
-                'name_ar' => 'المد المنفصل',
-                'slug' => 'madd-munfasil',
-                'category' => 'madd',
-                'color_code' => '#6366f1',
-                'description' => 'Elongation when madd letter comes at the end of a word and hamzah at the beginning of the next.',
-                'description_ku' => 'درێژکردنەوەی دەنگە کاتێک پیتی مەد لە کۆتایی وشەیەکدا بێت و هەمزە لە سەرەتای وشەی دواتردا بێت.',
-                'example_text' => 'إِنَّا أَعْطَيْنَاكَ',
-                'priority' => 8,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Madd Muttasil',
-                'name_ku' => 'مەدی پێکەوەبەستراو',
-                'name_ar' => 'المد المتصل',
-                'slug' => 'madd-muttasil',
-                'category' => 'madd',
-                'color_code' => '#9333ea',
-                'description' => 'Elongation when madd letter and hamzah are in the same word.',
-                'description_ku' => 'درێژکردنەوەی دەنگە کاتێک پیتی مەد و هەمزە پێکەوە لە ناو یەک وشەدا بن.',
-                'example_text' => 'جَاءَ',
-                'priority' => 9,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Meem Sakinah Ikhfa Shafawi',
-                'name_ku' => 'ئیخفای لێوی (ئیخفای شەفەوی)',
-                'name_ar' => 'الإخفاء الشفوي',
-                'slug' => 'ikhfa-shafawi',
-                'category' => 'meem_sakinah',
-                'color_code' => '#f97316',
-                'description' => 'Hidden meem before baa with ghunnah.',
-                'description_ku' => 'شاردنەوەی دەنگی پیتی میمی ساکینە کاتێک بکەوێتە پێش پیتی باء (ب) لەگەڵ غوننە.',
-                'example_text' => 'تَرْمِيهِمْ بِحِجَارَةٍ',
+                'name' => 'Idhhar Halqi (Clear)',
+                'slug' => 'idhhar-halqi',
+                'category' => 'Noon Sakinah & Tanween',
+                'color_code' => '#000000', // Usually black/uncolored
+                'description' => 'Pronouncing the Noon Sakinah or Tanween clearly without extra Ghunnah when followed by throat letters (ء, ه, ع, ح, غ, خ).',
+                'example_text' => 'مِنْ خَوْفٍ',
                 'priority' => 10,
-                'is_active' => true,
+            ],
+            [
+                'name' => 'Idgham Bighunnah (Merge with Nasal)',
+                'slug' => 'idgham-bighunnah',
+                'category' => 'Noon Sakinah & Tanween',
+                'color_code' => '#4CAF50', // Green
+                'description' => 'Merging the Noon into the following letter with a 2-beat nasal hold. Letters: ي, ن, م, و.',
+                'example_text' => 'مَن يَعْمَلْ',
+                'priority' => 11,
+            ],
+            [
+                'name' => 'Idgham Bighayr Ghunnah (Merge without Nasal)',
+                'slug' => 'idgham-bighayr-ghunnah',
+                'category' => 'Noon Sakinah & Tanween',
+                'color_code' => '#9E9E9E', // Gray
+                'description' => 'Merging the Noon completely into the following letter without any nasal hold. Letters: ل, ر.',
+                'example_text' => 'مِن رَّبِّهِمْ',
+                'priority' => 12,
+            ],
+            [
+                'name' => 'Iqlab (Changing)',
+                'slug' => 'iqlab',
+                'category' => 'Noon Sakinah & Tanween',
+                'color_code' => '#2196F3', // Blue
+                'description' => 'Changing the Noon sound into a hidden Meem with a 2-beat Ghunnah when followed by Ba (ب).',
+                'example_text' => 'مِن بَعْدِ',
+                'priority' => 13,
+            ],
+            [
+                'name' => 'Ikhfa Haqiqi (Hiding)',
+                'slug' => 'ikhfa-haqiqi',
+                'category' => 'Noon Sakinah & Tanween',
+                'color_code' => '#4CAF50', // Green
+                'description' => 'Hiding the Noon sound in the nasal cavity with a 2-beat hold before the remaining 15 letters.',
+                'example_text' => 'مِن قَبْلُ',
+                'priority' => 14,
+            ],
+
+            // ==========================================
+            // 2. MEEM SAKINAH
+            // ==========================================
+            [
+                'name' => 'Ikhfa Shafawi',
+                'slug' => 'ikhfa-shafawi',
+                'category' => 'Meem Sakinah',
+                'color_code' => '#4CAF50', // Green
+                'description' => 'Hiding the Meem lightly with a 2-beat Ghunnah when followed by Ba (ب).',
+                'example_text' => 'تَرْمِيهِم بِحِجَارَةٍ',
+                'priority' => 20,
+            ],
+            [
+                'name' => 'Idgham Shafawi',
+                'slug' => 'idgham-shafawi',
+                'category' => 'Meem Sakinah',
+                'color_code' => '#4CAF50', // Green
+                'description' => 'Merging the Meem into another Meem with a 2-beat Ghunnah.',
+                'example_text' => 'لَهُم مَّثَلًا',
+                'priority' => 21,
+            ],
+            [
+                'name' => 'Idhhar Shafawi',
+                'slug' => 'idhhar-shafawi',
+                'category' => 'Meem Sakinah',
+                'color_code' => '#000000',
+                'description' => 'Pronouncing the Meem clearly with closed lips before any letter other than Meem or Ba.',
+                'example_text' => 'أَلَمْ تَرَ',
+                'priority' => 22,
+            ],
+
+            // ==========================================
+            // 3. MADD (PROLONGATION)
+            // ==========================================
+            [
+                'name' => 'Madd Tabi\'i (Natural Madd)',
+                'slug' => 'madd-tabii',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#FF9800', // Orange
+                'description' => 'The natural 2-beat prolongation of Alif, Waw, or Yaa when not followed by a Hamzah or Sukoon.',
+                'example_text' => 'نُوحِيهَا',
+                'priority' => 30,
+            ],
+            [
+                'name' => 'Madd Muttasil (Attached)',
+                'slug' => 'madd-muttasil',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#E53935', // Red
+                'description' => 'A mandatory 4 or 5 beat prolongation when a Madd letter is followed by a Hamzah in the same word.',
+                'example_text' => 'سَمَاء',
+                'priority' => 31,
+            ],
+            [
+                'name' => 'Madd Munfasil (Separated)',
+                'slug' => 'madd-munfasil',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#E53935', // Red
+                'description' => 'A 4 or 5 beat prolongation when a Madd letter ends a word and Hamzah begins the next. (2 beats is permissible in some readings).',
+                'example_text' => 'بِمَا أُنزِلَ',
+                'priority' => 32,
+            ],
+
+            [
+                'name' => 'Madd \'Iwad (Compensation)',
+                'slug' => 'madd-iwad',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#FF9800', // Orange (matches other 2-beat madds)
+                'description' => 'A 2-beat prolongation that substitutes a Fathatain (double Fatha) when stopping on a word, turning it into a spoken Alif.',
+                'example_text' => 'عَلِيمًا', // Pronounced as 'Aleemaa' when stopping
+                'priority' => 42,
+            ],
+            [
+                'name' => 'Madd Tamkeen (Empowerment)',
+                'slug' => 'madd-tamkeen',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#FF9800', // Orange
+                'description' => 'A 2-beat prolongation occurring when two consecutive Yaa letters appear; the first has a Shaddah and Kasrah, and the second has a Sukoon.',
+                'example_text' => 'حُيِّيتُم',
+                'priority' => 43,
+            ],
+
+            [
+                'name' => 'Madd Badal (Substituted)',
+                'slug' => 'madd-badal',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#FF9800', // Orange
+                'description' => 'A 2-beat prolongation occurring when a Hamzah precedes a Madd letter.',
+                'example_text' => 'ءَامَنُوا',
+                'priority' => 33,
+            ],
+            [
+                'name' => 'Madd \'Aridh li-Sukun (Temporary Stop)',
+                'slug' => 'madd-aridh',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#E53935', // Red
+                'description' => 'Prolonging the Madd letter for 2, 4, or 6 beats when stopping on the last letter of a word, creating a temporary Sukoon.',
+                'example_text' => 'ٱلْعَالَمِينَ',
+                'priority' => 34,
+            ],
+            [
+                'name' => 'Madd Leen (Soft Madd)',
+                'slug' => 'madd-leen',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#FF9800', // Orange
+                'description' => 'Prolonging a Waw or Yaa with a Sukoon (preceded by a Fatha) for 2, 4, or 6 beats when stopping on the word.',
+                'example_text' => 'قُرَيْشٍ',
+                'priority' => 35,
+            ],
+            [
+                'name' => 'Madd Lazim Kalimi Muthaqqal (Compulsory Word Heavy)',
+                'slug' => 'madd-lazim-kalimi-muthaqqal',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#B71C1C', // Dark Red
+                'description' => 'A strict 6-beat prolongation when a Madd letter is followed by a Shaddah in the same word.',
+                'example_text' => 'ٱلضَّآلِّينَ',
+                'priority' => 36,
+            ],
+            [
+                'name' => 'Madd Lazim Kalimi Mukhaffaf (Compulsory Word Light)',
+                'slug' => 'madd-lazim-kalimi-mukhaffaf',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#B71C1C', // Dark Red
+                'description' => 'A strict 6-beat prolongation when a Madd letter is followed by a non-merged Sukoon in the same word.',
+                'example_text' => 'ءَآلْـَٔـٰنَ',
+                'priority' => 37,
+            ],
+            [
+                'name' => 'Madd Lazim Harfi Muthaqqal (Compulsory Letter Heavy)',
+                'slug' => 'madd-lazim-harfi-muthaqqal',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#B71C1C', // Dark Red
+                'description' => 'A strict 6-beat prolongation in the disconnected letters (Muqatta\'at) where one letter merges into the next.',
+                'example_text' => 'طسٓمٓ',
+                'priority' => 38,
+            ],
+            [
+                'name' => 'Madd Lazim Harfi Mukhaffaf (Compulsory Letter Light)',
+                'slug' => 'madd-lazim-harfi-mukhaffaf',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#B71C1C', // Dark Red
+                'description' => 'A strict 6-beat prolongation in the disconnected letters (Muqatta\'at) where the letter does not merge into the next.',
+                'example_text' => 'صٓ',
+                'priority' => 39,
+            ],
+            [
+                'name' => 'Madd Silah Kubra (Connecting)',
+                'slug' => 'madd-silah-kubra',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#FF9800', // Orange
+                'description' => 'Prolonging the pronoun Ha (ـه)  followed by a Hamzah, making  4/5 beats (Kubra).',
+                'example_text' => 'مَالَهُۥٓ أَخْلَدَهُ',
+                'priority' => 40,
+            ],
+
+            [
+                'name' => 'Madd Silah Sughra (Connecting)',
+                'slug' => 'madd-silah-sughra',
+                'category' => 'Madd (Prolongation)',
+                'color_code' => '#FF9800', // Orange
+                'description' => 'Prolonging the pronoun Ha (ـه) for 2 beats (Sughra) when it is NOT followed by a Hamzah.',
+                'example_text' => 'إِنَّهُۥ كَانَ', // Corrected example for Sughra
+                'priority' => 41, // Bumped priority to keep them sequential
+            ],
+
+            // ==========================================
+            // 4. THE LETTER RAA (ر)
+            // ==========================================
+            [
+                'name' => 'Raa Tafkhim (Heavy Raa)',
+                'slug' => 'raa-tafkhim',
+                'category' => 'Rules of Raa',
+                'color_code' => '#3F51B5', // Indigo
+                'description' => 'Pronouncing the Raa with a full, heavy mouth. Occurs when Raa has a Fatha/Damma, or a Sukoon preceded by Fatha/Damma.',
+                'example_text' => 'رَبَّنَا',
+                'priority' => 50,
+            ],
+            [
+                'name' => 'Raa Tarqiq (Light Raa)',
+                'slug' => 'raa-tarqiq',
+                'category' => 'Rules of Raa',
+                'color_code' => '#03A9F4', // Light Blue
+                'description' => 'Pronouncing the Raa with an empty, flat mouth. Occurs when Raa has a Kasra, or a Sukoon preceded by a Kasra.',
+                'example_text' => 'رِجَالٌ',
+                'priority' => 51,
+            ],
+            [
+                'name' => 'Raa Jawaz (Permissible Both Ways)',
+                'slug' => 'raa-jawaz',
+                'category' => 'Rules of Raa',
+                'color_code' => '#9C27B0', // Purple
+                'description' => 'Rare scenarios where the Raa can be read as either heavy or light (e.g., when followed by a heavy letter with a Kasra, or stopping on specific words).',
+                'example_text' => 'فِرْقٍ',
+                'priority' => 52,
+            ],
+
+            // ==========================================
+            // 5. OTHER CRITICAL RULES
+            // ==========================================
+            [
+                'name' => 'Qalqalah Kubra (Major Echo)',
+                'slug' => 'qalqalah-kubra',
+                'category' => 'Qalqalah',
+                'color_code' => '#00BCD4', // Cyan
+                'description' => 'A strong echoing bounce sound made when stopping on one of the Qalqalah letters (ق, ط, ب, ج, د) at the end of a word.',
+                'example_text' => 'ٱلْفَلَقِ',
+                'priority' => 60,
+            ],
+            [
+                'name' => 'Qalqalah Sughra (Minor Echo)',
+                'slug' => 'qalqalah-sughra',
+                'category' => 'Qalqalah',
+                'color_code' => '#00BCD4', // Cyan
+                'description' => 'A softer echoing bounce sound made when a Qalqalah letter has a Sukoon in the middle of a word.',
+                'example_text' => 'يَجْعَلُ',
+                'priority' => 61,
+            ],
+            [
+                'name' => 'Ghunnah Mushaddadah',
+                'slug' => 'ghunnah-mushaddadah',
+                'category' => 'Ghunnah',
+                'color_code' => '#4CAF50', // Green
+                'description' => 'A mandatory 2-beat strong nasal sound whenever a Noon (ن) or Meem (م) carries a Shaddah.',
+                'example_text' => 'إِنَّ',
+                'priority' => 62,
+            ],
+			
+			// ==========================================
+            // 6. LAFDH AL-JALALAH (The Word "Allah")
+            // ==========================================
+            [
+                'name' => 'Laam Tafkhim (Heavy Laam)',
+                'slug' => 'laam-tafkhim',
+                'category' => 'Laam of Allah',
+                'color_code' => '#3F51B5', // Indigo (matches Raa Tafkhim)
+                'description' => 'Pronouncing the Laam in the word "Allah" with a heavy, full mouth when preceded by a Fatha or Damma.',
+                'example_text' => 'شَهِدَ اللَّهُ',
+                'priority' => 70,
+            ],
+            [
+                'name' => 'Laam Tarqiq (Light Laam)',
+                'slug' => 'laam-tarqiq',
+                'category' => 'Laam of Allah',
+                'color_code' => '#03A9F4', // Light Blue (matches Raa Tarqiq)
+                'description' => 'Pronouncing the Laam in the word "Allah" with a light, empty mouth when preceded by a Kasra.',
+                'example_text' => 'بِسْمِ اللَّهِ',
+                'priority' => 71,
+            ],
+
+            // ==========================================
+            // 7. AL-LAAM AL-TA'REEF (The Definite Article)
+            // ==========================================
+            [
+                'name' => 'Idhhar Qamari (Clear Laam)',
+                'slug' => 'idhhar-qamari',
+                'category' => 'Laam Al-Ta\'reef',
+                'color_code' => '#000000', // Black/Clear
+                'description' => 'Pronouncing the Laam clearly when followed by any of the 14 lunar letters (e.g., ب، ج، ح).',
+                'example_text' => 'ٱلْقَمَرِ',
+                'priority' => 80,
+            ],
+            [
+                'name' => 'Idgham Shamsi (Merged Laam)',
+                'slug' => 'idgham-shamsi',
+                'category' => 'Laam Al-Ta\'reef',
+                'color_code' => '#9E9E9E', // Gray (silent/merged)
+                'description' => 'Merging the Laam completely into the following letter without pronouncing it, applied to the 14 solar letters (e.g., ش، س، ت).',
+                'example_text' => 'ٱلشَّمْسِ',
+                'priority' => 81,
+            ],
+
+            // ==========================================
+            // 8. ADVANCED IDGHAM (Letter Merging)
+            // ==========================================
+            [
+                'name' => 'Idgham Mutamathilayn (Identical)',
+                'slug' => 'idgham-mutamathilayn',
+                'category' => 'Advanced Idgham',
+                'color_code' => '#9E9E9E', // Gray
+                'description' => 'Merging two identical letters when the first has a Sukoon and the second has a vowel.',
+                'example_text' => 'ٱضْرِب بِّعَصَاكَ',
+                'priority' => 90,
+            ],
+            [
+                'name' => 'Idgham Mutajanisayn (Similar)',
+                'slug' => 'idgham-mutajanisayn',
+                'category' => 'Advanced Idgham',
+                'color_code' => '#9E9E9E', // Gray
+                'description' => 'Merging two letters that share the same articulation point but have different characteristics (e.g., Ta and Da).',
+                'example_text' => 'أُجِيبَت دَّعْوَتُكُمَا',
+                'priority' => 91,
+            ],
+            [
+                'name' => 'Idgham Mutaqaribayn (Close)',
+                'slug' => 'idgham-mutaqaribayn',
+                'category' => 'Advanced Idgham',
+                'color_code' => '#9E9E9E', // Gray
+                'description' => 'Merging two letters that are very close in articulation point and characteristics (e.g., Qaf and Kaf).',
+                'example_text' => 'أَلَمْ نَخْلُقكُّم',
+                'priority' => 92,
+            ],
+
+            // ==========================================
+            // 9. SPECIAL RULES
+            // ==========================================
+            [
+                'name' => 'Saktah (Breathless Pause)',
+                'slug' => 'saktah',
+                'category' => 'Special Rules',
+                'color_code' => '#E91E63', // Pink/Distinct
+                'description' => 'A mandatory short pause of about 2 beats without breaking the breath. Marked by a small (س).',
+                'example_text' => 'عِوَجَا ۜ قَيِّمًا',
+                'priority' => 100,
             ],
         ];
 
-        foreach ($rules as $rule) {
-            TajweedRule::updateOrCreate(
-                ['slug' => $rule['slug']],
-                $rule
-            );
-        }
+        // Format timestamps for batch insert
+        $rules = array_map(function ($rule) use ($now) {
+            $rule['created_at'] = $now;
+            $rule['updated_at'] = $now;
+            $rule['is_active'] = true;
+            return $rule;
+        }, $rules);
+
+        DB::table('tajweed_rules')->insert($rules);
     }
 }

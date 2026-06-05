@@ -21,6 +21,9 @@ return new class extends Migration
             $table->foreignId('default_qiraah_id')->nullable()->constrained('qiraats')->nullOnDelete();
             $table->text('about_text')->nullable();
             $table->string('contact_email')->nullable();
+            $table->string('font_ar')->default('AmiriQuran-Regular.ttf');
+            $table->string('font_ku')->default('3_NRT-Bd.ttf');
+            $table->string('font_en')->default('PatuaOne-Regular.ttf');
             $table->timestamps();
         });
     }
