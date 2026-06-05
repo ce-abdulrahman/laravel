@@ -1,10 +1,11 @@
+{{-- resources/views/hadiths/index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'لیستی فەرموودەکان')
-@section('page-title', 'لیستی فەرموودەکان')
+@section('title', __('hadiths.titles.index'))
+@section('page-title', __('hadiths.titles.index'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active" aria-current="page">فەرموودەکان</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('hadiths.titles.index') }}</li>
 @endsection
 
 @section('content')
@@ -12,17 +13,17 @@
     <!-- Header Section -->
     <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">لیستی فەرموودەکان</h1>
-            <div class="text-muted">فەرموودەکان بەپێی هاوپۆلەکانیان دروست بکە، دەستکاری بکە یان بسڕەوە.</div>
+            <h1 class="h4 mb-1">{{ __('hadiths.titles.index') }}</h1>
+            <div class="text-muted">{{ __('hadiths.hints.index') }}</div>
         </div>
 
-        <div class="d-flex gap-2">
+        <div class="d-flex flex-wrap gap-2">
             <form method="GET" action="{{ route('hadiths.index') }}" class="d-flex gap-2" id="searchForm">
                 <select name="category_id" class="form-select" onchange="document.getElementById('searchForm').submit()">
-                    <option value="">-- هەموو هاوپۆلەکان --</option>
+                    <option value="">-- {{ __('hadith_categories.placeholders.search') }} --</option>
                     @foreach($categories as $cat)
                         <option value="{{ $cat->id }}" @selected($selectedCategoryId == $cat->id)>
-                            {{ $cat->name_ku }}
+                            {{ $cat->{'name_' . app()->getLocale()} ?? $cat->name_ku }}
                         </option>
                     @endforeach
                 </select>
@@ -31,7 +32,7 @@
                     name="q"
                     value="{{ $search }}"
                     class="form-control"
-                    placeholder="گەڕان لە دەق، وەرگێڕان یان ڕاوی..."
+                    placeholder="{{ __('hadiths.placeholders.search') }}"
                     style="min-width: 250px;"
                 >
                 <button class="quran-btn quran-btn-outline-primary" type="submit">
@@ -41,7 +42,7 @@
 
             <a href="{{ route('hadiths.create') }}" class="quran-btn quran-btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>
-                زیادکردنی فەرموودە
+                {{ __('hadiths.actions.create') }}
             </a>
         </div>
     </div>
@@ -53,138 +54,148 @@
             <div class="quran-table-search">
                 <i class="bi bi-search"></i>
                 <input type="text"
-                       placeholder="خێرا گەڕان..."
+                       placeholder="{{ __('hadiths.placeholders.search') }}"
                        id="tableSearch"
                        value="{{ $search }}">
             </div>
             <div class="quran-table-filters">
                 <button class="quran-table-filter-btn" onclick="window.location.reload()">
                     <i class="bi bi-arrow-clockwise"></i>
-                    تازەکردنەوە
+                    {{ __('hadiths.actions.refresh') }}
                 </button>
             </div>
         </div>
 
         <!-- Table -->
-        <table class="quran-table quran-table-striped quran-surah-table">
-            <thead>
-                <tr>
-                    <th class="number-column" style="width: 80px;">ڕیزبەندی</th>
-                    <th>هاوپۆل</th>
-                    <th>ڕاوی</th>
-                    <th>دەقی عەرەبی</th>
-                    <th>وەرگێڕانی کوردی</th>
-                    <th>سەرچاوە</th>
-                    <th class="text-center" style="width: 100px;">دۆخ</th>
-                    <th class="text-end" style="width: 120px;">کردارەکان</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($hadiths as $had)
+        <div class="table-responsive">
+            <table class="quran-table quran-table-striped quran-surah-table">
+                <thead>
                     <tr>
-                        <td class="number-column">
-                            <span class="surah-number">{{ $had->order }}</span>
-                        </td>
-                        <td>
-                            <span class="quran-table-badge info">{{ $had->category->name_ku }}</span>
-                        </td>
-                        <td>
-                            @if($had->narrator)
-                                <small class="text-muted">{{ Str::limit($had->narrator, 25) }}</small>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="surah-name-arabic text-truncate" style="max-width: 250px;">{{ $had->arabic_text }}</div>
-                        </td>
-                        <td>
-                            <div class="text-truncate" style="max-width: 250px;">{{ $had->translation_ku }}</div>
-                        </td>
-                        <td>
-                            @if($had->source)
-                                <span class="badge bg-light text-dark">{{ $had->source }}</span>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            @if($had->is_active)
-                                <span class="quran-table-badge success">
-                                    <i class="bi bi-check-circle me-1"></i>
-                                    چالاک
-                                </span>
-                            @else
-                                <span class="quran-table-badge danger">
-                                    <i class="bi bi-x-circle me-1"></i>
-                                    ناچالاک
-                                </span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="quran-table-actions justify-content-end">
-                                <a href="{{ route('hadiths.edit', $had) }}"
-                                   class="quran-table-action-btn edit"
-                                   data-bs-toggle="tooltip"
-                                   title="دەستکاریکردن">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <form method="POST"
-                                      action="{{ route('hadiths.destroy', $had) }}"
-                                      class="d-inline"
-                                      onsubmit="return confirmDelete(event)">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="quran-table-action-btn delete"
-                                            data-bs-toggle="tooltip"
-                                            title="سڕینەوە">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+                        <th class="number-column" style="width: 80px;">{{ __('hadiths.table.order') }}</th>
+                        <th>{{ __('hadiths.table.category') }}</th>
+                        <th>{{ __('hadiths.table.narrator') }}</th>
+                        <th>{{ __('hadiths.table.arabic_text') }}</th>
+                        <th>{{ __('hadiths.table.translation_ku') }}</th>
+                        <th>{{ __('hadiths.table.source') }}</th>
+                        <th class="text-center" style="width: 100px;">{{ __('hadiths.table.status') }}</th>
+                        <th class="text-end" style="width: 150px;">{{ __('hadiths.table.actions') }}</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="8">
-                            <div class="quran-table-empty">
-                                <i class="bi bi-chat-square-text" style="font-size: 3rem; color: #ccc;"></i>
-                                <h6 class="mt-3">هیچ فەرموودەیەک نییە</h6>
-                                <p>هیچ فەرموودەیەک نەدۆزرایەوە لەم بەشەدا.</p>
-                                <a href="{{ route('hadiths.create') }}" class="quran-btn quran-btn-primary mt-3">
-                                    <i class="bi bi-plus-lg me-1"></i>
-                                    دروستکردنی یەکەم فەرموودە
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($hadiths as $had)
+                        <tr>
+                            <td class="number-column">
+                                <span class="surah-number">{{ $had->order }}</span>
+                            </td>
+                            <td>
+                                <span class="quran-table-badge info">
+                                    {{ $had->category->{'name_' . app()->getLocale()} ?? $had->category->name_ku }}
+                                </span>
+                            </td>
+                            <td>
+                                @if($had->narrator)
+                                    <small class="text-muted">{{ Str::limit($had->narrator, 25) }}</small>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="surah-name-arabic text-truncate" style="max-width: 220px;" dir="rtl">{{ $had->arabic_text }}</div>
+                            </td>
+                            <td>
+                                <div class="text-truncate" style="max-width: 220px;">{{ $had->translation_ku }}</div>
+                            </td>
+                            <td>
+                                @if($had->source)
+                                    <span class="badge bg-light text-dark">{{ $had->source }}</span>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($had->is_active)
+                                    <span class="quran-table-badge success">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        {{ __('hadiths.status.active') }}
+                                    </span>
+                                @else
+                                    <span class="quran-table-badge danger">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        {{ __('hadiths.status.inactive') }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="quran-table-actions justify-content-end">
+                                    <a href="{{ route('hadiths.show', $had) }}"
+                                       class="quran-table-action-btn view"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ __('hadiths.actions.view') }}">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ route('hadiths.edit', $had) }}"
+                                       class="quran-table-action-btn edit"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ __('hadiths.actions.edit') }}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form method="POST"
+                                          action="{{ route('hadiths.destroy', $had) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirmDelete(event)">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="quran-table-action-btn delete"
+                                                data-bs-toggle="tooltip"
+                                                title="{{ __('hadiths.actions.delete') }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8">
+                                <div class="quran-table-empty">
+                                    <i class="bi bi-chat-square-text" style="font-size: 3rem; color: #ccc;"></i>
+                                    <h6 class="mt-3">{{ __('hadiths.empty.title') }}</h6>
+                                    <p>{{ __('hadiths.empty.message') }}</p>
+                                    <a href="{{ route('hadiths.create') }}" class="quran-btn quran-btn-primary mt-3">
+                                        <i class="bi bi-plus-lg me-1"></i>
+                                        {{ __('hadiths.actions.create_first') }}
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
         <!-- Table Footer with Pagination -->
         @if($hadiths->hasPages())
             <div class="quran-table-footer">
                 <div class="quran-table-info">
-                    پیشاندانی
+                    {{ __('hadiths.pagination.showing') }}
                     <strong>{{ $hadiths->firstItem() }}</strong>
-                    بۆ
+                    {{ __('hadiths.pagination.to') }}
                     <strong>{{ $hadiths->lastItem() }}</strong>
-                    لە
+                    {{ __('hadiths.pagination.of') }}
                     <strong>{{ $hadiths->total() }}</strong>
-                    فەرموودە
+                    {{ __('hadiths.pagination.entries') }}
                 </div>
                 <div class="quran-pagination">
-                    {{ $hadiths->links() }}
+                    {{ $hadiths->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         @elseif(count($hadiths) > 0)
             <div class="quran-table-footer">
                 <div class="quran-table-info">
-                    کۆتایی لیست. کۆی گشتی:
+                    {{ __('hadiths.pagination.total') }}
                     <strong>{{ count($hadiths) }}</strong>
-                    فەرموودە
+                    {{ __('hadiths.pagination.entries') }}
                 </div>
             </div>
         @endif
@@ -198,7 +209,7 @@
         event.preventDefault();
         const form = event.target;
 
-        if (confirm('دڵنیای لە سڕینەوەی ئەم فەرموودەیە؟')) {
+        if (confirm('{{ __('hadiths.messages.confirm_delete') }}')) {
             form.submit();
         }
         return false;

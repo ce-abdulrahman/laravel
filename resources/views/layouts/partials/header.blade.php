@@ -69,6 +69,11 @@
                 <span class="quran-audio-indicator" style="display: none;"></span>
             </button>
 
+            <!-- Theme Toggle Button -->
+            <button class="quran-header-icon-btn" id="themeToggleHeaderBtn" data-bs-toggle="tooltip" title="{{ __('sidebar.dark_mode') }}">
+                <i class="bi bi-moon-stars" id="themeHeaderIcon"></i>
+            </button>
+
             <!-- Language Switcher -->
             <div class="quran-language-switcher">
                 <button class="quran-header-icon-btn" id="languageDropdownBtn">

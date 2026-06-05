@@ -1,8 +1,18 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rtl' : 'ltr' }}" data-theme="light">
+<html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        const savedTheme = localStorage.getItem('theme') || localStorage.getItem('quran-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="@yield('meta_description', __('common.app_description'))">
     <meta name="keywords" content="@yield('meta_keywords', 'Quran, Koran, Islam, Surah, Ayah, Tafsir, Recitation')">
@@ -44,13 +54,65 @@
     <link rel="stylesheet" href="{{ asset('css/components/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components/footer.css') }}">
 
-    <!-- Custom RTL/LTR overrides based on current locale -->
+    <!-- Custom RTL/LTR overrides based on current locale and configured settings -->
+    @php
+        $settings = \Illuminate\Support\Facades\Cache::remember('app_settings', 3600, function () {
+            return \App\Models\Setting::firstOrCreate([]);
+        });
+        
+        $fontAr = $settings->font_ar ?? 'Wafeq-Regular.otf';
+        $fontKu = $settings->font_ku ?? '3_NRT-Bd.ttf';
+        $fontEn = $settings->font_en ?? 'PatuaOne-Regular.ttf';
+
+        $fontArExt = pathinfo($fontAr, PATHINFO_EXTENSION);
+        $fontKuExt = pathinfo($fontKu, PATHINFO_EXTENSION);
+        $fontEnExt = pathinfo($fontEn, PATHINFO_EXTENSION);
+        
+        $formatAr = strtolower($fontArExt) === 'otf' ? 'opentype' : 'truetype';
+        $formatKu = strtolower($fontKuExt) === 'otf' ? 'opentype' : 'truetype';
+        $formatEn = strtolower($fontEnExt) === 'otf' ? 'opentype' : 'truetype';
+    @endphp
+
     <style>
-        /* Dynamic RTL/LTR Adjustments */
-        {!! in_array(app()->getLocale(), ['ar', 'ku']) ? '
+        /* Define Custom Webfonts */
+        @font-face {
+            font-family: 'CustomArFont';
+            src: url('{{ asset("fonts/ar/" . $fontAr) }}') format('{{ $formatAr }}');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'CustomKuFont';
+            src: url('{{ asset("fonts/ku/" . $fontKu) }}') format('{{ $formatKu }}');
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'CustomEnFont';
+            src: url('{{ asset("fonts/en/" . $fontEn) }}') format('{{ $formatEn }}');
+            font-display: swap;
+        }
+
+        /* Dynamic Font & Alignment Adjustments */
+        {!! app()->getLocale() == 'ar' ? '
             body {
-                font-family: "' . (app()->getLocale() == 'ku' ? 'Noto Naskh Arabic' : 'Amiri') . '", serif;
+                font-family: "CustomArFont", "Amiri", serif;
             }
+        ' : (app()->getLocale() == 'ku' ? '
+            body {
+                font-family: "CustomKuFont", "Noto Naskh Arabic", serif;
+            }
+        ' : '
+            body {
+                font-family: "CustomEnFont", "Inter", sans-serif;
+            }
+        ') !!}
+
+        /* Enforce custom Arabic font for Quranic texts across all locales */
+        .arabic-text, .quran-surah-arabic, .quran-surah-number, .surah-name-arabic {
+            font-family: "CustomArFont", "Amiri", serif !important;
+        }
+
+        /* Sidebar RTL Adjustments */
+        {!! in_array(app()->getLocale(), ['ar', 'ku']) ? '
             .quran-sidebar {
                 left: auto;
                 right: 0;
@@ -62,11 +124,7 @@
             .sidebar-collapsed .quran-main-content {
                 margin-right: var(--sidebar-collapsed-width);
             }
-        ' : '
-            body {
-                font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-            }
-        ' !!}
+        ' : '' !!}
 
         /* Page-specific styles */
         @yield('page-styles')

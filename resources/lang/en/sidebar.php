@@ -20,6 +20,8 @@ return [
     'reciters' => 'Reciters',
     'audio_library' => 'Audio Library',
     'qiraat' => "Qira'at",
+    'qiraats' => "Qira'ats",
+    'qiraat_texts' => "Qira'at Texts",
 
     'study_tools' => 'Study Tools',
     'tafsir' => 'Tafsir',
@@ -30,9 +32,16 @@ return [
     'memorization' => 'Memorization',
     'memorization_plan' => 'Memorization Plan',
     'memorization_plans' => 'Memorization Plans',
+    'memorization_reviews' => 'Reviews',
     'daily_review' => 'Daily Review',
     'progress' => 'Progress',
+    'my_progress' => 'My Progress',
+    'progress_dashboard' => 'Progress Dashboard',
+    'progress_history' => 'Progress History',
+    'progress_comparison' => 'Progress Comparison',
+    'admin' => 'Admin',
 
+    'my_account' => 'My Account',
     'bookmarks' => 'Bookmarks',
     'favorites' => 'Favorites',
     'reading_history' => 'Reading History',
@@ -56,4 +65,3 @@ return [
     // Legacy / placeholders (used in dashboard example)
     'products' => 'Products',
 ];
-

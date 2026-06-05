@@ -69,4 +69,13 @@ return [
     'weekly_report' => 'Weekly Report',
     'daily_stats' => 'Daily Statistics',
     'performance' => 'Performance',
+    'users' => 'Users',
+    'users_subtitle' => 'Total registered users',
+    'hadiths_subtitle' => ':count categories',
+    'adhkars_subtitle' => ':count categories',
+    'tasbihs_subtitle' => 'Tasbih settings',
+    'surahs_subtitle' => 'Quran Surahs',
+    'ayahs_subtitle' => 'Holy Verses',
+    'reciters_subtitle' => ':count audio files',
+    'banners_subtitle' => 'Notices and slides',
 ];

@@ -4,18 +4,18 @@
 @section('title', __('ayahs.ayah_details'))
 
 @section('content')
-<div class="quran-content-container">
-    {{-- Page Header --}}
-    <div class="d-flex align-items-center justify-content-between mb-4">
+<div class="quran-dashboard">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between mb-4">
         <div>
-            <h4 class="mb-1">
+            <h1 class="h4 mb-1 text-zinc-900 dark:text-white font-bold">
                 {{ $ayah->surah->name_simple }} - {{ __('ayahs.ayah') }} {{ $ayah->ayah_number }}
-            </h4>
+            </h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('sidebar.dashboard') }}</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('ayahs.index') }}">{{ __('ayahs.ayahs') }}</a></li>
-                    <li class="breadcrumb-item active">{{ $ayah->surah->name_simple }} {{ $ayah->ayah_number }}</li>
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-emerald-600 hover:text-emerald-700 text-decoration-none">{{ __('sidebar.dashboard') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('ayahs.index') }}" class="text-emerald-600 hover:text-emerald-700 text-decoration-none">{{ __('ayahs.ayahs') }}</a></li>
+                    <li class="breadcrumb-item active text-zinc-500">{{ $ayah->surah->name_simple }} {{ $ayah->ayah_number }}</li>
                 </ol>
             </nav>
         </div>
@@ -28,245 +28,227 @@
             @endcan
             <a href="{{ route('ayahs.index') }}" class="quran-btn quran-btn-outline-primary">
                 <i class="bi bi-list"></i>
-                <span>{{ __('common.all_ayahs') }}</span>
+                <span>{{ __('common.all') ?? 'All' }}</span>
             </a>
         </div>
     </div>
 
     <div class="row g-4">
-        {{-- Main Ayah Display --}}
+        <!-- Main Ayah Display -->
         <div class="col-lg-8">
-            {{-- Ayah Card --}}
-            <div class="quran-card mb-4">
-                <div class="quran-card-body">
-                    {{-- Surah Info Header --}}
-                    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
-                        <div class="quran-surah-number">
-                            {{ $ayah->surah->id }}
+            <!-- Ayah Card -->
+            <div class="quran-card mb-4 border-0 shadow-sm overflow-hidden position-relative">
+                <div class="absolute -right-16 -top-16 w-36 h-36 bg-emerald-500/5 rounded-full blur-2xl"></div>
+                <div class="absolute -left-16 -bottom-16 w-36 h-36 bg-teal-500/5 rounded-full blur-2xl"></div>
+                
+                <div class="quran-card-body p-4 p-md-5">
+                    <!-- Surah Info Header -->
+                    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom border-zinc-100 dark:border-zinc-800">
+                        <div class="relative d-inline-flex align-items-center justify-content-center w-12 h-12 select-none flex-shrink-0">
+                            <svg class="absolute w-full h-full text-emerald-50 dark:text-emerald-950/40 fill-current stroke-emerald-600/50 dark:stroke-emerald-400/40 stroke-1" viewBox="0 0 24 24">
+                                <path d="M12 2L15 5H19V9L22 12L19 15V19H15L12 22L9 19H5V15L2 12L5 9V5H9L12 2Z" />
+                            </svg>
+                            <span class="relative z-10 text-xs font-extrabold text-emerald-800 dark:text-emerald-400">
+                                {{ $ayah->surah->id }}
+                            </span>
                         </div>
                         <div>
-                            <h5 class="mb-1">{{ $ayah->surah->name_simple }}</h5>
-                            <div class="d-flex gap-3">
-                                <span class="arabic-text" style="font-size: 18px;">
+                            <h5 class="mb-1 text-zinc-900 dark:text-white font-bold">{{ $ayah->surah->name_simple }}</h5>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="arabic-text text-sm text-zinc-600 dark:text-zinc-400">
                                     {{ $ayah->surah->name_arabic }}
                                 </span>
-                                <span class="text-muted">|</span>
-                                <span class="text-muted">{{ $ayah->surah->revelation_type }}</span>
+                                <span class="text-zinc-300 dark:text-zinc-700 text-xs">•</span>
+                                <span class="text-zinc-500 dark:text-zinc-400 text-xs font-semibold uppercase">
+                                    {{ $ayah->surah->revelation_type }}
+                                </span>
                             </div>
                         </div>
                         @if($ayah->sajda_flag)
                         <div class="ms-auto">
-                            <span class="quran-table-badge warning">
-                                <i class="bi bi-star-fill"></i> {{ __('ayahs.sajda_ayah') }}
+                            <span class="quran-table-badge warning py-1.5 px-3">
+                                <i class="bi bi-star-fill text-warning me-1"></i> {{ __('ayahs.sajda_ayah') }}
                             </span>
                         </div>
                         @endif
                     </div>
 
-                    {{-- Ayah Arabic Text --}}
-                    <div class="quran-verse-arabic-text mb-4 p-4 bg-light rounded-3"
-                         style="font-family: var(--font-arabic); font-size: 28px; line-height: 2.2; text-align: center;">
-                        {{ $ayah->text_uthmani }}
-                        <span class="ayah-end-mark" style="font-size: 24px; margin: 0 8px;">
-                            {{ App\Helpers\QuranHelper::getAyahEndMark($ayah->ayah_number) }}
-                        </span>
+                    <!-- Ayah Arabic Text -->
+                    <div class="bg-zinc-50 dark:bg-zinc-950/40 rounded-3xl p-5 md:p-8 mb-4 border border-zinc-100/50 dark:border-zinc-900/50 text-center relative">
+                        <div class="arabic-text text-3xl md:text-4xl text-zinc-900 dark:text-white leading-[2.5] tracking-wide select-none" dir="rtl">
+                            {{ $ayah->text_uthmani }}
+                            <span class="arabic-text text-2xl md:text-3xl text-emerald-600 dark:text-emerald-400 mx-2 select-none">
+                                ﴿{{ App\Helpers\QuranHelper::getArabicNumber($ayah->ayah_number) }}﴾
+                            </span>
+                        </div>
                     </div>
 
-                    {{-- Ayah Controls --}}
-                    <div class="d-flex align-items-center justify-content-center gap-3 mb-4">
-                        <button class="quran-audio-btn" onclick="playAudio()">
-                            <i class="bi bi-play-fill"></i>
-                        </button>
-                        <button class="quran-audio-btn" onclick="copyAyah()">
+                    <!-- Ayah Controls -->
+                    <div class="d-flex align-items-center justify-content-center gap-3 mb-2 mt-4">
+                        <button class="quran-btn-icon" onclick="copyAyah()" title="Copy Arabic Text">
                             <i class="bi bi-clipboard"></i>
                         </button>
-                        <button class="quran-audio-btn" onclick="toggleBookmark()">
-                            <i class="bi bi-bookmark{{ $userBookmark ? '-fill' : '' }}" id="bookmarkIcon"></i>
+                        <button class="quran-btn-icon" onclick="toggleBookmark()" title="Toggle Bookmark">
+                            <i class="bi bi-bookmark{{ $userBookmark ? '-fill text-emerald-600' : '' }}" id="bookmarkIcon"></i>
                         </button>
-                        <button class="quran-audio-btn" onclick="shareAyah()">
+                        <button class="quran-btn-icon" onclick="shareAyah()" title="Share Ayah">
                             <i class="bi bi-share"></i>
                         </button>
-                    </div>
-
-                    {{-- Navigation --}}
-                    <div class="d-flex align-items-center justify-content-between">
-                        @if($prevAyah)
-                        <a href="{{ route('ayahs.show', $prevAyah) }}" class="quran-btn quran-btn-outline-primary">
-                            <i class="bi bi-chevron-right"></i>
-                            <span>{{ __('ayahs.previous_ayah') }}</span>
-                        </a>
-                        @else
-                        <span></span>
-                        @endif
-
-                        <span class="text-muted">
-                            {{ $ayah->ayah_number }} / {{ $ayah->surah->total_verses }}
-                        </span>
-
-                        @if($nextAyah)
-                        <a href="{{ route('ayahs.show', $nextAyah) }}" class="quran-btn quran-btn-outline-primary">
-                            <span>{{ __('ayahs.next_ayah') }}</span>
-                            <i class="bi bi-chevron-left"></i>
-                        </a>
-                        @else
-                        <span></span>
-                        @endif
                     </div>
                 </div>
             </div>
 
-            {{-- Translations Section --}}
-            @if($ayah->translations->count() > 0)
-            <div class="quran-card mb-4">
-                <div class="quran-card-header">
-                    <h6 class="quran-card-title">
+            <!-- Translations Section -->
+            <div class="quran-card mb-4 border-0 shadow-sm">
+                <div class="quran-card-header border-0 bg-transparent pb-0">
+                    <h6 class="quran-card-title text-emerald-800 dark:text-emerald-400 font-bold fs-5">
                         <i class="bi bi-translate me-2"></i>
                         {{ __('ayahs.translations') }}
                     </h6>
                 </div>
-                <div class="quran-card-body">
-                    @foreach($ayah->translations as $translation)
-                    <div class="quran-translation-item mb-3 pb-3 border-bottom">
+                <div class="quran-card-body pt-3">
+                    @forelse($ayah->translations as $translation)
+                    <div class="mb-4 pb-3 border-bottom border-zinc-100 dark:border-zinc-800 last-border-0">
                         <div class="d-flex align-items-center gap-2 mb-2">
-                            <span class="fw-semibold">{{ $translation->language->name }}</span>
-                            <span class="text-muted">-</span>
-                            <span class="text-muted">{{ $translation->translator_name }}</span>
+                            <span class="badge bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-500/10 font-bold px-2.5 py-1.5 text-[11px]">
+                                {{ $translation->language->name }}
+                            </span>
+                            <span class="text-zinc-300 dark:text-zinc-700 text-xs">•</span>
+                            <span class="text-zinc-500 dark:text-zinc-400 text-xs font-semibold">{{ $translation->translator_name }}</span>
                         </div>
-                        <p class="quran-translation-text mb-0">{{ $translation->text }}</p>
+                        <p class="text-zinc-700 dark:text-zinc-300 font-medium mb-0 leading-relaxed text-sm md:text-base {{ in_array($translation->language->code, ['ku', 'ar']) ? 'text-right' : 'text-left' }}" dir="{{ in_array($translation->language->code, ['ku', 'ar']) ? 'rtl' : 'ltr' }}">
+                            {{ $translation->text }}
+                        </p>
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="text-center py-4 text-zinc-500 dark:text-zinc-400 italic">
+                        No translations available for this verse.
+                    </div>
+                    @endforelse
                 </div>
             </div>
-            @endif
 
-            {{-- Tafsir Section --}}
-            @if($ayah->tafsirs->count() > 0)
-            <div class="quran-card">
-                <div class="quran-card-header">
-                    <h6 class="quran-card-title">
+            <!-- Tafsir Section -->
+            <div class="quran-card border-0 shadow-sm">
+                <div class="quran-card-header border-0 bg-transparent pb-0">
+                    <h6 class="quran-card-title text-emerald-800 dark:text-emerald-400 font-bold fs-5">
                         <i class="bi bi-book me-2"></i>
                         {{ __('ayahs.tafsir') }}
                     </h6>
                 </div>
-                <div class="quran-card-body">
-                    @foreach($ayah->tafsirs as $tafsir)
-                    <div class="mb-4">
-                        <h6 class="fw-semibold mb-2">{{ $tafsir->tafsirBook->name }}</h6>
-                        <div class="quran-description">
-                            {{ Str::limit($tafsir->text, 500) }}
+                <div class="quran-card-body pt-3">
+                    @forelse($ayah->tafsirs as $tafsir)
+                    <div class="mb-4 pb-3 border-bottom border-zinc-100 dark:border-zinc-800 last-border-0">
+                        <h6 class="text-zinc-800 dark:text-zinc-200 font-bold mb-2 fs-6">{{ $tafsir->tafsirBook->name }}</h6>
+                        <div class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed arabic-text p-3 bg-zinc-50 dark:bg-zinc-950/20 rounded-2xl border border-zinc-100/50 dark:border-zinc-900/50" dir="rtl" style="font-size: 17px; line-height: 1.8;">
+                            {{ $tafsir->text }}
                         </div>
-                        @if(strlen($tafsir->text) > 500)
-                        <button class="btn btn-link btn-sm p-0 mt-2" onclick="showFullTafsir({{ $tafsir->id }})">
-                            {{ __('common.read_more') }}
-                        </button>
-                        @endif
                     </div>
-                    @endforeach
+                    @empty
+                    <div class="text-center py-4 text-zinc-500 dark:text-zinc-400 italic">
+                        No tafsir records available for this verse.
+                    </div>
+                    @endforelse
                 </div>
             </div>
-            @endif
         </div>
 
-        {{-- Sidebar Information --}}
-        <div class="col-lg-4">
-            {{-- Ayah Details --}}
-            <div class="quran-card mb-4">
-                <div class="quran-card-header">
-                    <h6 class="quran-card-title">
+        <!-- Sidebar Information -->
+        <div class="col-lg-4 d-flex flex-column gap-4">
+            <!-- Ayah Metadata Card -->
+            <div class="quran-card border-0 shadow-sm">
+                <div class="quran-card-header border-0 bg-transparent pb-0">
+                    <h6 class="quran-card-title text-emerald-800 dark:text-emerald-400 font-bold fs-5">
                         <i class="bi bi-info-circle me-2"></i>
                         {{ __('ayahs.ayah_information') }}
                     </h6>
                 </div>
-                <div class="quran-card-body">
-                    <div class="quran-detail-item">
-                        <div class="quran-detail-label">
-                            <i class="bi bi-book me-2"></i>
-                            {{ __('ayahs.surah') }}
-                        </div>
-                        <div class="quran-detail-value">
-                            <a href="{{ route('surahs.show', $ayah->surah) }}" class="text-decoration-none">
-                                {{ $ayah->surah->name_simple }} ({{ $ayah->surah->name_arabic }})
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="quran-detail-item">
-                        <div class="quran-detail-label">
-                            <i class="bi bi-hash me-2"></i>
-                            {{ __('ayahs.ayah_number') }}
-                        </div>
-                        <div class="quran-detail-value">{{ $ayah->ayah_number }}</div>
-                    </div>
-
-                    @if($ayah->page_number)
-                    <div class="quran-detail-item">
-                        <div class="quran-detail-label">
-                            <i class="bi bi-file-text me-2"></i>
-                            {{ __('ayahs.page_number') }}
-                        </div>
-                        <div class="quran-detail-value">{{ $ayah->page_number }}</div>
-                    </div>
-                    @endif
-
-                    @if($ayah->juz_number)
-                    <div class="quran-detail-item">
-                        <div class="quran-detail-label">
-                            <i class="bi bi-grid-3x3 me-2"></i>
-                            {{ __('ayahs.juz') }}
-                        </div>
-                        <div class="quran-detail-value">{{ $ayah->juz_number }}</div>
-                    </div>
-                    @endif
-
-                    @if($ayah->hizb_number)
-                    <div class="quran-detail-item">
-                        <div class="quran-detail-label">
-                            <i class="bi bi-grid me-2"></i>
-                            {{ __('ayahs.hizb') }}
-                        </div>
-                        <div class="quran-detail-value">{{ $ayah->hizb_number }}</div>
-                    </div>
-                    @endif
-
-                    <div class="quran-detail-item">
-                        <div class="quran-detail-label">
-                            <i class="bi bi-check-circle me-2"></i>
-                            {{ __('ayahs.status') }}
-                        </div>
-                        <div class="quran-detail-value">
-                            @if($ayah->is_active)
-                            <span class="text-success">
-                                <i class="bi bi-check-circle-fill"></i> {{ __('common.active') }}
+                <div class="quran-card-body pt-3">
+                    <div class="d-flex flex-col gap-3">
+                        <div class="d-flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800/60">
+                            <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold">
+                                <i class="bi bi-book me-1.5 text-emerald-600"></i>{{ __('ayahs.surah') }}
                             </span>
-                            @else
-                            <span class="text-danger">
-                                <i class="bi bi-x-circle-fill"></i> {{ __('common.inactive') }}
+                            <span class="text-zinc-800 dark:text-zinc-200 text-xs font-bold">
+                                <a href="{{ route('surahs.show', $ayah->surah) }}" class="text-emerald-600 hover:text-emerald-700 text-decoration-none">
+                                    {{ $ayah->surah->name_simple }} ({{ $ayah->surah->name_arabic }})
+                                </a>
                             </span>
-                            @endif
+                        </div>
+
+                        <div class="d-flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800/60">
+                            <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold">
+                                <i class="bi bi-hash me-1.5 text-emerald-600"></i>{{ __('ayahs.ayah_number') }}
+                            </span>
+                            <span class="text-zinc-800 dark:text-zinc-200 text-xs font-bold">{{ $ayah->ayah_number }}</span>
+                        </div>
+
+                        @if($ayah->page_number)
+                        <div class="d-flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800/60">
+                            <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold">
+                                <i class="bi bi-file-text me-1.5 text-emerald-600"></i>{{ __('ayahs.page_number') }}
+                            </span>
+                            <span class="text-zinc-800 dark:text-zinc-200 text-xs font-bold">{{ $ayah->page_number }}</span>
+                        </div>
+                        @endif
+
+                        @if($ayah->juz_number)
+                        <div class="d-flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800/60">
+                            <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold">
+                                <i class="bi bi-grid-3x3 me-1.5 text-emerald-600"></i>{{ __('ayahs.juz') }}
+                            </span>
+                            <span class="text-zinc-800 dark:text-zinc-200 text-xs font-bold">{{ $ayah->juz_number }}</span>
+                        </div>
+                        @endif
+
+                        @if($ayah->hizb_number)
+                        <div class="d-flex items-center justify-between py-2 border-b border-zinc-100 dark:border-zinc-800/60">
+                            <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold">
+                                <i class="bi bi-grid me-1.5 text-emerald-600"></i>{{ __('ayahs.hizb') }}
+                            </span>
+                            <span class="text-zinc-800 dark:text-zinc-200 text-xs font-bold">{{ $ayah->hizb_number }}</span>
+                        </div>
+                        @endif
+
+                        <div class="d-flex items-center justify-between py-2">
+                            <span class="text-zinc-500 dark:text-zinc-400 text-xs font-bold">
+                                <i class="bi bi-check-circle me-1.5 text-emerald-600"></i>{{ __('ayahs.status') }}
+                            </span>
+                            <span>
+                                @if($ayah->is_active)
+                                <span class="text-success text-xs font-bold">
+                                    <i class="bi bi-check-circle-fill me-1"></i>{{ __('common.active') }}
+                                </span>
+                                @else
+                                <span class="text-danger text-xs font-bold">
+                                    <i class="bi bi-x-circle-fill me-1"></i>{{ __('common.inactive') }}
+                                </span>
+                                @endif
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {{-- Audio Files --}}
+            <!-- Audio Files Card -->
             @if($ayah->audioFiles->count() > 0)
-            <div class="quran-card mb-4">
-                <div class="quran-card-header">
-                    <h6 class="quran-card-title">
+            <div class="quran-card border-0 shadow-sm">
+                <div class="quran-card-header border-0 bg-transparent pb-0">
+                    <h6 class="quran-card-title text-emerald-800 dark:text-emerald-400 font-bold fs-5">
                         <i class="bi bi-headphones me-2"></i>
                         {{ __('ayahs.audio_recitations') }}
                     </h6>
                 </div>
-                <div class="quran-card-body p-0">
-                    <div class="list-group list-group-flush">
+                <div class="quran-card-body pt-3">
+                    <div class="d-flex flex-column gap-3">
                         @foreach($ayah->audioFiles as $audio)
-                        <div class="list-group-item bg-transparent d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center justify-content-between p-2.5 rounded-2xl bg-zinc-50 dark:bg-zinc-950/20 border border-zinc-100/50 dark:border-zinc-900/50">
                             <div>
-                                <div class="fw-semibold">{{ $audio->reciter->name }}</div>
-                                <small class="text-muted">{{ $audio->reciter->style }}</small>
+                                <div class="text-zinc-800 dark:text-zinc-200 text-xs font-bold">{{ $audio->reciter->name }}</div>
+                                <small class="text-zinc-500 dark:text-zinc-400 text-[10px] font-semibold">{{ $audio->reciter->style }}</small>
                             </div>
-                            <button class="quran-audio-btn" onclick="playReciterAudio({{ $audio->id }})">
-                                <i class="bi bi-play-fill"></i>
+                            <button class="quran-btn-icon" onclick="playReciterAudio('{{ asset($audio->url) }}', this)" title="Play Recitation">
+                                <i class="bi bi-play-fill text-lg"></i>
                             </button>
                         </div>
                         @endforeach
@@ -275,38 +257,38 @@
             </div>
             @endif
 
-            {{-- Quick Stats --}}
-            <div class="quran-card">
-                <div class="quran-card-header">
-                    <h6 class="quran-card-title">
+            <!-- Quick Stats Card -->
+            <div class="quran-card border-0 shadow-sm">
+                <div class="quran-card-header border-0 bg-transparent pb-0">
+                    <h6 class="quran-card-title text-emerald-800 dark:text-emerald-400 font-bold fs-5">
                         <i class="bi bi-bar-chart me-2"></i>
                         {{ __('ayahs.quick_stats') }}
                     </h6>
                 </div>
-                <div class="quran-card-body">
-                    <div class="row text-center g-3">
+                <div class="quran-card-body pt-3">
+                    <div class="row g-2 text-center">
                         <div class="col-6">
-                            <div class="p-3 bg-light rounded-3">
-                                <h3 class="mb-1">{{ $ayah->translations->count() }}</h3>
-                                <small class="text-muted">{{ __('ayahs.translations') }}</small>
+                            <div class="p-2.5 bg-zinc-50 dark:bg-zinc-950/20 rounded-2xl border border-zinc-100/50 dark:border-zinc-900/50">
+                                <div class="text-zinc-800 dark:text-zinc-200 font-extrabold fs-5 mb-0.5">{{ $ayah->translations->count() }}</div>
+                                <small class="text-zinc-500 dark:text-zinc-400 text-[10px] font-bold">{{ __('ayahs.translations') }}</small>
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="p-3 bg-light rounded-3">
-                                <h3 class="mb-1">{{ $ayah->tafsirs->count() }}</h3>
-                                <small class="text-muted">{{ __('ayahs.tafsirs') }}</small>
+                            <div class="p-2.5 bg-zinc-50 dark:bg-zinc-950/20 rounded-2xl border border-zinc-100/50 dark:border-zinc-900/50">
+                                <div class="text-zinc-800 dark:text-zinc-200 font-extrabold fs-5 mb-0.5">{{ $ayah->tafsirs->count() }}</div>
+                                <small class="text-zinc-500 dark:text-zinc-400 text-[10px] font-bold">{{ __('ayahs.tafsirs') }}</small>
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="p-3 bg-light rounded-3">
-                                <h3 class="mb-1">{{ $ayah->audioFiles->count() }}</h3>
-                                <small class="text-muted">{{ __('ayahs.audio_files') }}</small>
+                            <div class="p-2.5 bg-zinc-50 dark:bg-zinc-950/20 rounded-2xl border border-zinc-100/50 dark:border-zinc-900/50">
+                                <div class="text-zinc-800 dark:text-zinc-200 font-extrabold fs-5 mb-0.5">{{ $ayah->audioFiles->count() }}</div>
+                                <small class="text-zinc-500 dark:text-zinc-400 text-[10px] font-bold">{{ __('ayahs.audio_files') }}</small>
                             </div>
                         </div>
                         <div class="col-6">
-                            <div class="p-3 bg-light rounded-3">
-                                <h3 class="mb-1">{{ $ayah->bookmarks->count() }}</h3>
-                                <small class="text-muted">{{ __('ayahs.bookmarks') }}</small>
+                            <div class="p-2.5 bg-zinc-50 dark:bg-zinc-950/20 rounded-2xl border border-zinc-100/50 dark:border-zinc-900/50">
+                                <div class="text-zinc-800 dark:text-zinc-200 font-extrabold fs-5 mb-0.5">{{ $ayah->bookmarks->count() }}</div>
+                                <small class="text-zinc-500 dark:text-zinc-400 text-[10px] font-bold">{{ __('ayahs.bookmarks') }}</small>
                             </div>
                         </div>
                     </div>
@@ -316,14 +298,19 @@
     </div>
 </div>
 
+{{-- Audio Player Context --}}
+<audio id="globalAudioPlayer" style="display: none;"></audio>
+
 @endsection
 
 @push('scripts')
 <script>
+let currentPlayingBtn = null;
+const audioPlayer = document.getElementById('globalAudioPlayer');
+
 function copyAyah() {
     const text = `{{ $ayah->text_uthmani }}`;
     navigator.clipboard.writeText(text).then(() => {
-        // Show success toast
         alert('{{ __("ayahs.ayah_copied") }}');
     });
 }
@@ -343,8 +330,10 @@ function toggleBookmark() {
         if (data.bookmarked) {
             icon.classList.remove('bi-bookmark');
             icon.classList.add('bi-bookmark-fill');
+            icon.classList.add('text-emerald-600');
         } else {
             icon.classList.remove('bi-bookmark-fill');
+            icon.classList.remove('text-emerald-600');
             icon.classList.add('bi-bookmark');
         }
     });
@@ -366,20 +355,26 @@ function shareAyah() {
     }
 }
 
-function playAudio() {
-    // Implement audio player functionality
-    const audioPlayer = document.querySelector('.quran-audio-player');
-    if (audioPlayer) {
-        // Update audio player with current ayah
+function playReciterAudio(url, btn) {
+    if (currentPlayingBtn === btn && !audioPlayer.paused) {
+        audioPlayer.pause();
+        btn.querySelector('i').className = 'bi bi-play-fill text-lg';
+        return;
     }
-}
 
-function playReciterAudio(audioId) {
-    // Implement reciter audio playback
-}
+    if (currentPlayingBtn) {
+        currentPlayingBtn.querySelector('i').className = 'bi bi-play-fill text-lg';
+    }
 
-function showFullTafsir(tafsirId) {
-    // Implement full tafsir modal
+    audioPlayer.src = url;
+    audioPlayer.play();
+    btn.querySelector('i').className = 'bi bi-pause-fill text-lg';
+    currentPlayingBtn = btn;
+
+    audioPlayer.onended = () => {
+        btn.querySelector('i').className = 'bi bi-play-fill text-lg';
+        currentPlayingBtn = null;
+    };
 }
 </script>
 @endpush

@@ -59,7 +59,12 @@ class HadithController extends Controller
 
         return redirect()
             ->route('hadiths.index')
-            ->with('success', 'فەرموودەکە بە سەرکەوتوویی دروستکرا.');
+            ->with('success', __('hadiths.messages.created'));
+    }
+
+    public function show(Hadith $hadith): View
+    {
+        return view('hadiths.show', compact('hadith'));
     }
 
     public function edit(Hadith $hadith): View
@@ -78,7 +83,7 @@ class HadithController extends Controller
 
         return redirect()
             ->route('hadiths.index')
-            ->with('success', 'فەرموودەکە بە سەرکەوتوویی نوێکرایەوە.');
+            ->with('success', __('hadiths.messages.updated'));
     }
 
     public function destroy(Hadith $hadith)
@@ -87,7 +92,7 @@ class HadithController extends Controller
 
         return redirect()
             ->route('hadiths.index')
-            ->with('success', 'فەرموودەکە بە سەرکەوتوویی سڕایەوە.');
+            ->with('success', __('hadiths.messages.deleted'));
     }
 
     /**

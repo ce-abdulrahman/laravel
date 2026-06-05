@@ -1,227 +1,261 @@
+{{-- resources/views/adhkar-categories/index.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'هاوپۆلەکانی ئەزکار')
-@section('page-title', 'هاوپۆلەکانی ئەزکار')
- 
+@section('title', __('adhkar_categories.titles.index'))
+@section('page-title', __('adhkar_categories.titles.index'))
+
 @section('breadcrumb')
-    <li class="breadcrumb-item active" aria-current="page">هاوپۆلەکانی ئەزکار</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('adhkar_categories.titles.index') }}</li>
 @endsection
 
 @section('content')
 <div class="quran-dashboard">
-    <!-- Header Section -->
+    {{-- Header --}}
     <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">هاوپۆلەکانی ئەزکار</h1>
-            <div class="text-muted">هاوپۆلەکانی زیکر (بەیانیان، ئێواران، دوای نوێژ، خەوتن) بەڕێوەببە.</div>
+            <h1 class="h4 mb-1">{{ __('adhkar_categories.titles.index') }}</h1>
+            <div class="text-muted">{{ __('adhkar_categories.hints.index') }}</div>
         </div>
-
         <div class="d-flex gap-2">
             <form method="GET" action="{{ route('adhkar-categories.index') }}" class="d-flex gap-2">
                 <input
                     type="text"
                     name="q"
                     value="{{ $search }}"
-                    class="form-control"
-                    placeholder="گەڕان بۆ هاوپۆل..."
+                    class="quran-form-control"
+                    placeholder="{{ __('adhkar_categories.placeholders.search') }}"
                 >
                 <button class="quran-btn quran-btn-outline-primary" type="submit">
                     <i class="bi bi-search"></i>
                 </button>
             </form>
-
             <a href="{{ route('adhkar-categories.create') }}" class="quran-btn quran-btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>
-                زیادکردنی هاوپۆل
+                {{ __('adhkar_categories.actions.create') }}
             </a>
         </div>
     </div>
 
-    <!-- Table Card -->
-    <div class="quran-table-container">
-        <!-- Table Toolbar -->
+    {{-- Success Alert --}}
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show border-0 rounded-3 mb-4" role="alert"
+         style="background: linear-gradient(135deg, rgba(27,115,64,0.12) 0%, rgba(16,185,129,0.08) 100%); border-left: 4px solid #1B7340 !important;">
+        <i class="bi bi-check-circle-fill me-2 text-success"></i>
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    @endif
+
+    {{-- Table Container --}}
+    <div class="quran-card">
+        {{-- Toolbar --}}
         <div class="quran-table-toolbar">
             <div class="quran-table-search">
                 <i class="bi bi-search"></i>
                 <input type="text"
-                       placeholder="گەڕان بۆ هاوپۆل..."
+                       placeholder="{{ __('adhkar_categories.placeholders.search') }}"
                        id="tableSearch"
                        value="{{ $search }}">
             </div>
             <div class="quran-table-filters">
-                <button class="quran-table-filter-btn" onclick="window.location.reload()">
+                <button class="quran-table-filter-btn"
+                        onclick="window.location.href='{{ route('adhkar-categories.index') }}'">
                     <i class="bi bi-arrow-clockwise"></i>
-                    تازەکردنەوە
+                    {{ __('adhkar_categories.actions.refresh') }}
                 </button>
             </div>
         </div>
 
-        <!-- Table -->
-        <table class="quran-table quran-table-striped quran-surah-table">
-            <thead>
-                <tr>
-                    <th class="number-column" style="width: 80px;">ڕیزبەندی</th>
-                    <th>ناوی کوردی</th>
-                    <th>ناوی عەرەبی</th>
-                    <th>ناوی ئینگلیزی</th>
-                    <th>ئایکۆن</th>
-                    <th class="text-center" style="width: 120px;">دۆخ</th>
-                    <th class="text-end" style="width: 150px;">کردارەکان</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($categories as $cat)
+        {{-- Table --}}
+        <div class="quran-table-container">
+            <table class="quran-table quran-table-striped quran-surah-table">
+                <thead>
                     <tr>
-                        <td class="number-column">
-                            <span class="surah-number">{{ $cat->order }}</span>
-                        </td>
-                        <td>
-                            <div style="font-weight: 600;">{{ $cat->name_ku }}</div>
-                        </td>
-                        <td>
-                            <div class="surah-name-arabic">{{ $cat->name_ar }}</div>
-                        </td>
-                        <td>
-                            @if($cat->name_en)
-                                <span>{{ $cat->name_en }}</span>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if($cat->icon)
-                                <code>{{ $cat->icon }}</code>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
-                        <td class="text-center">
-                            @if($cat->is_active)
-                                <span class="quran-table-badge success">
-                                    <i class="bi bi-check-circle me-1"></i>
-                                    چالاک
-                                </span>
-                            @else
-                                <span class="quran-table-badge danger">
-                                    <i class="bi bi-x-circle me-1"></i>
-                                    ناچالاک
-                                </span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="quran-table-actions justify-content-end">
-                                <a href="{{ route('adhkars.index') }}?category_id={{ $cat->id }}"
-                                   class="quran-table-action-btn view"
-                                   data-bs-toggle="tooltip"
-                                   title="بینینی زیکرەکان">
-                                    <i class="bi bi-list-task"></i>
-                                </a>
-                                <a href="{{ route('adhkar-categories.edit', $cat) }}"
-                                   class="quran-table-action-btn edit"
-                                   data-bs-toggle="tooltip"
-                                   title="دەستکاریکردن">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <form method="POST"
-                                      action="{{ route('adhkar-categories.destroy', $cat) }}"
-                                      class="d-inline"
-                                      onsubmit="return confirmDelete(event, '{{ $cat->name_ku }}')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
+                        <th class="number-column" style="width: 80px;">{{ __('adhkar_categories.table.order') }}</th>
+                        <th>{{ __('adhkar_categories.table.name_ku') }}</th>
+                        <th>{{ __('adhkar_categories.table.name_ar') }}</th>
+                        <th>{{ __('adhkar_categories.table.name_en') }}</th>
+                        <th style="width: 140px;">{{ __('adhkar_categories.table.icon') }}</th>
+                        <th class="text-center" style="width: 120px;">{{ __('adhkar_categories.table.status') }}</th>
+                        <th class="text-end" style="width: 160px;">{{ __('adhkar_categories.table.actions') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($categories as $cat)
+                        <tr>
+                            <td class="number-column">
+                                <span class="surah-number">{{ $cat->order }}</span>
+                            </td>
+                            <td>
+                                <div style="font-weight: 600;">{{ $cat->name_ku }}</div>
+                            </td>
+                            <td>
+                                <div class="surah-name-arabic">{{ $cat->name_ar }}</div>
+                            </td>
+                            <td>
+                                @if($cat->name_en)
+                                    <span class="text-muted">{{ $cat->name_en }}</span>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($cat->icon)
+                                    <span class="badge bg-light text-dark border" style="font-family: monospace; font-size: 0.75rem;">
+                                        <i class="bi bi-grid me-1 text-muted"></i>{{ $cat->icon }}
+                                    </span>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if($cat->is_active)
+                                    <span class="quran-table-badge success">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        {{ __('adhkar_categories.status.active') }}
+                                    </span>
+                                @else
+                                    <span class="quran-table-badge danger">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        {{ __('adhkar_categories.status.inactive') }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="quran-table-actions justify-content-end">
+                                    <a href="{{ route('adhkar-categories.show', $cat) }}"
+                                       class="quran-table-action-btn view"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ __('adhkar_categories.actions.view') }}">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ route('adhkars.index') }}?category_id={{ $cat->id }}"
+                                       class="quran-table-action-btn"
+                                       style="color: #1B7340;"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ __('adhkar_categories.actions.view_adhkars') }}">
+                                        <i class="bi bi-list-task"></i>
+                                    </a>
+                                    <a href="{{ route('adhkar-categories.edit', $cat) }}"
+                                       class="quran-table-action-btn edit"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ __('adhkar_categories.actions.edit') }}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button type="button"
                                             class="quran-table-action-btn delete"
                                             data-bs-toggle="tooltip"
-                                            title="سڕینەوە">
+                                            title="{{ __('adhkar_categories.actions.delete') }}"
+                                            onclick="confirmDelete({{ $cat->id }}, '{{ addslashes($cat->name_ku) }}')">
                                         <i class="bi bi-trash"></i>
                                     </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7">
-                            <div class="quran-table-empty">
-                                <i class="bi bi-tag" style="font-size: 3rem; color: #ccc;"></i>
-                                <h6 class="mt-3">هیچ هاوپۆلێک نییە</h6>
-                                <p>هیچ هاوپۆلی ئەزکارێک نەدۆزرایەوە لە داتابەیسدا.</p>
-                                <a href="{{ route('adhkar-categories.create') }}" class="quran-btn quran-btn-primary mt-3">
-                                    <i class="bi bi-plus-lg me-1"></i>
-                                    دروستکردنی یەکەم هاوپۆل
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7">
+                                <div class="quran-table-empty">
+                                    <i class="bi bi-tag" style="font-size: 3rem;"></i>
+                                    <h6 class="mt-3">{{ __('adhkar_categories.empty.title') }}</h6>
+                                    <p>{{ __('adhkar_categories.empty.message') }}</p>
+                                    <a href="{{ route('adhkar-categories.create') }}" class="quran-btn quran-btn-primary mt-3">
+                                        <i class="bi bi-plus-lg me-1"></i>
+                                        {{ __('adhkar_categories.actions.create_first') }}
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-        <!-- Table Footer with Pagination -->
+        {{-- Pagination Footer --}}
         @if($categories->hasPages())
             <div class="quran-table-footer">
                 <div class="quran-table-info">
-                    پیشاندانی
+                    {{ __('adhkar_categories.pagination.showing') }}
                     <strong>{{ $categories->firstItem() }}</strong>
-                    بۆ
+                    {{ __('adhkar_categories.pagination.to') }}
                     <strong>{{ $categories->lastItem() }}</strong>
-                    لە
+                    {{ __('adhkar_categories.pagination.of') }}
                     <strong>{{ $categories->total() }}</strong>
-                    هاوپۆل
+                    {{ __('adhkar_categories.pagination.entries') }}
                 </div>
                 <div class="quran-pagination">
-                    {{ $categories->links() }}
+                    {{ $categories->links('pagination::bootstrap-5') }}
                 </div>
             </div>
-        @elseif(count($categories) > 0)
+        @elseif($categories->count() > 0)
             <div class="quran-table-footer">
                 <div class="quran-table-info">
-                    کۆتایی لیست. کۆی گشتی:
-                    <strong>{{ count($categories) }}</strong>
-                    هاوپۆل
+                    {{ __('adhkar_categories.pagination.total') }}
+                    <strong>{{ $categories->count() }}</strong>
+                    {{ __('adhkar_categories.pagination.entries') }}
                 </div>
             </div>
         @endif
+    </div>
+</div>
+
+{{-- Delete Modal --}}
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                    {{ __('common.confirm_delete') }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteModalBody">{{ __('adhkar_categories.messages.confirm_delete') }}</p>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">
+                    {{ __('common.cancel') }}
+                </button>
+                <form id="deleteForm" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="quran-btn quran-btn-danger">
+                        <i class="bi bi-trash me-1"></i>{{ __('common.delete') }}
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
 
 @push('scripts')
 <script>
-    // Confirm Delete Function
-    function confirmDelete(event, catName) {
-        event.preventDefault();
-        const form = event.target;
+function confirmDelete(id, name) {
+    document.getElementById('deleteForm').action =
+        "{{ route('adhkar-categories.destroy', ':id') }}".replace(':id', id);
+    document.getElementById('deleteModalBody').textContent =
+        "{{ __('adhkar_categories.messages.confirm_delete') }}\n\n" + name;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
 
-        if (confirm('دڵنیای لە سڕینەوەی ئەم هاوپۆلە؟ هەموو زیکرەکانی ژێر ئەم هاوپۆلەش دەسڕێنەوە!\n\n' + catName)) {
-            form.submit();
-        }
-        return false;
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('tableSearch');
+    if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = searchInput.value.trim();
+                window.location.href = query
+                    ? '{{ route("adhkar-categories.index") }}?q=' + encodeURIComponent(query)
+                    : '{{ route("adhkar-categories.index") }}';
+            }
+        });
     }
 
-    // Table Search Functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('tableSearch');
-
-        if (searchInput) {
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    const query = searchInput.value.trim();
-                    if (query) {
-                        window.location.href = '{{ route("adhkar-categories.index") }}?q=' + encodeURIComponent(query);
-                    } else {
-                        window.location.href = '{{ route("adhkar-categories.index") }}';
-                    }
-                }
-            });
-        }
-
-        // Initialize Bootstrap Tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl, {
-                placement: 'top'
-            });
-        });
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+        new bootstrap.Tooltip(el, { placement: 'top' });
     });
+});
 </script>
 @endpush

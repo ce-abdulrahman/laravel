@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    <form method="POST" action="{{ route('settings.update') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('settings.update', $settings) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -175,6 +175,65 @@
                                 @endforeach
                             </select>
                             @error('default_qiraah_id')
+                            <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Font Settings Card -->
+                <div class="quran-card mt-4">
+                    <div class="quran-card-header">
+                        <h5 class="quran-card-title">
+                            <i class="bi bi-fonts me-2"></i>
+                            {{ __('settings.sections.fonts') }}
+                        </h5>
+                    </div>
+                    <div class="quran-card-body">
+                        <div class="mb-3">
+                            <label class="quran-form-label" for="font_ar">
+                                {{ __('settings.fields.font_ar') }}
+                            </label>
+                            <select name="font_ar" id="font_ar" class="quran-form-select @error('font_ar') is-invalid @enderror">
+                                @foreach($availableArFonts as $font)
+                                    <option value="{{ $font }}" {{ old('font_ar', $settings->font_ar) == $font ? 'selected' : '' }}>
+                                        {{ $font }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('font_ar')
+                            <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="quran-form-label" for="font_ku">
+                                {{ __('settings.fields.font_ku') }}
+                            </label>
+                            <select name="font_ku" id="font_ku" class="quran-form-select @error('font_ku') is-invalid @enderror">
+                                @foreach($availableKuFonts as $font)
+                                    <option value="{{ $font }}" {{ old('font_ku', $settings->font_ku) == $font ? 'selected' : '' }}>
+                                        {{ $font }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('font_ku')
+                            <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="quran-form-label" for="font_en">
+                                {{ __('settings.fields.font_en') }}
+                            </label>
+                            <select name="font_en" id="font_en" class="quran-form-select @error('font_en') is-invalid @enderror">
+                                @foreach($availableEnFonts as $font)
+                                    <option value="{{ $font }}" {{ old('font_en', $settings->font_en) == $font ? 'selected' : '' }}>
+                                        {{ $font }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('font_en')
                             <div class="quran-invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

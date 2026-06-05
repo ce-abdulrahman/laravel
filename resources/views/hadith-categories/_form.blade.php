@@ -1,21 +1,22 @@
+{{-- resources/views/hadith-categories/_form.blade.php --}}
 @php
     /** @var \App\Models\HadithCategory $category */
 @endphp
 
 <div class="quran-form">
     <div class="row g-4">
-        <!-- Content Section -->
+        {{-- Category Info Section --}}
         <div class="col-12">
             <div class="quran-form-section">
                 <h6 class="quran-form-section-title">
                     <i class="bi bi-tag me-2"></i>
-                    زانیاری هاوپۆل
+                    {{ __('hadith_categories.sections.info') }}
                 </h6>
 
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="quran-form-label" for="name_ku">
-                            ناوی هاوپۆل (کوردی)
+                            {{ __('hadith_categories.fields.name_ku') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input
@@ -25,7 +26,7 @@
                             class="quran-form-control @error('name_ku') is-invalid @enderror"
                             value="{{ old('name_ku', $category->name_ku) }}"
                             required
-                            placeholder="ناوی هاوپۆل بنووسە بە کوردی..."
+                            placeholder="{{ __('hadith_categories.placeholders.name_ku') }}"
                         >
                         @error('name_ku')
                             <div class="quran-invalid-feedback">{{ $message }}</div>
@@ -34,7 +35,7 @@
 
                     <div class="col-md-4">
                         <label class="quran-form-label" for="name_ar">
-                            ناوی هاوپۆل (عەرەبی)
+                            {{ __('hadith_categories.fields.name_ar') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input
@@ -45,7 +46,7 @@
                             value="{{ old('name_ar', $category->name_ar) }}"
                             required
                             dir="rtl"
-                            placeholder="ناوی هاوپۆل بنووسە بە عەرەبی..."
+                            placeholder="{{ __('hadith_categories.placeholders.name_ar') }}"
                         >
                         @error('name_ar')
                             <div class="quran-invalid-feedback">{{ $message }}</div>
@@ -54,7 +55,7 @@
 
                     <div class="col-md-4">
                         <label class="quran-form-label" for="name_en">
-                            ناوی هاوپۆل (ئینگلیزی)
+                            {{ __('hadith_categories.fields.name_en') }}
                         </label>
                         <input
                             type="text"
@@ -62,7 +63,7 @@
                             id="name_en"
                             class="quran-form-control @error('name_en') is-invalid @enderror"
                             value="{{ old('name_en', $category->name_en) }}"
-                            placeholder="ناوی هاوپۆل بنووسە بە ئینگلیزی..."
+                            placeholder="{{ __('hadith_categories.placeholders.name_en') }}"
                         >
                         @error('name_en')
                             <div class="quran-invalid-feedback">{{ $message }}</div>
@@ -72,18 +73,18 @@
             </div>
         </div>
 
-        <!-- Configuration Section -->
+        {{-- Configuration Section --}}
         <div class="col-12">
             <div class="quran-form-section">
                 <h6 class="quran-form-section-title">
                     <i class="bi bi-sliders me-2"></i>
-                    ڕێکخستن و دیزاین
+                    {{ __('hadith_categories.sections.configuration') }}
                 </h6>
 
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="quran-form-label" for="icon">
-                            ئایکۆنی ویجێت (بۆ مۆبایل)
+                            {{ __('hadith_categories.fields.icon') }}
                         </label>
                         <input
                             type="text"
@@ -91,9 +92,9 @@
                             id="icon"
                             class="quran-form-control @error('icon') is-invalid @enderror"
                             value="{{ old('icon', $category->icon) }}"
-                            placeholder="نموونە: auto_stories, library_books, menu_book..."
+                            placeholder="{{ __('hadith_categories.placeholders.icon') }}"
                         >
-                        <p class="text-muted small mt-1">ئەم ئایکۆنە لە لاپەڕەی فەرموودەی ئەپەکە بەکاردێت.</p>
+                        <p class="text-muted small mt-1">{{ __('hadith_categories.fields.icon_hint') }}</p>
                         @error('icon')
                             <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -101,7 +102,7 @@
 
                     <div class="col-md-4">
                         <label class="quran-form-label" for="order">
-                            ڕیزبەندی نیشاندان
+                            {{ __('hadith_categories.fields.order') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input
@@ -129,7 +130,7 @@
                             >
                             <label class="quran-form-check-label" for="is_active">
                                 <i class="bi bi-check-circle me-1"></i>
-                                چالاک بێت (لەسەر مۆبایل پیشان بدرێت)
+                                {{ __('hadith_categories.fields.is_active') }}
                             </label>
                         </div>
                     </div>

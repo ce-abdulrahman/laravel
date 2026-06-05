@@ -251,9 +251,14 @@ class ReadingHistoryController extends Controller
      */
     private function getWeeklyStats($userId): array
     {
+        $driver = \DB::connection()->getDriverName();
+        $weekExpression = $driver === 'sqlite'
+            ? 'strftime("%Y%W", last_read_at) as week'
+            : 'YEARWEEK(last_read_at) as week';
+
         return ReadingHistory::where('user_id', $userId)
             ->where('last_read_at', '>=', now()->subWeeks(4))
-            ->selectRaw('YEARWEEK(last_read_at) as week, COUNT(*) as count, SUM(seconds_spent) as time')
+            ->selectRaw("$weekExpression, COUNT(*) as count, SUM(seconds_spent) as time")
             ->groupBy('week')
             ->orderBy('week', 'desc')
             ->get()
@@ -265,9 +270,14 @@ class ReadingHistoryController extends Controller
      */
     private function getMonthlyStats($userId): array
     {
+        $driver = \DB::connection()->getDriverName();
+        $monthExpression = $driver === 'sqlite'
+            ? 'strftime("%Y-%m", last_read_at) as month'
+            : 'DATE_FORMAT(last_read_at, "%Y-%m") as month';
+
         return ReadingHistory::where('user_id', $userId)
             ->where('last_read_at', '>=', now()->subMonths(6))
-            ->selectRaw('DATE_FORMAT(last_read_at, "%Y-%m") as month, COUNT(*) as count, SUM(seconds_spent) as time')
+            ->selectRaw("$monthExpression, COUNT(*) as count, SUM(seconds_spent) as time")
             ->groupBy('month')
             ->orderBy('month', 'desc')
             ->get()

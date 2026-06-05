@@ -37,6 +37,8 @@ return [
     'revelation_types' => [
         'meccan' => 'مەککەیی',
         'medinan' => 'مەدینەیی',
+        'Meccan' => 'مەککەیی',
+        'Medinan' => 'مەدینەیی',
     ],
 
     'status' => [

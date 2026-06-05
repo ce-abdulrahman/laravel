@@ -69,4 +69,13 @@ return [
     'weekly_report' => 'ڕاپۆرتی هەفتانە',
     'daily_stats' => 'ئاماری ڕۆژانە',
     'performance' => 'کارایی',
+    'users' => 'بەکارهێنەران',
+    'users_subtitle' => 'کۆی بەکارهێنەرانی ئەپ',
+    'hadiths_subtitle' => ':count هاوپۆل',
+    'adhkars_subtitle' => ':count هاوپۆل',
+    'tasbihs_subtitle' => 'ڕێکخستنی زیکرەکان',
+    'surahs_subtitle' => 'سووڕەتەکانی قورئان',
+    'ayahs_subtitle' => 'ئایەتە پیرۆزەکان',
+    'reciters_subtitle' => ':count فایلە دەنگییەکان',
+    'banners_subtitle' => 'ڕیکلام و زانیارییەکان',
 ];

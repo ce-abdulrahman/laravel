@@ -24,7 +24,7 @@ class BannerController extends Controller
 
         return view('banners.index', [
             'banners' => $banners,
-            'search' => $search,
+            'search'  => $search,
         ]);
     }
 
@@ -33,7 +33,7 @@ class BannerController extends Controller
         return view('banners.create', [
             'banner' => new Banner([
                 'is_active' => true,
-                'order' => 0,
+                'order'     => 0,
             ]),
             'surahs' => Surah::orderBy('number')->get(),
         ]);
@@ -42,12 +42,19 @@ class BannerController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateBanner($request);
-        
+
         Banner::create($validated);
 
         return redirect()
             ->route('banners.index')
-            ->with('success', 'بانەرەکە بە سەرکەوتوویی دروستکرا.');
+            ->with('success', __('banners.messages.created'));
+    }
+
+    public function show(Banner $banner): View
+    {
+        $banner->load('surah');
+
+        return view('banners.show', compact('banner'));
     }
 
     public function edit(Banner $banner): View
@@ -66,7 +73,7 @@ class BannerController extends Controller
 
         return redirect()
             ->route('banners.index')
-            ->with('success', 'بانەرەکە بە سەرکەوتوویی نوێکرایەوە.');
+            ->with('success', __('banners.messages.updated'));
     }
 
     public function destroy(Banner $banner)
@@ -75,7 +82,7 @@ class BannerController extends Controller
 
         return redirect()
             ->route('banners.index')
-            ->with('success', 'بانەرەکە بە سەرکەوتوویی سڕایەوە.');
+            ->with('success', __('banners.messages.deleted'));
     }
 
     /**
@@ -85,11 +92,11 @@ class BannerController extends Controller
     {
         $validated = $request->validate([
             'title_arabic' => ['nullable', 'string', 'max:500'],
-            'verse' => ['required', 'string'],
-            'source' => ['nullable', 'string', 'max:255'],
-            'surah_id' => ['nullable', 'integer', 'exists:surahs,id'],
-            'ayah_number' => ['nullable', 'integer', 'min:1'],
-            'order' => ['required', 'integer'],
+            'verse'        => ['required', 'string'],
+            'source'       => ['nullable', 'string', 'max:255'],
+            'surah_id'     => ['nullable', 'integer', 'exists:surahs,id'],
+            'ayah_number'  => ['nullable', 'integer', 'min:1'],
+            'order'        => ['required', 'integer'],
         ]);
 
         $validated['is_active'] = $request->boolean('is_active', true);

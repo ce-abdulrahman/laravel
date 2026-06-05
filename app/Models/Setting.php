@@ -18,6 +18,9 @@ class Setting extends Model
         'default_qiraah_id',
         'about_text',
         'contact_email',
+        'font_ar',
+        'font_ku',
+        'font_en',
     ];
 
     public function defaultTafsirBook()

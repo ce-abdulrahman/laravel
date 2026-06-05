@@ -88,11 +88,18 @@
             <tbody>
                 @forelse($surahs as $surah)
                     <tr>
-                        <td class="number-column">
-                            <span class="surah-number">{{ $surah->number }}</span>
+                        <td class="number-column text-center">
+                            <div class="relative d-inline-flex align-items-center justify-content-center w-9 h-9 select-none">
+                                <svg class="absolute w-full h-full text-emerald-50 dark:text-emerald-950/40 fill-current stroke-emerald-600/50 dark:stroke-emerald-400/40 stroke-1" viewBox="0 0 24 24">
+                                    <path d="M12 2L15 5H19V9L22 12L19 15V19H15L12 22L9 19H5V15L2 12L5 9V5H9L12 2Z" />
+                                </svg>
+                                <span class="relative z-10 text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                                    {{ $surah->number }}
+                                </span>
+                            </div>
                         </td>
                         <td>
-                            <div class="surah-name-arabic">{{ $surah->name_ar }}</div>
+                            <div class="surah-name-arabic arabic-text text-xl font-bold">{{ $surah->name_ar }}</div>
                         </td>
                         <td>
                             @if($surah->name_ku)
@@ -193,7 +200,7 @@
                     {{ __('common.surahs') }}
                 </div>
                 <div class="quran-pagination">
-                    {{ $surahs->links() }}
+                    {{ $surahs->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         @elseif(count($surahs) > 0)

@@ -17,9 +17,9 @@
             <div class="quran-stat-card quran-stat-primary">
                 <div class="quran-stat-content">
                     <div class="quran-stat-info">
-                        <h6 class="quran-stat-label">بەکارهێنەران</h6>
+                        <h6 class="quran-stat-label">{{ __('dashboard.users') }}</h6>
                         <h3 class="quran-stat-value">{{ $stats['users'] ?? '0' }}</h3>
-                        <span class="quran-stat-sub">کۆی بەکارهێنەرانی ئەپ</span>
+                        <span class="quran-stat-sub">{{ __('dashboard.users_subtitle') }}</span>
                     </div>
                     <div class="quran-stat-icon">
                         <i class="bi bi-people-fill"></i>
@@ -34,9 +34,9 @@
                 <div class="quran-stat-card quran-stat-success">
                     <div class="quran-stat-content">
                         <div class="quran-stat-info">
-                            <h6 class="quran-stat-label">فەرموودەکان</h6>
+                            <h6 class="quran-stat-label">{{ __('sidebar.hadiths') }}</h6>
                             <h3 class="quran-stat-value">{{ $stats['hadiths'] ?? '0' }}</h3>
-                            <span class="quran-stat-sub">{{ $stats['hadith_categories'] ?? '0' }} هاوپۆل</span>
+                            <span class="quran-stat-sub">{{ __('dashboard.hadiths_subtitle', ['count' => $stats['hadith_categories'] ?? '0']) }}</span>
                         </div>
                         <div class="quran-stat-icon">
                             <i class="bi bi-chat-quote-fill"></i>
@@ -52,9 +52,9 @@
                 <div class="quran-stat-card quran-stat-warning">
                     <div class="quran-stat-content">
                         <div class="quran-stat-info">
-                            <h6 class="quran-stat-label">ئەزکارەکان</h6>
+                            <h6 class="quran-stat-label">{{ __('sidebar.adhkars') }}</h6>
                             <h3 class="quran-stat-value">{{ $stats['adhkars'] ?? '0' }}</h3>
-                            <span class="quran-stat-sub">{{ $stats['adhkar_categories'] ?? '0' }} هاوپۆل</span>
+                            <span class="quran-stat-sub">{{ __('dashboard.adhkars_subtitle', ['count' => $stats['adhkar_categories'] ?? '0']) }}</span>
                         </div>
                         <div class="quran-stat-icon">
                             <i class="bi bi-sun-fill"></i>
@@ -70,9 +70,9 @@
                 <div class="quran-stat-card quran-stat-info">
                     <div class="quran-stat-content">
                         <div class="quran-stat-info">
-                            <h6 class="quran-stat-label">زیکرەکانی تەسبیح</h6>
+                            <h6 class="quran-stat-label">{{ __('sidebar.tasbihs') }}</h6>
                             <h3 class="quran-stat-value">{{ $stats['tasbihs'] ?? '0' }}</h3>
-                            <span class="quran-stat-sub">ڕێکخستنی زیکرەکان</span>
+                            <span class="quran-stat-sub">{{ __('dashboard.tasbihs_subtitle') }}</span>
                         </div>
                         <div class="quran-stat-icon">
                             <i class="bi bi-fingerprint"></i>
@@ -88,9 +88,9 @@
                 <div class="quran-stat-card quran-stat-success">
                     <div class="quran-stat-content">
                         <div class="quran-stat-info">
-                            <h6 class="quran-stat-label">سووڕەتەکان</h6>
+                            <h6 class="quran-stat-label">{{ __('sidebar.surahs') }}</h6>
                             <h3 class="quran-stat-value">{{ $stats['surahs'] ?? '0' }}</h3>
-                            <span class="quran-stat-sub">سووڕەتەکانی قورئان</span>
+                            <span class="quran-stat-sub">{{ __('dashboard.surahs_subtitle') }}</span>
                         </div>
                         <div class="quran-stat-icon">
                             <i class="bi bi-book-half"></i>
@@ -106,9 +106,9 @@
                 <div class="quran-stat-card quran-stat-primary">
                     <div class="quran-stat-content">
                         <div class="quran-stat-info">
-                            <h6 class="quran-stat-label">ئایەتەکان</h6>
+                            <h6 class="quran-stat-label">{{ __('sidebar.ayahs') }}</h6>
                             <h3 class="quran-stat-value">{{ $stats['ayahs'] ?? '0' }}</h3>
-                            <span class="quran-stat-sub">ئایەتە پیرۆزەکان</span>
+                            <span class="quran-stat-sub">{{ __('dashboard.ayahs_subtitle') }}</span>
                         </div>
                         <div class="quran-stat-icon">
                             <i class="bi bi-file-text-fill"></i>
@@ -124,9 +124,9 @@
                 <div class="quran-stat-card quran-stat-info">
                     <div class="quran-stat-content">
                         <div class="quran-stat-info">
-                            <h6 class="quran-stat-label">خوێنەران و دەنگ</h6>
+                            <h6 class="quran-stat-label">{{ __('sidebar.reciters') }}</h6>
                             <h3 class="quran-stat-value">{{ $stats['reciters'] ?? '0' }}</h3>
-                            <span class="quran-stat-sub">{{ $stats['audio_files'] ?? '0' }} فایلە دەنگییەکان</span>
+                            <span class="quran-stat-sub">{{ __('dashboard.reciters_subtitle', ['count' => $stats['audio_files'] ?? '0']) }}</span>
                         </div>
                         <div class="quran-stat-icon">
                             <i class="bi bi-headphones"></i>
@@ -142,9 +142,9 @@
                 <div class="quran-stat-card quran-stat-warning">
                     <div class="quran-stat-content">
                         <div class="quran-stat-info">
-                            <h6 class="quran-stat-label">بانەرەکانی سەرەکی</h6>
+                            <h6 class="quran-stat-label">{{ __('sidebar.banners') }}</h6>
                             <h3 class="quran-stat-value">{{ $stats['banners'] ?? '0' }}</h3>
-                            <span class="quran-stat-sub">ڕیکلام و زانیارییەکان</span>
+                            <span class="quran-stat-sub">{{ __('dashboard.banners_subtitle') }}</span>
                         </div>
                         <div class="quran-stat-icon">
                             <i class="bi bi-flag-fill"></i>
@@ -416,51 +416,51 @@
                     <div class="quran-quick-actions">
                         <a href="{{ route('surahs.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-book"></i>
-                            <span>سووڕەتەکان</span>
+                            <span>{{ __('sidebar.surahs') }}</span>
                         </a>
                         <a href="{{ route('ayahs.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-file-text-fill"></i>
-                            <span>ئایەتەکان</span>
+                            <span>{{ __('sidebar.ayahs') }}</span>
                         </a>
                         <a href="{{ route('hadiths.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-chat-quote-fill"></i>
-                            <span>فەرموودەکان</span>
+                            <span>{{ __('sidebar.hadiths') }}</span>
                         </a>
                         <a href="{{ route('hadith-categories.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-tags-fill"></i>
-                            <span>هاوپۆلی فەرموودە</span>
+                            <span>{{ __('sidebar.hadith_categories') }}</span>
                         </a>
                         <a href="{{ route('adhkars.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-sun-fill"></i>
-                            <span>ئەزکارەکان</span>
+                            <span>{{ __('sidebar.adhkars') }}</span>
                         </a>
                         <a href="{{ route('adhkar-categories.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-tags"></i>
-                            <span>هاوپۆلی ئەزکار</span>
+                            <span>{{ __('sidebar.adhkar_categories') }}</span>
                         </a>
                         <a href="{{ route('tasbihs.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-fingerprint"></i>
-                            <span>تەسبیحەکان</span>
+                            <span>{{ __('sidebar.tasbihs') }}</span>
                         </a>
                         <a href="{{ route('audio-files.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-music-note-beamed"></i>
-                            <span>فایلە دەنگییەکان</span>
+                            <span>{{ __('sidebar.audio_library') }}</span>
                         </a>
                         <a href="{{ route('reciters.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-headphones"></i>
-                            <span>خوێنەران</span>
+                            <span>{{ __('sidebar.reciters') }}</span>
                         </a>
                         <a href="{{ route('banners.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-flag-fill"></i>
-                            <span>بانەرەکان</span>
+                            <span>{{ __('sidebar.banners') }}</span>
                         </a>
                         <a href="{{ route('settings.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-gear-fill"></i>
-                            <span>ڕێکخستنەکان</span>
+                            <span>{{ __('sidebar.settings') }}</span>
                         </a>
                         <a href="{{ route('memorization-plans.index') }}" class="quran-quick-action-btn">
                             <i class="bi bi-calendar-check-fill"></i>
-                            <span>پلانەکانی حیفز</span>
+                            <span>{{ __('sidebar.memorization_plans') }}</span>
                         </a>
                     </div>
                 </div>

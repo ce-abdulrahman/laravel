@@ -12,17 +12,15 @@ use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('admin')->except(['show', 'getPublicSettings']);
-    }
-
     /**
      * Display the settings page.
      */
     public function index()
     {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, __('common.unauthorized'));
+        }
+
         $settings = Setting::firstOrCreate([]);
         $settings->load(['defaultTafsirBook', 'defaultReciter', 'defaultQiraat']);
 
@@ -31,8 +29,14 @@ class SettingController extends Controller
         $qiraats = Qiraat::active()->orderBy('name')->get();
         $languages = $this->getAvailableLanguages();
 
+        // Scan available fonts from public/fonts
+        $availableArFonts = array_map('basename', glob(public_path('fonts/ar/*.*')) ?: []);
+        $availableKuFonts = array_map('basename', glob(public_path('fonts/ku/*.*')) ?: []);
+        $availableEnFonts = array_map('basename', glob(public_path('fonts/en/*.*')) ?: []);
+
         return view('settings.index', compact(
-            'settings', 'tafsirBooks', 'reciters', 'qiraats', 'languages'
+            'settings', 'tafsirBooks', 'reciters', 'qiraats', 'languages',
+            'availableArFonts', 'availableKuFonts', 'availableEnFonts'
         ));
     }
 
@@ -41,6 +45,10 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, __('common.unauthorized'));
+        }
+
         $settings = Setting::firstOrCreate([]);
 
         $validated = $request->validate([
@@ -52,6 +60,9 @@ class SettingController extends Controller
             'default_qiraah_id' => 'nullable|exists:qiraats,id',
             'about_text' => 'nullable|string',
             'contact_email' => 'nullable|email|max:255',
+            'font_ar' => 'nullable|string|max:255',
+            'font_ku' => 'nullable|string|max:255',
+            'font_en' => 'nullable|string|max:255',
         ]);
 
         if ($request->hasFile('app_logo')) {

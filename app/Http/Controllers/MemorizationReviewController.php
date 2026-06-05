@@ -367,9 +367,14 @@ class MemorizationReviewController extends Controller
      */
     private function getMonthlyTrend($userId): array
     {
+        $driver = \DB::connection()->getDriverName();
+        $dateExpression = $driver === 'sqlite' 
+            ? 'strftime("%Y-%m", review_date) as month'
+            : 'DATE_FORMAT(review_date, "%Y-%m") as month';
+
         return MemorizationReview::where('user_id', $userId)
             ->where('review_date', '>=', now()->subMonths(6))
-            ->selectRaw('DATE_FORMAT(review_date, "%Y-%m") as month, COUNT(*) as count')
+            ->selectRaw("$dateExpression, COUNT(*) as count")
             ->groupBy('month')
             ->orderBy('month')
             ->get()

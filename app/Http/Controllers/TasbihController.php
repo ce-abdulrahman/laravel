@@ -21,7 +21,7 @@ class TasbihController extends Controller
 
         return view('tasbihs.index', [
             'tasbihs' => $tasbihs,
-            'search' => $search,
+            'search'  => $search,
         ]);
     }
 
@@ -30,7 +30,7 @@ class TasbihController extends Controller
         return view('tasbihs.create', [
             'tasbih' => new Tasbih([
                 'is_active' => true,
-                'target' => 33,
+                'target'    => 33,
             ]),
         ]);
     }
@@ -43,14 +43,17 @@ class TasbihController extends Controller
 
         return redirect()
             ->route('tasbihs.index')
-            ->with('success', 'تەسریحەکە بە سەرکەوتوویی دروستکرا.');
+            ->with('success', __('tasbihs.messages.created'));
+    }
+
+    public function show(Tasbih $tasbih): View
+    {
+        return view('tasbihs.show', compact('tasbih'));
     }
 
     public function edit(Tasbih $tasbih): View
     {
-        return view('tasbihs.edit', [
-            'tasbih' => $tasbih,
-        ]);
+        return view('tasbihs.edit', compact('tasbih'));
     }
 
     public function update(Request $request, Tasbih $tasbih)
@@ -61,7 +64,7 @@ class TasbihController extends Controller
 
         return redirect()
             ->route('tasbihs.index')
-            ->with('success', 'تەسریحەکە بە سەرکەوتوویی نوێکرایەوە.');
+            ->with('success', __('tasbihs.messages.updated'));
     }
 
     public function destroy(Tasbih $tasbih)
@@ -70,7 +73,7 @@ class TasbihController extends Controller
 
         return redirect()
             ->route('tasbihs.index')
-            ->with('success', 'تەسریحەکە بە سەرکەوتوویی سڕایەوە.');
+            ->with('success', __('tasbihs.messages.deleted'));
     }
 
     /**
@@ -79,7 +82,7 @@ class TasbihController extends Controller
     private function validateTasbih(Request $request, ?Tasbih $tasbih = null): array
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name'   => ['required', 'string', 'max:255'],
             'target' => ['required', 'integer', 'min:1'],
         ]);
 

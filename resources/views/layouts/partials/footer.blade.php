@@ -8,7 +8,14 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="quran-footer-about">
                         <div class="quran-footer-logo">
-                            <i class="bi bi-book quran-footer-logo-icon"></i>
+                            @php
+                                $settings = \App\Models\Setting::first();
+                            @endphp
+                            @if($settings->app_logo)
+                                <img src="{{ asset('storage/' . $settings->app_logo) }}" alt="Logo" class="quran-footer-logo-icon" style="width: 100px; height: 100px; object-fit: cover; border-radius: 12px;">
+                            @else
+                                <i class="bi bi-book quran-logo-icon"></i>
+                            @endif
                             <h5>{{ __('common.app_name') }}</h5>
                         </div>
                         <p class="quran-footer-description">

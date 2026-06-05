@@ -8,6 +8,18 @@
 
     <title>@yield('title') - {{ config('app.name', 'Quran App') }}</title>
 
+    <!-- Inline script to handle theme before render -->
+    <script>
+        const savedTheme = localStorage.getItem('theme') || localStorage.getItem('quran-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,6 +42,7 @@
         </div>
         
         <!-- Language Switcher -->
+        @if(!isset($hideGuestLang) || !$hideGuestLang)
         <div class="auth-language">
             <div class="dropdown">
                 <button class="btn btn-link text-muted dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -43,6 +56,7 @@
                 </ul>
             </div>
         </div>
+        @endif
     </div>
 
     <!-- Scripts -->

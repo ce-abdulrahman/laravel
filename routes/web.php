@@ -30,8 +30,13 @@ use App\Http\Controllers\HadithController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $surahs = \App\Models\Surah::active()->orderBy('number')->get();
+    return view('welcome', compact('surahs'));
 });
+
+Route::get('/read/surah/{surah}', [App\Http\Controllers\ReadController::class, 'show'])->name('read.surah');
+Route::get('/read/juz/{juz}', [App\Http\Controllers\ReadController::class, 'juz'])->name('read.juz');
+Route::get('/read/page/{page}', [App\Http\Controllers\ReadController::class, 'page'])->name('read.page');
 
 Route::get('/dashboard', function () {
     $stats = [
@@ -54,6 +59,8 @@ Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('l
 Route::get('/language/current', [LanguageController::class, 'getCurrentLanguage'])->name('language.current');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/juz', [App\Http\Controllers\ReadController::class, 'juzIndex'])->name('juz.index');
+    Route::get('/page', [App\Http\Controllers\ReadController::class, 'pageIndex'])->name('page.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -83,7 +90,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('bookmarks', BookmarkController::class);
     Route::resource('favorites', FavoriteController::class);
     Route::resource('memorization-plans', MemorizationPlanController::class);
+    Route::get('memorization-reviews/stats', [MemorizationReviewController::class, 'stats'])->name('memorization-reviews.stats-page');
     Route::resource('memorization-reviews', MemorizationReviewController::class);
+    Route::get('user-ayah-progress/dashboard', [UserAyahProgressController::class, 'dashboard'])
+        ->name('user-ayah-progress.dashboard');
     Route::resource('user-ayah-progress', UserAyahProgressController::class);
     Route::resource('settings', SettingController::class);
     Route::resource('banners', BannerController::class);
@@ -92,9 +102,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('tasbihs', TasbihController::class);
     Route::resource('hadith-categories', HadithCategoryController::class);
     Route::resource('hadiths', HadithController::class);
-
-    Route::get('user-ayah-progress/dashboard', [UserAyahProgressController::class, 'dashboard'])
-        ->name('user-ayah-progress.dashboard');
 
     Route::get('reading-history', [ReadingHistoryController::class, 'index'])->name('reading-history.index');
     Route::post('reading-history/track', [ReadingHistoryController::class, 'track'])->name('reading-history.track');

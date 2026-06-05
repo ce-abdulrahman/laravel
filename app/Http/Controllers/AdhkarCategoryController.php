@@ -23,7 +23,7 @@ class AdhkarCategoryController extends Controller
 
         return view('adhkar-categories.index', [
             'categories' => $categories,
-            'search' => $search,
+            'search'     => $search,
         ]);
     }
 
@@ -32,7 +32,7 @@ class AdhkarCategoryController extends Controller
         return view('adhkar-categories.create', [
             'category' => new AdhkarCategory([
                 'is_active' => true,
-                'order' => 0,
+                'order'     => 0,
             ]),
         ]);
     }
@@ -45,7 +45,14 @@ class AdhkarCategoryController extends Controller
 
         return redirect()
             ->route('adhkar-categories.index')
-            ->with('success', 'هاوپۆلی ئەزکارەکە بە سەرکەوتوویی دروستکرا.');
+            ->with('success', __('adhkar_categories.messages.created'));
+    }
+
+    public function show(AdhkarCategory $adhkarCategory): View
+    {
+        return view('adhkar-categories.show', [
+            'category' => $adhkarCategory,
+        ]);
     }
 
     public function edit(AdhkarCategory $adhkarCategory): View
@@ -63,7 +70,7 @@ class AdhkarCategoryController extends Controller
 
         return redirect()
             ->route('adhkar-categories.index')
-            ->with('success', 'هاوپۆلی ئەزکارەکە بە سەرکەوتوویی نوێکرایەوە.');
+            ->with('success', __('adhkar_categories.messages.updated'));
     }
 
     public function destroy(AdhkarCategory $adhkarCategory)
@@ -72,7 +79,7 @@ class AdhkarCategoryController extends Controller
 
         return redirect()
             ->route('adhkar-categories.index')
-            ->with('success', 'هاوپۆلی ئەزکارەکە بە سەرکەوتوویی سڕایەوە.');
+            ->with('success', __('adhkar_categories.messages.deleted'));
     }
 
     /**
@@ -84,8 +91,8 @@ class AdhkarCategoryController extends Controller
             'name_ku' => ['required', 'string', 'max:255'],
             'name_ar' => ['required', 'string', 'max:255'],
             'name_en' => ['nullable', 'string', 'max:255'],
-            'icon' => ['nullable', 'string', 'max:255'],
-            'order' => ['required', 'integer'],
+            'icon'    => ['nullable', 'string', 'max:255'],
+            'order'   => ['required', 'integer'],
         ]);
 
         $validated['is_active'] = $request->boolean('is_active', true);

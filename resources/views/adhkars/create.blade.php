@@ -1,42 +1,45 @@
+{{-- resources/views/adhkars/create.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'دروستکردنی زیکری نوێ')
-@section('page-title', 'دروستکردنی زیکری نوێ')
+@section('title', __('adhkars.titles.create'))
+@section('page-title', __('adhkars.titles.create'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('adhkars.index') }}">لیستی زیکرەکان</a></li>
-    <li class="breadcrumb-item active" aria-current="page">زیکری نوێ</li>
+    <li class="breadcrumb-item">
+        <a href="{{ route('adhkars.index') }}">{{ __('adhkars.titles.index') }}</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('adhkars.titles.create') }}</li>
 @endsection
 
 @section('content')
 <div class="quran-dashboard">
-    <!-- Header Section -->
+    {{-- Header --}}
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">دروستکردنی زیکری نوێ</h1>
-            <div class="text-muted">زیکرێکی نوێ زیاد بکە بۆ هاوپۆلێکی دیاریکراو.</div>
+            <h1 class="h4 mb-1">{{ __('adhkars.titles.create') }}</h1>
+            <div class="text-muted">{{ __('adhkars.hints.create') }}</div>
         </div>
         <a href="{{ route('adhkars.index') }}" class="quran-btn quran-btn-outline-primary">
             <i class="bi bi-arrow-left me-1"></i>
-            گەڕانەوە بۆ لیست
+            {{ __('adhkars.actions.back') }}
         </a>
     </div>
 
-    <!-- Form Container -->
+    {{-- Form Container --}}
     <div class="quran-form-container">
         <form method="POST" action="{{ route('adhkars.store') }}">
             @csrf
-            
+
             @include('adhkars._form')
 
-            <!-- Form Actions -->
+            {{-- Actions --}}
             <div class="quran-form-actions mt-4">
                 <button type="submit" class="quran-btn quran-btn-primary">
                     <i class="bi bi-save me-1"></i>
-                    پاشەکەوتکردن
+                    {{ __('adhkars.actions.save') }}
                 </button>
                 <a href="{{ route('adhkars.index') }}" class="quran-btn quran-btn-outline-secondary">
-                    پاشگەزبوونەوە
+                    {{ __('adhkars.actions.cancel') }}
                 </a>
             </div>
         </form>

@@ -69,4 +69,13 @@ return [
     'weekly_report' => 'تقرير أسبوعي',
     'daily_stats' => 'إحصائيات يومية',
     'performance' => 'الأداء',
+    'users' => 'المستخدمين',
+    'users_subtitle' => 'إجمالي مستخدمي التطبيق',
+    'hadiths_subtitle' => ':count أقسام',
+    'adhkars_subtitle' => ':count أقسام',
+    'tasbihs_subtitle' => 'إعدادات التسبيح',
+    'surahs_subtitle' => 'سور القرآن الكريم',
+    'ayahs_subtitle' => 'الآيات الكريمة',
+    'reciters_subtitle' => ':count الملفات الصوتية',
+    'banners_subtitle' => 'الإعلانات والمعلومات',
 ];

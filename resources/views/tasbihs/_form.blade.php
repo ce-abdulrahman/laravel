@@ -1,40 +1,42 @@
+{{-- resources/views/tasbihs/_form.blade.php --}}
 @php
     /** @var \App\Models\Tasbih $tasbih */
 @endphp
 
 <div class="quran-form">
     <div class="row g-4">
-        <!-- Content Section -->
         <div class="col-12">
             <div class="quran-form-section">
                 <h6 class="quran-form-section-title">
                     <i class="bi bi-card-text me-2"></i>
-                    ناوەڕۆکی تەسبیح
+                    {{ __('tasbihs.sections.content') }}
                 </h6>
 
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <label class="quran-form-label" for="name">
-                            ناوی زیکر
+                            {{ __('tasbihs.fields.name') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input
                             type="text"
                             name="name"
                             id="name"
-                            class="quran-form-control @error('name') is-invalid @enderror"
+                            class="quran-form-control arabic-text @error('name') is-invalid @enderror"
                             value="{{ old('name', $tasbih->name) }}"
                             required
-                            placeholder="ناوی زیکرەکە لێرە بنووسە (بۆ نموونە: سُبْحَانَ اللهِ)..."
+                            dir="rtl"
+                            style="font-family: var(--quran-font, 'Amiri Quran', serif); font-size: 1.1rem;"
+                            placeholder="{{ __('tasbihs.placeholders.name') }}"
                         >
                         @error('name')
                             <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="quran-form-label" for="target">
-                            ئامانج (ژمارەی دووبارەکردنەوە)
+                            {{ __('tasbihs.fields.target') }}
                             <span class="text-danger">*</span>
                         </label>
                         <input
@@ -45,15 +47,15 @@
                             value="{{ old('target', $tasbih->target) }}"
                             min="1"
                             required
-                            placeholder="بۆ نموونە: ٣٣"
+                            placeholder="{{ __('tasbihs.placeholders.target') }}"
                         >
                         @error('target')
                             <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="col-12 d-flex align-items-end">
-                        <div class="quran-form-check mb-2">
+                    <div class="col-12">
+                        <div class="quran-form-check">
                             <input
                                 type="checkbox"
                                 name="is_active"
@@ -64,7 +66,7 @@
                             >
                             <label class="quran-form-check-label" for="is_active">
                                 <i class="bi bi-check-circle me-1"></i>
-                                چالاک بێت (لەسەر مۆبایل پیشان بدرێت)
+                                {{ __('tasbihs.fields.is_active') }}
                             </label>
                         </div>
                     </div>

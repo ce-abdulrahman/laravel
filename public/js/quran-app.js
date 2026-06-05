@@ -8,6 +8,8 @@ class QuranApp {
         this.sidebar = document.getElementById('mainSidebar');
         this.sidebarOverlay = document.getElementById('sidebarOverlay');
         this.sidebarToggle = document.getElementById('mobileMenuBtn');
+        this.sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        this.closeSidebarBtn = document.getElementById('closeSidebarBtn');
         this.collapseSidebarBtn = document.getElementById('collapseSidebarBtn');
         this.languageDropdown = document.querySelector('.quran-language-dropdown');
         this.notificationsDropdown = document.querySelector('.quran-notifications-dropdown');
@@ -29,11 +31,27 @@ class QuranApp {
     }
 
     setupSidebar() {
-        // Mobile sidebar toggle
+        // Mobile sidebar toggle (from header)
         if (this.sidebarToggle) {
             this.sidebarToggle.addEventListener('click', () => {
                 this.sidebar.classList.add('mobile-open');
                 this.sidebarOverlay.classList.add('active');
+            });
+        }
+
+        // Mobile sidebar toggle (floating button on page)
+        if (this.sidebarToggleBtn) {
+            this.sidebarToggleBtn.addEventListener('click', () => {
+                this.sidebar.classList.add('mobile-open');
+                this.sidebarOverlay.classList.add('active');
+            });
+        }
+
+        // Close sidebar from close button
+        if (this.closeSidebarBtn) {
+            this.closeSidebarBtn.addEventListener('click', () => {
+                this.sidebar.classList.remove('mobile-open');
+                this.sidebarOverlay.classList.remove('active');
             });
         }
 
@@ -266,25 +284,49 @@ class QuranApp {
     setupThemeToggle() {
         const themeToggle = document.getElementById('themeSwitch');
         const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeToggleHeaderBtn = document.getElementById('themeToggleHeaderBtn');
+        const themeHeaderIcon = document.getElementById('themeHeaderIcon');
 
         // Load saved theme
-        const savedTheme = localStorage.getItem('quran-theme') || 'light';
+        const savedTheme = localStorage.getItem('theme') || localStorage.getItem('quran-theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
-        if (themeToggle) {
-            themeToggle.checked = savedTheme === 'dark';
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
         }
+        
+        const updateUI = (theme) => {
+            if (themeToggle) {
+                themeToggle.checked = theme === 'dark';
+            }
+            if (themeHeaderIcon) {
+                if (theme === 'dark') {
+                    themeHeaderIcon.className = 'bi bi-sun';
+                } else {
+                    themeHeaderIcon.className = 'bi bi-moon-stars';
+                }
+            }
+        };
+
+        updateUI(savedTheme);
 
         // Toggle theme
         const toggleTheme = () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const currentTheme = document.documentElement.getAttribute('data-theme') || (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
             document.documentElement.setAttribute('data-theme', newTheme);
+            if (newTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            
+            localStorage.setItem('theme', newTheme);
             localStorage.setItem('quran-theme', newTheme);
 
-            if (themeToggle) {
-                themeToggle.checked = newTheme === 'dark';
-            }
+            updateUI(newTheme);
         };
 
         if (themeToggle) {
@@ -293,6 +335,10 @@ class QuranApp {
 
         if (themeToggleBtn) {
             themeToggleBtn.addEventListener('click', toggleTheme);
+        }
+
+        if (themeToggleHeaderBtn) {
+            themeToggleHeaderBtn.addEventListener('click', toggleTheme);
         }
     }
 }

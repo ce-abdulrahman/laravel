@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserAyahProgressController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     /**
      * Display a listing of the user's ayah progress.
      */
@@ -284,12 +279,12 @@ class UserAyahProgressController extends Controller
         $bySurah = UserAyahProgress::where('user_id', $user->id)
             ->join('ayahs', 'user_ayah_progress.ayah_id', '=', 'ayahs.id')
             ->join('surahs', 'ayahs.surah_id', '=', 'surahs.id')
-            ->selectRaw('surahs.id, surahs.name_ar, surahs.number, 
+            ->selectRaw("surahs.id, surahs.name_ar, surahs.number, 
                         COUNT(*) as total,
-                        SUM(CASE WHEN memorize_status = "mastered" THEN 1 ELSE 0 END) as mastered,
-                        SUM(CASE WHEN memorize_status = "memorized" THEN 1 ELSE 0 END) as memorized,
-                        SUM(CASE WHEN memorize_status = "memorizing" THEN 1 ELSE 0 END) as memorizing,
-                        SUM(CASE WHEN memorize_status = "needs_review" THEN 1 ELSE 0 END) as needs_review')
+                        SUM(CASE WHEN memorize_status = 'mastered' THEN 1 ELSE 0 END) as mastered,
+                        SUM(CASE WHEN memorize_status = 'memorized' THEN 1 ELSE 0 END) as memorized,
+                        SUM(CASE WHEN memorize_status = 'memorizing' THEN 1 ELSE 0 END) as memorizing,
+                        SUM(CASE WHEN memorize_status = 'needs_review' THEN 1 ELSE 0 END) as needs_review")
             ->groupBy('surahs.id', 'surahs.name_ar', 'surahs.number')
             ->orderBy('surahs.number')
             ->get();

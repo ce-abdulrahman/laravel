@@ -11,7 +11,7 @@ class AdhkarController extends Controller
 {
     public function index(Request $request): View
     {
-        $search = trim((string) $request->query('q', ''));
+        $search     = trim((string) $request->query('q', ''));
         $categoryId = $request->query('category_id');
 
         $query = Adhkar::query()->with('category')->orderBy('category_id')->orderBy('order');
@@ -28,24 +28,21 @@ class AdhkarController extends Controller
             });
         }
 
-        $adhkars = $query->paginate(20)->withQueryString();
+        $adhkars    = $query->paginate(20)->withQueryString();
         $categories = AdhkarCategory::orderBy('order')->get();
 
         return view('adhkars.index', [
-            'adhkars' => $adhkars,
-            'categories' => $categories,
+            'adhkars'            => $adhkars,
+            'categories'         => $categories,
             'selectedCategoryId' => $categoryId,
-            'search' => $search,
+            'search'             => $search,
         ]);
     }
 
     public function create(): View
     {
         return view('adhkars.create', [
-            'adhkar' => new Adhkar([
-                'count' => 1,
-                'order' => 0,
-            ]),
+            'adhkar'     => new Adhkar(['count' => 1, 'order' => 0]),
             'categories' => AdhkarCategory::orderBy('order')->get(),
         ]);
     }
@@ -58,13 +55,20 @@ class AdhkarController extends Controller
 
         return redirect()
             ->route('adhkars.index')
-            ->with('success', 'زیکرەکە بە سەرکەوتوویی دروستکرا.');
+            ->with('success', __('adhkars.messages.created'));
+    }
+
+    public function show(Adhkar $adhkar): View
+    {
+        $adhkar->load('category');
+
+        return view('adhkars.show', compact('adhkar'));
     }
 
     public function edit(Adhkar $adhkar): View
     {
         return view('adhkars.edit', [
-            'adhkar' => $adhkar,
+            'adhkar'     => $adhkar,
             'categories' => AdhkarCategory::orderBy('order')->get(),
         ]);
     }
@@ -77,7 +81,7 @@ class AdhkarController extends Controller
 
         return redirect()
             ->route('adhkars.index')
-            ->with('success', 'زیکرەکە بە سەرکەوتوویی نوێکرایەوە.');
+            ->with('success', __('adhkars.messages.updated'));
     }
 
     public function destroy(Adhkar $adhkar)
@@ -86,7 +90,7 @@ class AdhkarController extends Controller
 
         return redirect()
             ->route('adhkars.index')
-            ->with('success', 'زیکرەکە بە سەرکەوتوویی سڕایەوە.');
+            ->with('success', __('adhkars.messages.deleted'));
     }
 
     /**
@@ -95,14 +99,14 @@ class AdhkarController extends Controller
     private function validateAdhkar(Request $request, ?Adhkar $adhkar = null): array
     {
         return $request->validate([
-            'category_id' => ['required', 'integer', 'exists:adhkar_categories,id'],
-            'arabic_text' => ['required', 'string'],
+            'category_id'    => ['required', 'integer', 'exists:adhkar_categories,id'],
+            'arabic_text'    => ['required', 'string'],
             'translation_ku' => ['nullable', 'string'],
             'translation_en' => ['nullable', 'string'],
-            'count' => ['required', 'integer', 'min:1'],
-            'source' => ['nullable', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'order' => ['required', 'integer'],
+            'count'          => ['required', 'integer', 'min:1'],
+            'source'         => ['nullable', 'string', 'max:255'],
+            'description'    => ['nullable', 'string'],
+            'order'          => ['required', 'integer'],
         ]);
     }
 }

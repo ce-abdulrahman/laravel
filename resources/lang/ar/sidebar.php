@@ -20,6 +20,8 @@ return [
     'reciters' => 'القراء',
     'audio_library' => 'مكتبة الصوت',
     'qiraat' => 'القراءات',
+    'qiraats' => 'القراءات',
+    'qiraat_texts' => 'نصوص القراءات',
 
     'study_tools' => 'أدوات الدراسة',
     'tafsir' => 'التفسير',
@@ -30,15 +32,26 @@ return [
     'memorization' => 'الحفظ',
     'memorization_plan' => 'خطة الحفظ',
     'memorization_plans' => 'خطط الحفظ',
+    'memorization_reviews' => 'المراجعات',
     'daily_review' => 'مراجعة يومية',
     'progress' => 'التقدم',
+    'my_progress' => 'تقدمي',
+    'progress_dashboard' => 'لوحة التقدم',
+    'progress_history' => 'سجل التقدم',
+    'progress_comparison' => 'مقارنة التقدم',
+    'admin' => 'لوحة الإدارة',
 
+    'my_account' => 'حسابي',
     'bookmarks' => 'العلامات',
     'favorites' => 'المفضلة',
     'reading_history' => 'سجل القراءة',
     'leaderboard' => 'لوحة الصدارة',
 
     'settings' => 'الإعدادات',
+    'banners' => 'لوحات العرض الرئيسية',
+    'adhkar_categories' => 'تصنيفات الأذكار',
+    'adhkars' => 'قائمة الأذكار',
+    'tasbihs' => 'قائمة التسبيح',
     'hadith_categories' => 'تصنيفات الأحاديث',
     'hadiths' => 'قائمة الأحاديث',
     'preferences' => 'التفضيلات',
@@ -52,4 +65,3 @@ return [
     // Legacy / placeholders (used in dashboard example)
     'products' => 'المنتجات',
 ];
-
