@@ -13,6 +13,7 @@ return [
     'juz' => 'جوز',
     'page' => 'پەڕە',
     'tajweed' => 'تەجوید',
+    'tajweed_categories' => 'کەتێگۆریەکانی تەجوید',
     'tajweed_rules' => 'یاساکانی تەجوید',
     'tajweed_segments' => 'سێگمێنتەکانی تەجوید',
 

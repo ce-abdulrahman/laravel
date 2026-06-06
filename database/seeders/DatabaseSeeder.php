@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             SurahSeeder::class,
             AyahSeeder::class,
             TafsirBookSeeder::class,
+            CategoryTajweedRulesSeeder::class,
             TajweedRuleSeeder::class,
             TajweedSegmentSeeder::class,
             ReciterSeeder::class,

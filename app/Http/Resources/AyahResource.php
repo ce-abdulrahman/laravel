@@ -33,6 +33,7 @@ class AyahResource extends JsonResource
                         'end_index' => $segment->end_index !== null ? (int) $segment->end_index : null,
                         'note' => $segment->note,
                         'rule' => $segment->tajweedRule ? [
+                            'slug' => $segment->tajweedRule->slug,
                             'name' => $segment->tajweedRule->name,
                             'name_ku' => $segment->tajweedRule->name_ku,
                             'name_ar' => $segment->tajweedRule->name_ar,

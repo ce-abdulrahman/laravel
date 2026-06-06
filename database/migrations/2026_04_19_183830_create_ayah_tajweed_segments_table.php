@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('ayah_tajweed_segments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('surah_id')->constrained()->cascadeOnDelete();
             $table->foreignId('ayah_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tajweed_rule_id')->constrained()->cascadeOnDelete();
             $table->text('text_segment');
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->text('note')->nullable();
             $table->timestamps(); 
 
-            $table->index(['ayah_id', 'tajweed_rule_id']);
+            $table->index(['surah_id', 'ayah_id', 'tajweed_rule_id']);
         });
     }
 

@@ -18,7 +18,7 @@ class TajweedRuleController extends Controller
 
         // فلتەر بەپێی کەتێگۆری
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $query->where('tajweed_rule_category_id', $request->category);
         }
 
         // فلتەر بەپێی دۆخی چالاکی
@@ -44,15 +44,15 @@ class TajweedRuleController extends Controller
             ->paginate($request->per_page ?? 20)
             ->withQueryString();
 
-        $categories = TajweedRule::distinct()
-            ->whereNotNull('category')
-            ->pluck('category');
+        $categories = \App\Models\TajweedRuleCategory::active()
+            ->orderBy('order')
+            ->pluck('name', 'id');
 
         $stats = [
-            'total_rules' => TajweedRule::count(),
-            'active_rules' => TajweedRule::where('is_active', true)->count(),
-            'total_segments' => \App\Models\AyahTajweedSegment::count(),
-            'categories_count' => TajweedRule::distinct('category')->whereNotNull('category')->count('category'),
+            'total_rules'      => TajweedRule::count(),
+            'active_rules'     => TajweedRule::where('is_active', true)->count(),
+            'total_segments'   => \App\Models\AyahTajweedSegment::count(),
+            'categories_count' => \App\Models\TajweedRuleCategory::count(),
         ];
 
         return view('tajweed-rules.index', compact('tajweedRules', 'categories', 'stats'));
@@ -65,7 +65,7 @@ class TajweedRuleController extends Controller
     {
         $this->authorizeAdmin();
 
-        $categories = $this->getTajweedCategories();
+        $categories = \App\Models\TajweedRuleCategory::active()->orderBy('order')->pluck('name', 'id');
         $colorPalette = $this->getColorPalette();
 
         return view('tajweed-rules.create', compact('categories', 'colorPalette'));
@@ -79,16 +79,16 @@ class TajweedRuleController extends Controller
         $this->authorizeAdmin();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:tajweed_rules,name',
-            'name_ku' => 'required|string|max:255',
-            'name_ar' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'color_code' => 'nullable|string|max:20',
-            'description' => 'required|string',
+            'name'           => 'required|string|max:255|unique:tajweed_rules,name',
+            'name_ku'        => 'required|string|max:255',
+            'name_ar'        => 'nullable|string|max:255',
+            'tajweed_rule_category_id' => 'nullable|exists:tajweed_rule_categories,id',
+            'color_code'     => 'nullable|string|max:20',
+            'description'    => 'required|string',
             'description_ku' => 'required|string',
-            'example_text' => 'nullable|string',
-            'priority' => 'integer|min:0',
-            'is_active' => 'boolean',
+            'example_text'   => 'nullable|string',
+            'priority'       => 'integer|min:0',
+            'is_active'      => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
@@ -113,7 +113,7 @@ class TajweedRuleController extends Controller
      */
     public function show(TajweedRule $tajweedRule)
     {
-        $tajweedRule->load(['ayahTajweedSegments.ayah.surah']);
+        $tajweedRule->load(['category', 'ayahTajweedSegments.ayah.surah']);
 
         $segments = $tajweedRule->ayahTajweedSegments()
             ->with(['ayah.surah'])
@@ -130,7 +130,7 @@ class TajweedRuleController extends Controller
     {
         $this->authorizeAdmin();
 
-        $categories = $this->getTajweedCategories();
+        $categories = \App\Models\TajweedRuleCategory::active()->orderBy('order')->pluck('name', 'id');
         $colorPalette = $this->getColorPalette();
 
         return view('tajweed-rules.edit', compact('tajweedRule', 'categories', 'colorPalette'));
@@ -144,16 +144,16 @@ class TajweedRuleController extends Controller
         $this->authorizeAdmin();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:tajweed_rules,name,' . $tajweedRule->id,
-            'name_ku' => 'required|string|max:255',
-            'name_ar' => 'nullable|string|max:255',
-            'category' => 'nullable|string|max:255',
-            'color_code' => 'nullable|string|max:20',
-            'description' => 'required|string',
+            'name'           => 'required|string|max:255|unique:tajweed_rules,name,' . $tajweedRule->id,
+            'name_ku'        => 'required|string|max:255',
+            'name_ar'        => 'nullable|string|max:255',
+            'tajweed_rule_category_id' => 'nullable|exists:tajweed_rule_categories,id',
+            'color_code'     => 'nullable|string|max:20',
+            'description'    => 'required|string',
             'description_ku' => 'required|string',
-            'example_text' => 'nullable|string',
-            'priority' => 'integer|min:0',
-            'is_active' => 'boolean',
+            'example_text'   => 'nullable|string',
+            'priority'       => 'integer|min:0',
+            'is_active'      => 'boolean',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);

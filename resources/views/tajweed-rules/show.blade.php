@@ -28,7 +28,10 @@
                         <span class="fs-6 arabic-text text-success font-bold" dir="rtl">{{ $tajweedRule->name_ar }}</span>
                         @endif
                         @if($tajweedRule->category)
-                        <span class="quran-table-badge info">{{ $tajweedRule->category }}</span>
+                        <a href="{{ route('tajweed-rule-categories.show', $tajweedRule->category) }}"
+                           class="quran-table-badge info text-decoration-none">
+                            {{ $tajweedRule->category->name_ku ?: $tajweedRule->category->name }}
+                        </a>
                         @endif
                     </div>
                 </div>
@@ -73,6 +76,19 @@
                             </span>
                         </div>
                     </div>
+
+                    @if($tajweedRule->category)
+                    <div class="quran-detail-item">
+                        <label class="quran-detail-label">{{ __('tajweed_rules.fields.category') }}</label>
+                        <div class="quran-detail-value">
+                            <a href="{{ route('tajweed-rule-categories.show', $tajweedRule->category) }}"
+                               class="quran-table-badge info text-decoration-none">
+                                <i class="bi bi-folder2-open me-1"></i>
+                                {{ $tajweedRule->category->name_ku ?: $tajweedRule->category->name }}
+                            </a>
+                        </div>
+                    </div>
+                    @endif
 
                     <div class="quran-detail-item">
                         <label class="quran-detail-label">{{ __('tajweed_rules.fields.color_code') }}</label>

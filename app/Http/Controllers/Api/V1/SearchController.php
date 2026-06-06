@@ -359,7 +359,13 @@ class SearchController extends Controller
     public function searchByPage(Request $request, $pageNumber)
     {
         $ayahs = Ayah::active()
-            ->with(['surah', 'translations'])
+            ->with([
+                'surah',
+                'translations' => function ($q) {
+                    $q->where('is_active', true);
+                },
+                'tajweedSegments.tajweedRule',
+            ])
             ->where('page_number', $pageNumber)
             ->orderBy('surah_id')
             ->orderBy('ayah_number')

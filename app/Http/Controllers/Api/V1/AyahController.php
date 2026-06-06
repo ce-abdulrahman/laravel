@@ -77,12 +77,15 @@ class AyahController extends Controller
         }
 
         $ayahs = Ayah::active()
-                     ->with(['translations' => function ($q) {
-                          $q->where('is_active', true);
-                      }])
+                     ->with([
+                         'translations' => function ($q) {
+                              $q->where('is_active', true);
+                          },
+                          'tajweedSegments.tajweedRule',
+                      ])
                      ->where('surah_id', $surah->id)
                      ->orderBy('ayah_number')
-                     ->paginate($request->per_page ?? 20);
+                     ->paginate($request->per_page ?? 500);
 
         return response()->json([
             'status' => 'success',

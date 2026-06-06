@@ -13,6 +13,7 @@ return [
     'juz' => 'Juz',
     'page' => 'Page',
     'tajweed' => 'Tajweed',
+    'tajweed_categories' => 'Tajweed Categories',
     'tajweed_rules' => 'Tajweed Rules',
     'tajweed_segments' => 'Tajweed Segments',
 

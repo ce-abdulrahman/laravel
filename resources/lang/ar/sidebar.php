@@ -13,6 +13,7 @@ return [
     'juz' => 'الجزء',
     'page' => 'الصفحة',
     'tajweed' => 'التجويد',
+    'tajweed_categories' => 'تصنيفات التجويد',
     'tajweed_rules' => 'أحكام التجويد',
     'tajweed_segments' => 'أجزاء التجويد',
 

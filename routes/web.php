@@ -19,6 +19,7 @@ use App\Http\Controllers\SurahController;
 use App\Http\Controllers\TafsirBookController;
 use App\Http\Controllers\TafsirController;
 use App\Http\Controllers\TajweedRuleController;
+use App\Http\Controllers\TajweedRuleCategoryController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\UserAyahProgressController;
 use App\Http\Controllers\BannerController;
@@ -73,6 +74,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('tajweed-rules/import', [TajweedRuleController::class, 'import'])->name('tajweed-rules.import');
     Route::resource('tajweed-rules', TajweedRuleController::class);
+    Route::resource('tajweed-rule-categories', TajweedRuleCategoryController::class);
     Route::resource('tajweed-segments', AyahTajweedSegmentController::class);
     Route::resource('reciters', ReciterController::class);
     Route::resource('audio-files', AudioFileController::class);

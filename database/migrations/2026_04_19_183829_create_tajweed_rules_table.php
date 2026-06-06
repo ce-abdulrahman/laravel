@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('category')->nullable();
             $table->string('color_code')->nullable();
+            $table->foreignId('tajweed_rule_category_id')
+                  ->nullable()
+                  ->constrained('tajweed_rule_categories')
+                  ->nullOnDelete();
             $table->text('description');
             $table->text('example_text')->nullable();
             $table->integer('priority')->default(0);

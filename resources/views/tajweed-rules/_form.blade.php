@@ -53,20 +53,20 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="quran-form-label" for="category">
+                        <label class="quran-form-label" for="tajweed_rule_category_id">
                             {{ __('tajweed_rules.fields.category') }}
                         </label>
-                        <select name="category" id="category" 
-                                class="quran-form-select @error('category') is-invalid @enderror">
+                        <select name="tajweed_rule_category_id" id="tajweed_rule_category_id"
+                                class="quran-form-select @error('tajweed_rule_category_id') is-invalid @enderror">
                             <option value="">{{ __('tajweed_rules.select_category') }}</option>
-                            @foreach($categories as $key => $name)
-                            <option value="{{ $key }}" 
-                                {{ old('category', $tajweedRule->category) == $key ? 'selected' : '' }}>
-                                {{ $name }}
+                            @foreach($categories as $catId => $catName)
+                            <option value="{{ $catId }}"
+                                {{ old('tajweed_rule_category_id', $tajweedRule->tajweed_rule_category_id) == $catId ? 'selected' : '' }}>
+                                {{ $catName }}
                             </option>
                             @endforeach
                         </select>
-                        @error('category')
+                        @error('tajweed_rule_category_id')
                         <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

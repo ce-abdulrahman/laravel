@@ -108,16 +108,20 @@
             <!-- Tajweed Dropdown -->
             <div class="quran-nav-group">
                 <a href="#tajweedSubmenu"
-                   class="quran-nav-item has-submenu {{ request()->routeIs('tajweed-rules.*') || request()->routeIs('tajweed-segments.*') ? 'active' : '' }}"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('tajweed-rules.*') || request()->routeIs('tajweed-segments.*') || request()->routeIs('tajweed-rule-categories.*') ? 'active' : '' }}"
                    data-bs-toggle="collapse"
-                   aria-expanded="{{ request()->routeIs('tajweed-rules.*') || request()->routeIs('tajweed-segments.*') ? 'true' : 'false' }}">
+                   aria-expanded="{{ request()->routeIs('tajweed-rules.*') || request()->routeIs('tajweed-segments.*') || request()->routeIs('tajweed-rule-categories.*') ? 'true' : 'false' }}">
                     <div class="quran-nav-icon">
                         <i class="bi bi-palette"></i>
                     </div>
                     <span class="quran-nav-label">{{ __('sidebar.tajweed') }}</span>
                     <i class="bi bi-chevron-down quran-submenu-icon"></i>
                 </a>
-                <div class="quran-submenu collapse {{ request()->routeIs('tajweed-rules.*') || request()->routeIs('tajweed-segments.*') ? 'show' : '' }}" id="tajweedSubmenu">
+                <div class="quran-submenu collapse {{ request()->routeIs('tajweed-rules.*') || request()->routeIs('tajweed-segments.*') || request()->routeIs('tajweed-rule-categories.*') ? 'show' : '' }}" id="tajweedSubmenu">
+                    <a href="{{ route('tajweed-rule-categories.index') }}" class="quran-submenu-item {{ request()->routeIs('tajweed-rule-categories.*') ? 'active' : '' }}">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
+                        <span>{{ __('sidebar.tajweed_categories') }}</span>
+                    </a>
                     <a href="{{ route('tajweed-rules.index') }}" class="quran-submenu-item {{ request()->routeIs('tajweed-rules.*') ? 'active' : '' }}">
                         <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
                         <span>{{ __('sidebar.tajweed_rules') }}</span>

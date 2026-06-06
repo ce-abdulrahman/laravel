@@ -14,7 +14,7 @@ class TajweedRule extends Model
         'name_ku',
         'name_ar',
         'slug',
-        'category',
+        'tajweed_rule_category_id',
         'color_code',
         'description',
         'description_ku',
@@ -33,6 +33,11 @@ class TajweedRule extends Model
     public function ayahTajweedSegments()
     {
         return $this->hasMany(AyahTajweedSegment::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(TajweedRuleCategory::class, 'tajweed_rule_category_id');
     }
 
     public function scopeActive($query)

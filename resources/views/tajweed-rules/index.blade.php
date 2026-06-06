@@ -104,9 +104,9 @@
                         <label class="quran-form-label">{{ __('tajweed_rules.filter_by_category') }}</label>
                         <select name="category" class="quran-form-select">
                             <option value="">{{ __('tajweed_rules.all_categories') }}</option>
-                            @foreach($categories as $category)
-                            <option value="{{ $category }}" {{ request('category') == $category ? 'selected' : '' }}>
-                                {{ $category }}
+                            @foreach($categories as $catId => $catName)
+                            <option value="{{ $catId }}" {{ request('category') == $catId ? 'selected' : '' }}>
+                                {{ $catName }}
                             </option>
                             @endforeach
                         </select>
@@ -162,7 +162,7 @@
                                 <small class="text-success arabic-text" dir="rtl">{{ $rule->name_ar }}</small>
                                 @endif
                                 @if($rule->category)
-                                <span class="quran-table-badge info">{{ $rule->category }}</span>
+                                <span class="quran-table-badge info">{{ $rule->category->name_ku ?: $rule->category->name }}</span>
                                 @endif
                             </div>
                         </div>
