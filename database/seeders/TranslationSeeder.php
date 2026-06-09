@@ -14,6 +14,36 @@ class TranslationSeeder extends Seeder
         // Truncate existing translations to start fresh
         Translation::truncate();
 
+        if (app()->environment('testing')) {
+            $this->command->info('Testing environment detected. Seeding dummy translations...');
+            $translations = [];
+            foreach (Ayah::all() as $ayah) {
+                $translations[] = [
+                    'ayah_id' => $ayah->id,
+                    'language_code' => 'en',
+                    'translator_name' => 'Saheeh International',
+                    'content' => "Translation content for Ayah {$ayah->ayah_number}",
+                    'is_default' => true,
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+                $translations[] = [
+                    'ayah_id' => $ayah->id,
+                    'language_code' => 'ku',
+                    'translator_name' => 'Burhan Muhammad-Amin',
+                    'content' => "تەرجەمەی ئایەتی {$ayah->ayah_number}",
+                    'is_default' => true,
+                    'is_active' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+            DB::table('translations')->insert($translations);
+            $this->command->info('Dummy translations seeded successfully.');
+            return;
+        }
+
         // 1. Build Ayah Lookup Map: "surah_id:ayah_number" => id
         $this->command->info('Building Ayah lookup map...');
         $ayahMap = [];

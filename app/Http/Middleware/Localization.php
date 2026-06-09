@@ -18,26 +18,11 @@ class Localization
      */
     public function handle(Request $request, Closure $next)
     {
-        $supportedLocales = ['en', 'ku', 'ar'];
+        $locale = \App\Helpers\LanguageHelper::resolveLocale($request);
 
-        // Check session for saved language
-        $sessionLocale = Session::get('locale');
-        if (is_string($sessionLocale) && in_array($sessionLocale, $supportedLocales, true)) {
-            $locale = $sessionLocale;
-        }
-        // Check browser language
-        else {
-            $preferred = strtolower((string) $request->getPreferredLanguage());
-            $primary = strtolower(strtok(str_replace('_', '-', $preferred), '-') ?: '');
-
-            // Browsers often report Sorani Kurdish as "ckb"
-            if ($primary === 'ckb') {
-                $primary = 'ku';
-            }
-
-            $fallback = (string) config('app.fallback_locale', 'en');
-            $locale = in_array($primary, $supportedLocales, true) ? $primary : $fallback;
-            Session::put('locale', $locale);
+        // Save in session if active
+        if ($request->hasSession()) {
+            $request->session()->put('locale', $locale);
         }
 
         // Set the application locale

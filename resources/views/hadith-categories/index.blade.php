@@ -67,14 +67,18 @@
         </div>
 
         {{-- Table --}}
-        <div class="quran-table-container">
+        @php
+            $totalColumns = 4 + \App\Models\Language::activeList()->count();
+        @endphp
+
+        <div class="table-responsive">
             <table class="quran-table quran-table-striped quran-surah-table">
                 <thead>
                     <tr>
                         <th class="number-column" style="width: 80px;">{{ __('hadith_categories.table.order') }}</th>
-                        <th>{{ __('hadith_categories.table.name_ku') }}</th>
-                        <th>{{ __('hadith_categories.table.name_ar') }}</th>
-                        <th>{{ __('hadith_categories.table.name_en') }}</th>
+                        @foreach(\App\Models\Language::activeList() as $lang)
+                            <th>Name ({{ $lang->name }})</th>
+                        @endforeach
                         <th style="width: 160px;">{{ __('hadith_categories.table.icon') }}</th>
                         <th class="text-center" style="width: 120px;">{{ __('hadith_categories.table.status') }}</th>
                         <th class="text-end" style="width: 170px;">{{ __('hadith_categories.table.actions') }}</th>
@@ -86,15 +90,21 @@
                             <td class="number-column">
                                 <span class="surah-number">{{ $cat->order }}</span>
                             </td>
-                            <td>
-                                <div style="font-weight: 600;">{{ $cat->name_ku }}</div>
-                            </td>
-                            <td>
-                                <div class="surah-name-arabic">{{ $cat->name_ar }}</div>
-                            </td>
-                            <td>
-                                <span class="text-muted">{{ $cat->name_en ?? '—' }}</span>
-                            </td>
+                            @foreach(\App\Models\Language::activeList() as $lang)
+                                <td>
+                                    @php
+                                        $val = $cat->getTranslation('name', $lang->code);
+                                        $attrs = $cat->getTranslationAttributes('name', $lang->code);
+                                    @endphp
+                                    @if($val !== null && $val !== '')
+                                        <div class="{{ $attrs['class'] }}" dir="{{ $attrs['dir'] }}" style="{{ $attrs['style'] }} font-weight: 600;">
+                                            {{ $val }}
+                                        </div>
+                                    @else
+                                        <span class="badge bg-light text-muted border small">{{ __('common.missing_translation') ?? 'Missing' }}</span>
+                                    @endif
+                                </td>
+                            @endforeach
                             <td>
                                 @if($cat->icon)
                                     <span class="badge bg-light text-dark border" style="font-family: monospace; font-size: 0.75rem;">
@@ -125,13 +135,6 @@
                                        title="{{ __('hadith_categories.actions.view') }}">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('hadiths.index') }}?category_id={{ $cat->id }}"
-                                       class="quran-table-action-btn"
-                                       style="color: #1B7340;"
-                                       data-bs-toggle="tooltip"
-                                       title="{{ __('hadith_categories.actions.view_hadiths') }}">
-                                        <i class="bi bi-list-task"></i>
-                                    </a>
                                     <a href="{{ route('hadith-categories.edit', $cat) }}"
                                        class="quran-table-action-btn edit"
                                        data-bs-toggle="tooltip"
@@ -142,7 +145,7 @@
                                             class="quran-table-action-btn delete"
                                             data-bs-toggle="tooltip"
                                             title="{{ __('hadith_categories.actions.delete') }}"
-                                            onclick="confirmDelete({{ $cat->id }}, '{{ addslashes($cat->name_ku) }}')">
+                                            onclick="confirmDelete({{ $cat->id }}, '{{ addslashes($cat->name) }}')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -150,7 +153,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">
+                            <td colspan="{{ $totalColumns }}">
                                 <div class="quran-table-empty">
                                     <i class="bi bi-tag" style="font-size: 3rem;"></i>
                                     <h6 class="mt-3">{{ __('hadith_categories.empty.title') }}</h6>

@@ -91,15 +91,21 @@
             </div>
         </div>
 
+        @php
+            $totalColumns = 6 + \App\Models\Language::activeList()->count();
+        @endphp
+
         {{-- Table --}}
-        <div class="quran-table-container">
+        <div class="table-responsive">
             <table class="quran-table quran-table-striped quran-surah-table">
                 <thead>
                     <tr>
                         <th style="width: 150px;">{{ __('adhkars.table.category') }}</th>
                         <th style="width: 80px;" class="text-center">{{ __('adhkars.table.order') }}</th>
                         <th>{{ __('adhkars.table.arabic') }}</th>
-                        <th>{{ __('adhkars.table.kurdish') }}</th>
+                        @foreach(\App\Models\Language::activeList() as $lang)
+                            <th>Translation ({{ $lang->name }})</th>
+                        @endforeach
                         <th class="text-center" style="width: 80px;">{{ __('adhkars.table.count') }}</th>
                         <th style="width: 140px;">{{ __('adhkars.table.source') }}</th>
                         <th class="text-end" style="width: 140px;">{{ __('adhkars.table.actions') }}</th>
@@ -111,7 +117,7 @@
                             <td>
                                 @if($item->category)
                                     <span class="quran-table-badge info" style="font-size: 0.78rem;">
-                                        {{ $item->category->name_ku }}
+                                        {{ $item->category->name }}
                                     </span>
                                 @else
                                     <span class="text-muted">—</span>
@@ -126,11 +132,22 @@
                                     {{ Str::limit($item->arabic_text, 120) }}
                                 </div>
                             </td>
-                            <td>
-                                <div class="text-muted small" style="line-height: 1.5; max-width: 200px;">
-                                    {{ $item->translation_ku ? Str::limit($item->translation_ku, 100) : '—' }}
-                                </div>
-                            </td>
+                            @foreach(\App\Models\Language::activeList() as $lang)
+                                <td>
+                                    @php
+                                        $val = $item->getTranslation('translation', $lang->code);
+                                        $attrs = $item->getTranslationAttributes('translation', $lang->code);
+                                    @endphp
+                                    @if($val !== null && $val !== '')
+                                        <div class="{{ $attrs['class'] }} text-muted small" style="line-height: 1.5; max-width: 200px; {{ $attrs['style'] }}" dir="{{ $attrs['dir'] }}" title="{{ $val }}">
+                                            {{ Str::limit($val, 100) }}
+                                        </div>
+                                    @else
+                                        <span class="badge bg-light text-muted border small">{{ __('common.missing_translation') ?? 'Missing' }}</span>
+                                    @endif
+                                </td>
+                            @endforeach
+
                             <td class="text-center">
                                 <span class="badge px-2 py-1"
                                       style="background: rgba(212,175,55,0.15); color: #a08000; border: 1px solid rgba(212,175,55,0.3); font-weight: 700; font-size: 0.85rem;">
@@ -172,7 +189,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">
+                            <td colspan="{{ $totalColumns }}">
                                 <div class="quran-table-empty">
                                     <i class="bi bi-chat-square-quote" style="font-size: 3rem;"></i>
                                     <h6 class="mt-3">{{ __('adhkars.empty.title') }}</h6>

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Surah;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 
 class SurahSeeder extends Seeder
@@ -26,10 +27,23 @@ class SurahSeeder extends Seeder
         }
 
         foreach ($surahs as $surah) {
-            Surah::updateOrCreate(
+            $translations = [
+                'ar' => ['name' => $surah['name_ar'] ?? null],
+                'ku' => ['name' => $surah['name_ku'] ?? null],
+                'en' => ['name' => $surah['name_en'] ?? null],
+            ];
+
+            $surahData = Arr::except($surah, ['name_ar', 'name_ku', 'name_en']);
+            $surahData['is_active'] = true;
+
+            $surahModel = Surah::updateOrCreate(
                 ['number' => $surah['number']],
-                array_merge($surah, ['is_active' => true])
+                $surahData
             );
+
+            $surahModel->saveTranslationsFromArray(array_filter($translations, function ($payload) {
+                return isset($payload['name']) && $payload['name'] !== null && $payload['name'] !== '';
+            }));
         }
 
         $this->command->info('Surahs seeded successfully.');

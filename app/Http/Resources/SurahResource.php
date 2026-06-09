@@ -15,14 +15,20 @@ class SurahResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $activeCodes = \App\Models\Language::activeCodes();
+
+        $data = [
             'id' => $this->id,
             'number' => (int) $this->number,
-            'name_ar' => $this->name_ar,
-            'name_en' => $this->name_en,
-            'name_ku' => $this->name_ku,
+            'name' => $this->name,
             'total_ayahs' => (int) $this->ayah_count,
             'revelation_type' => $this->revelation_type,
         ];
+
+        foreach ($activeCodes as $code) {
+            $data['name_' . $code] = $this->getTranslation('name', $code);
+        }
+
+        return $data;
     }
 }

@@ -7,14 +7,23 @@ use App\Models\TajweedRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class TajweedRuleController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class TajweedRuleController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('admin', except: ['index', 'show']),
+        ];
+    }
     /**
      * Display a listing of the tajweed rules.
      */
     public function index(Request $request)
     {
-        $query = TajweedRule::withCount('ayahTajweedSegments');
+        $query = TajweedRule::with(['translations', 'category.translations'])->withCount('ayahTajweedSegments');
 
         // فلتەر بەپێی کەتێگۆری
         if ($request->filled('category')) {
@@ -30,17 +39,19 @@ class TajweedRuleController extends Controller
             }
         }
 
-        // گەڕان بەپێی ناو یان وەسف
+        // Search by name or description across all active languages simultaneously
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('description', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereTranslationLikeAny('name', $search)
+                  ->orWhereTranslationLikeAny('description', $search);
             });
         }
 
-        $tajweedRules = $query->orderBy('category')
+        $tajweedRules = $query
+            ->orderByCategoryTranslation('asc')
             ->orderBy('priority', 'desc')
-            ->orderBy('name')
+            ->orderByTranslation('name', 'asc')
             ->paginate($request->per_page ?? 20)
             ->withQueryString();
 
@@ -78,20 +89,45 @@ class TajweedRuleController extends Controller
     {
         $this->authorizeAdmin();
 
-        $validated = $request->validate([
-            'name'           => 'required|string|max:255|unique:tajweed_rules,name',
-            'name_ku'        => 'required|string|max:255',
-            'name_ar'        => 'nullable|string|max:255',
+        $rules = [
             'tajweed_rule_category_id' => 'nullable|exists:tajweed_rule_categories,id',
             'color_code'     => 'nullable|string|max:20',
-            'description'    => 'required|string',
-            'description_ku' => 'required|string',
             'example_text'   => 'nullable|string',
-            'priority'       => 'integer|min:0',
+            'priority'       => 'nullable|integer|min:0',
             'is_active'      => 'boolean',
-        ]);
+            'translations'   => ['required', 'array'],
+        ];
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $customAttributes = [
+            'tajweed_rule_category_id' => __('tajweed_rules.fields.category'),
+            'color_code' => __('tajweed_rules.fields.color_code'),
+            'example_text' => __('tajweed_rules.fields.example_text'),
+            'priority' => __('tajweed_rules.fields.priority'),
+            'is_active' => __('tajweed_rules.fields.is_active'),
+        ];
+
+        foreach (\App\Models\Language::activeList() as $lang) {
+            $isRequired = in_array($lang->code, ['en', 'ku']);
+            $rules["translations.{$lang->code}.name"] = [
+                $isRequired ? 'required' : 'nullable',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('tajweed_rule_translations', 'name')
+                    ->where('locale', $lang->code)
+            ];
+            $rules["translations.{$lang->code}.description"] = [
+                $isRequired ? 'required' : 'nullable',
+                'string'
+            ];
+            $customAttributes["translations.{$lang->code}.name"] = "Name ({$lang->name})";
+            $customAttributes["translations.{$lang->code}.description"] = "Description ({$lang->name})";
+        }
+
+        $validated = $request->validate($rules, [], $customAttributes);
+
+        $fallbackLocale = config('app.fallback_locale', 'en');
+        $slugSource = $validated['translations'][$fallbackLocale]['name'] ?? reset($validated['translations'])['name'] ?? 'rule';
+        $validated['slug'] = Str::slug($slugSource);
 
         // پشکنینی دووبارە نەبوونی slug
         $count = 1;
@@ -101,7 +137,12 @@ class TajweedRuleController extends Controller
             $count++;
         }
 
+        $validated['is_active'] = $request->boolean('is_active', true);
+
         $tajweedRule = TajweedRule::create($validated);
+        if (isset($validated['translations'])) {
+            $tajweedRule->saveTranslationsFromArray($validated['translations']);
+        }
 
         return redirect()
             ->route('tajweed-rules.show', $tajweedRule)
@@ -113,14 +154,19 @@ class TajweedRuleController extends Controller
      */
     public function show(TajweedRule $tajweedRule)
     {
-        $tajweedRule->load(['category', 'ayahTajweedSegments.ayah.surah']);
+        $tajweedRule->loadMissing(['translations', 'category.translations', 'ayahTajweedSegments.ayah.surah.translations']);
+        $activeLanguages = \App\Models\Language::activeList();
 
         $segments = $tajweedRule->ayahTajweedSegments()
             ->with(['ayah.surah'])
             ->orderBy('ayah_id')
             ->paginate(20);
 
-        return view('tajweed-rules.show', compact('tajweedRule', 'segments'));
+        return view('tajweed-rules.show', [
+            'tajweedRule' => $tajweedRule,
+            'segments' => $segments,
+            'activeLanguages' => $activeLanguages,
+        ]);
     }
 
     /**
@@ -143,20 +189,46 @@ class TajweedRuleController extends Controller
     {
         $this->authorizeAdmin();
 
-        $validated = $request->validate([
-            'name'           => 'required|string|max:255|unique:tajweed_rules,name,' . $tajweedRule->id,
-            'name_ku'        => 'required|string|max:255',
-            'name_ar'        => 'nullable|string|max:255',
+        $rules = [
             'tajweed_rule_category_id' => 'nullable|exists:tajweed_rule_categories,id',
             'color_code'     => 'nullable|string|max:20',
-            'description'    => 'required|string',
-            'description_ku' => 'required|string',
             'example_text'   => 'nullable|string',
-            'priority'       => 'integer|min:0',
+            'priority'       => 'nullable|integer|min:0',
             'is_active'      => 'boolean',
-        ]);
+            'translations'   => ['required', 'array'],
+        ];
 
-        $validated['slug'] = Str::slug($validated['name']);
+        $customAttributes = [
+            'tajweed_rule_category_id' => __('tajweed_rules.fields.category'),
+            'color_code' => __('tajweed_rules.fields.color_code'),
+            'example_text' => __('tajweed_rules.fields.example_text'),
+            'priority' => __('tajweed_rules.fields.priority'),
+            'is_active' => __('tajweed_rules.fields.is_active'),
+        ];
+
+        foreach (\App\Models\Language::activeList() as $lang) {
+            $isRequired = in_array($lang->code, ['en', 'ku']);
+            $rules["translations.{$lang->code}.name"] = [
+                $isRequired ? 'required' : 'nullable',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('tajweed_rule_translations', 'name')
+                    ->where('locale', $lang->code)
+                    ->ignore($tajweedRule->id, 'tajweed_rule_id')
+            ];
+            $rules["translations.{$lang->code}.description"] = [
+                $isRequired ? 'required' : 'nullable',
+                'string'
+            ];
+            $customAttributes["translations.{$lang->code}.name"] = "Name ({$lang->name})";
+            $customAttributes["translations.{$lang->code}.description"] = "Description ({$lang->name})";
+        }
+
+        $validated = $request->validate($rules, [], $customAttributes);
+
+        $fallbackLocale = config('app.fallback_locale', 'en');
+        $slugSource = $validated['translations'][$fallbackLocale]['name'] ?? reset($validated['translations'])['name'] ?? 'rule';
+        $validated['slug'] = Str::slug($slugSource);
 
         // پشکنینی دووبارە نەبوونی slug
         $count = 1;
@@ -166,7 +238,12 @@ class TajweedRuleController extends Controller
             $count++;
         }
 
+        $validated['is_active'] = $request->boolean('is_active', true);
+
         $tajweedRule->update($validated);
+        if (isset($validated['translations'])) {
+            $tajweedRule->saveTranslationsFromArray($validated['translations']);
+        }
 
         return redirect()
             ->route('tajweed-rules.show', $tajweedRule)

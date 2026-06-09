@@ -76,31 +76,25 @@
 
             <!-- Language Switcher -->
             <div class="quran-language-switcher">
-                <button class="quran-header-icon-btn" id="languageDropdownBtn">
-                    @php
-                        $locale = app()->getLocale();
-                        $flags = ['en' => '🇬🇧', 'ku' => '🇮🇶', 'ar' => '🇸🇦'];
-                        $names = ['en' => 'EN', 'ku' => 'KU', 'ar' => 'AR'];
-                    @endphp
-                    <span class="quran-current-lang">{{ $names[$locale] }}</span>
-                </button>
-                <div class="quran-language-dropdown">
-                    <a href="{{ route('language.switch', 'en') }}"
-                       class="quran-language-option {{ $locale == 'en' ? 'active' : '' }}">
-                        <span class="quran-lang-flag">🇬🇧</span>
-                        <span class="quran-lang-name">English</span>
-                    </a>
-                    <a href="{{ route('language.switch', 'ku') }}"
-                       class="quran-language-option {{ $locale == 'ku' ? 'active' : '' }}">
-                        <span class="quran-lang-flag">🇮🇶</span>
-                        <span class="quran-lang-name">کوردی</span>
-                    </a>
-                    <a href="{{ route('language.switch', 'ar') }}"
-                       class="quran-language-option {{ $locale == 'ar' ? 'active' : '' }}">
-                        <span class="quran-lang-flag">🇸🇦</span>
-                        <span class="quran-lang-name">العربية</span>
-                    </a>
-                </div>
+                @php
+                    $locale = app()->getLocale();
+                    $activeLangs = \App\Models\Language::activeList();
+                    $currentLang = $activeLangs->where('code', $locale)->first() ?? $activeLangs->where('is_default', true)->first() ?? $activeLangs->first();
+                @endphp
+                @if($currentLang)
+                    <button class="quran-header-icon-btn" id="languageDropdownBtn">
+                        <span class="quran-current-lang">{{ strtoupper($currentLang->code) }}</span>
+                    </button>
+                    <div class="quran-language-dropdown">
+                        @foreach($activeLangs as $lang)
+                            <a href="{{ route('language.switch', $lang->code) }}"
+                               class="quran-language-option {{ $locale == $lang->code ? 'active' : '' }}">
+                                <span class="quran-lang-flag">{{ $lang->flag ?? '🌐' }}</span>
+                                <span class="quran-lang-name">{{ $lang->native_name ?? $lang->name }}</span>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             <!-- Notifications -->

@@ -140,14 +140,15 @@ class SearchController extends Controller
             $results['tafsirs'] = $tafsirs;
         }
 
-        // Search in Surahs
         if (in_array($type, ['all', 'surah'])) {
             $surahs = Surah::active()
                 ->where(function ($q) use ($query) {
-                    $q->where('name_ar', 'like', "%{$query}%")
-                      ->orWhere('name_en', 'like', "%{$query}%")
-                      ->orWhere('name_ku', 'like', "%{$query}%")
-                      ->orWhere('name_transliteration', 'like', "%{$query}%");
+                    $q->whereHas('translations', function ($transQuery) use ($query) {
+                        $transQuery->where('name', 'like', "%{$query}%");
+                    });
+                    if (\Illuminate\Support\Facades\Schema::hasColumn('surahs', 'name_transliteration')) {
+                        $q->orWhere('name_transliteration', 'like', "%{$query}%");
+                    }
                 })
                 ->limit(20)
                 ->get()
@@ -200,11 +201,15 @@ class SearchController extends Controller
 
         $suggestions = [];
 
-        // Surah name suggestions
         $surahs = Surah::active()
-            ->where('name_ar', 'like', "{$query}%")
-            ->orWhere('name_en', 'like', "{$query}%")
-            ->orWhere('name_transliteration', 'like', "{$query}%")
+            ->where(function ($q) use ($query) {
+                $q->whereHas('translations', function ($transQuery) use ($query) {
+                    $transQuery->where('name', 'like', "{$query}%");
+                });
+                if (\Illuminate\Support\Facades\Schema::hasColumn('surahs', 'name_transliteration')) {
+                    $q->orWhere('name_transliteration', 'like', "{$query}%");
+                }
+            })
             ->limit(5)
             ->get()
             ->map(function ($surah) {

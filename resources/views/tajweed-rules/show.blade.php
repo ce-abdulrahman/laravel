@@ -1,8 +1,8 @@
 {{-- resources/views/tajweed-rules/show.blade.php --}}
 @extends('layouts.app')
 
-@section('title', $tajweedRule->name)
-@section('page-title', $tajweedRule->name)
+@section('title', $tajweedRule->name ?? '')
+@section('page-title', $tajweedRule->name ?? '')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">
@@ -22,18 +22,15 @@
                             border: 2px solid var(--quran-border-light);"></div>
                 @endif
                 <div>
-                    <h1 class="h4 mb-1">{{ $tajweedRule->name_ku }} ({{ $tajweedRule->name }})</h1>
+                    <h1 class="h4 mb-1">{{ $tajweedRule->name }}</h1>
+                    @if($tajweedRule->category)
                     <div class="d-flex align-items-center gap-2 mt-1">
-                        @if($tajweedRule->name_ar)
-                        <span class="fs-6 arabic-text text-success font-bold" dir="rtl">{{ $tajweedRule->name_ar }}</span>
-                        @endif
-                        @if($tajweedRule->category)
                         <a href="{{ route('tajweed-rule-categories.show', $tajweedRule->category) }}"
                            class="quran-table-badge info text-decoration-none">
-                            {{ $tajweedRule->category->name_ku ?: $tajweedRule->category->name }}
+                            {{ $tajweedRule->category->name }}
                         </a>
-                        @endif
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -118,37 +115,24 @@
                 </div>
             </div>
 
-            <!-- Description -->
-            <div class="quran-card">
+            <!-- Translations Card -->
+            <x-translations.show-tabs :model="$tajweedRule" :active-languages="$activeLanguages" />
+
+            @if($tajweedRule->example_text)
+            <div class="quran-card mt-4">
                 <div class="quran-card-header">
                     <h5 class="quran-card-title">
-                        <i class="bi bi-card-text me-2"></i>
-                        {{ __('tajweed_rules.fields.description') }}
+                        <i class="bi bi-file-earmark-text me-2"></i>
+                        {{ __('tajweed_rules.fields.example_text') }}
                     </h5>
                 </div>
                 <div class="quran-card-body">
-                    <div class="mb-3">
-                        <label class="quran-detail-label d-block mb-1">شیکردنەوە بە کوردی</label>
-                        <div class="quran-description text-primary font-medium" style="font-family: 'Cairo'; line-height: 1.6; font-size: 14px;">
-                            {{ $tajweedRule->description_ku }}
-                        </div>
+                    <div class="bg-light p-3 rounded-3">
+                        <div class="arabic-text" style="font-size: 20px;">{{ $tajweedRule->example_text }}</div>
                     </div>
-                    <hr>
-                    <div class="mb-3">
-                        <label class="quran-detail-label d-block mb-1">Explanation (English)</label>
-                        <div class="quran-description">{{ $tajweedRule->description }}</div>
-                    </div>
-
-                    @if($tajweedRule->example_text)
-                    <div class="mt-4">
-                        <label class="quran-detail-label">{{ __('tajweed_rules.fields.example_text') }}</label>
-                        <div class="bg-light p-3 rounded-3">
-                            <div class="arabic-text" style="font-size: 20px;">{{ $tajweedRule->example_text }}</div>
-                        </div>
-                    </div>
-                    @endif
                 </div>
             </div>
+            @endif
         </div>
 
         <!-- Segments List -->

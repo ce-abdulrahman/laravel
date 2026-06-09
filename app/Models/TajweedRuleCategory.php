@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TajweedRuleCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
+
+    protected $translatable = ['name', 'description'];
+
+    protected $with = ['translations'];
 
     protected $fillable = [
         'name',
@@ -50,11 +55,6 @@ class TajweedRuleCategory extends Model
      */
     public function getLocalizedNameAttribute(): string
     {
-        $locale = app()->getLocale();
-        return match ($locale) {
-            'ku' => $this->name_ku ?: $this->name,
-            'ar' => $this->name_ar ?: $this->name,
-            default => $this->name,
-        };
+        return $this->name ?? '';
     }
 }

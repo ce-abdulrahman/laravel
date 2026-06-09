@@ -7,8 +7,17 @@ use App\Models\Surah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class AyahController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class AyahController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('admin', except: ['index', 'show']),
+        ];
+    }
     /**
      * Display a listing of the ayahs.
      */

@@ -402,13 +402,12 @@ class TajweedRuleSeeder extends Seeder
         // ─────────────────────────────────────────────────────────────────
         // Add timestamps and is_active to every row then batch insert
         // ─────────────────────────────────────────────────────────────────
-        foreach ($rules as &$rule) {
-            $rule['is_active']   = true;
-            $rule['created_at']  = $now;
-            $rule['updated_at']  = $now;
+        foreach ($rules as $rule) {
+            $rule['is_active'] = true;
+            \App\Models\TajweedRule::updateOrCreate(
+                ['slug' => $rule['slug']],
+                $rule
+            );
         }
-        unset($rule);
-
-        DB::table('tajweed_rules')->insert($rules);
     }
 }

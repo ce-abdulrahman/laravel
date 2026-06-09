@@ -76,39 +76,33 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="quran-form-label" for="translation_ku">
-                            {{ __('hadiths.fields.translation_ku') }}
-                            <span class="text-danger">*</span>
-                        </label>
-                        <textarea
-                            name="translation_ku"
-                            id="translation_ku"
-                            rows="3"
-                            class="quran-form-control @error('translation_ku') is-invalid @enderror"
-                            required
-                            placeholder="{{ __('hadiths.placeholders.translation_ku') }}"
-                        >{{ old('translation_ku', $hadith->translation_ku) }}</textarea>
-                        @error('translation_ku')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="quran-form-label" for="translation_en">
-                            {{ __('hadiths.fields.translation_en') }}
-                        </label>
-                        <textarea
-                            name="translation_en"
-                            id="translation_en"
-                            rows="3"
-                            class="quran-form-control @error('translation_en') is-invalid @enderror"
-                            placeholder="{{ __('hadiths.placeholders.translation_en') }}"
-                        >{{ old('translation_en', $hadith->translation_en) }}</textarea>
-                        @error('translation_en')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        @php
+                            $isKu = $lang->code === 'ku';
+                        @endphp
+                        <div class="col-md-6">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_translation">
+                                @if(Lang::has('hadiths.fields.translation_' . $lang->code))
+                                    {{ __('hadiths.fields.translation_' . $lang->code) }}
+                                @else
+                                    Translation ({{ $lang->name }})
+                                @endif
+                                @if($isKu) <span class="text-danger">*</span> @endif
+                            </label>
+                            <textarea
+                                name="translations[{{ $lang->code }}][translation]"
+                                id="translations_{{ $lang->code }}_translation"
+                                rows="3"
+                                class="quran-form-control @error('translations.' . $lang->code . '.translation') is-invalid @enderror"
+                                @if($isKu) required @endif
+                                @if($lang->isRtl()) dir="rtl" @endif
+                                placeholder="{{ __('hadiths.placeholders.translation_' . $lang->code) ?? ('Enter ' . $lang->name . ' translation') }}"
+                            >{{ old('translations.' . $lang->code . '.translation', $hadith->getTranslation('translation', $lang->code)) }}</textarea>
+                            @error('translations.' . $lang->code . '.translation')
+                                <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -174,37 +168,28 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="quran-form-label" for="explanation_ku">
-                            {{ __('hadiths.fields.explanation_ku') }}
-                        </label>
-                        <textarea
-                            name="explanation_ku"
-                            id="explanation_ku"
-                            rows="4"
-                            class="quran-form-control @error('explanation_ku') is-invalid @enderror"
-                            placeholder="{{ __('hadiths.placeholders.explanation_ku') }}"
-                        >{{ old('explanation_ku', $hadith->explanation_ku) }}</textarea>
-                        @error('explanation_ku')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="quran-form-label" for="explanation_en">
-                            {{ __('hadiths.fields.explanation_en') }}
-                        </label>
-                        <textarea
-                            name="explanation_en"
-                            id="explanation_en"
-                            rows="4"
-                            class="quran-form-control @error('explanation_en') is-invalid @enderror"
-                            placeholder="{{ __('hadiths.placeholders.explanation_en') }}"
-                        >{{ old('explanation_en', $hadith->explanation_en) }}</textarea>
-                        @error('explanation_en')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        <div class="col-md-6">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_explanation">
+                                @if(Lang::has('hadiths.fields.explanation_' . $lang->code))
+                                    {{ __('hadiths.fields.explanation_' . $lang->code) }}
+                                @else
+                                    Explanation ({{ $lang->name }})
+                                @endif
+                            </label>
+                            <textarea
+                                name="translations[{{ $lang->code }}][explanation]"
+                                id="translations_{{ $lang->code }}_explanation"
+                                rows="4"
+                                class="quran-form-control @error('translations.' . $lang->code . '.explanation') is-invalid @enderror"
+                                @if($lang->isRtl()) dir="rtl" @endif
+                                placeholder="{{ __('hadiths.placeholders.explanation_' . $lang->code) ?? ('Enter ' . $lang->name . ' explanation') }}"
+                            >{{ old('translations.' . $lang->code . '.explanation', $hadith->getTranslation('explanation', $lang->code)) }}</textarea>
+                            @error('translations.' . $lang->code . '.explanation')
+                                <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

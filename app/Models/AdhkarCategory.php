@@ -2,11 +2,18 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AdhkarCategory extends Model
 {
+    use HasTranslations;
+
+    protected $translatable = ['name'];
+
+    protected $with = ['translations'];
+
     protected $fillable = [
         'name_ku',
         'name_ar',

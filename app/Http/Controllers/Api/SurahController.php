@@ -17,16 +17,26 @@ class SurahController extends Controller
     public function index(): JsonResponse
     {
         $ttl = config('quran_api.cache_ttl', 3600);
+        $locale = \App\Helpers\LanguageHelper::resolveLocale(request());
+        app()->setLocale($locale);
 
-        $data = Cache::remember(QuranApiCache::KEY_SURAHS, $ttl, function () {
+        $cacheKey = QuranApiCache::getSurahsKey($locale);
+
+        $data = Cache::remember($cacheKey, $ttl, function () {
             $surahs = Surah::query()
                 ->active()
-                ->select(['id', 'number', 'name_ar', 'name_en', 'name_ku', 'ayah_count'])
                 ->orderBy('number')
                 ->get();
 
             return SurahResource::collection($surahs)->resolve(request());
         });
+
+        if (request()->has('fields')) {
+            $fields = explode(',', request()->query('fields'));
+            $data = collect($data)->map(function ($item) use ($fields) {
+                return array_intersect_key((array)$item, array_flip($fields));
+            })->all();
+        }
 
         return $this->success($data);
     }

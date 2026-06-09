@@ -19,6 +19,7 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
+        'preferred_locale',
         'points_total',
         'streak_days',
         'longest_streak',

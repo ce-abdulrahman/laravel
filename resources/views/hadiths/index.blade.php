@@ -66,6 +66,10 @@
             </div>
         </div>
 
+        @php
+            $totalColumns = 7 + \App\Models\Language::activeList()->count();
+        @endphp
+
         <!-- Table -->
         <div class="table-responsive">
             <table class="quran-table quran-table-striped quran-surah-table">
@@ -75,7 +79,9 @@
                         <th>{{ __('hadiths.table.category') }}</th>
                         <th>{{ __('hadiths.table.narrator') }}</th>
                         <th>{{ __('hadiths.table.arabic_text') }}</th>
-                        <th>{{ __('hadiths.table.translation_ku') }}</th>
+                        @foreach(\App\Models\Language::activeList() as $lang)
+                            <th>Translation ({{ $lang->name }})</th>
+                        @endforeach
                         <th>{{ __('hadiths.table.source') }}</th>
                         <th class="text-center" style="width: 100px;">{{ __('hadiths.table.status') }}</th>
                         <th class="text-end" style="width: 150px;">{{ __('hadiths.table.actions') }}</th>
@@ -89,7 +95,7 @@
                             </td>
                             <td>
                                 <span class="quran-table-badge info">
-                                    {{ $had->category->{'name_' . app()->getLocale()} ?? $had->category->name_ku }}
+                                    {{ $had->category->name }}
                                 </span>
                             </td>
                             <td>
@@ -102,9 +108,21 @@
                             <td>
                                 <div class="surah-name-arabic text-truncate" style="max-width: 220px;" dir="rtl">{{ $had->arabic_text }}</div>
                             </td>
-                            <td>
-                                <div class="text-truncate" style="max-width: 220px;">{{ $had->translation_ku }}</div>
-                            </td>
+                            @foreach(\App\Models\Language::activeList() as $lang)
+                                <td>
+                                    @php
+                                        $val = $had->getTranslation('translation', $lang->code);
+                                        $attrs = $had->getTranslationAttributes('translation', $lang->code);
+                                    @endphp
+                                    @if($val !== null && $val !== '')
+                                        <div class="{{ $attrs['class'] }} text-truncate" style="max-width: 220px; {{ $attrs['style'] }}" dir="{{ $attrs['dir'] }}" title="{{ $val }}">
+                                            {{ $val }}
+                                        </div>
+                                    @else
+                                        <span class="badge bg-light text-muted border small">{{ __('common.missing_translation') ?? 'Missing' }}</span>
+                                    @endif
+                                </td>
+                            @endforeach
                             <td>
                                 @if($had->source)
                                     <span class="badge bg-light text-dark">{{ $had->source }}</span>
@@ -157,7 +175,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8">
+                            <td colspan="{{ $totalColumns }}">
                                 <div class="quran-table-empty">
                                     <i class="bi bi-chat-square-text" style="font-size: 3rem; color: #ccc;"></i>
                                     <h6 class="mt-3">{{ __('hadiths.empty.title') }}</h6>

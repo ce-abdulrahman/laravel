@@ -15,44 +15,44 @@ class AdhkarSeeder extends Seeder
     {
         // 1. Create categories
         $morning = AdhkarCategory::updateOrCreate(
-            ['name_en' => 'Morning Adhkar'],
+            ['icon' => 'wb_sunny_rounded'],
             [
+                'name_en' => 'Morning Adhkar',
                 'name_ku' => 'بەیانیان',
                 'name_ar' => 'أذكار الصباح',
-                'icon' => 'wb_sunny_rounded',
                 'order' => 1,
                 'is_active' => true,
             ]
         );
 
         $evening = AdhkarCategory::updateOrCreate(
-            ['name_en' => 'Evening Adhkar'],
+            ['icon' => 'dark_mode_outlined'],
             [
+                'name_en' => 'Evening Adhkar',
                 'name_ku' => 'ئێواران',
                 'name_ar' => 'أذكار المساء',
-                'icon' => 'dark_mode_outlined',
                 'order' => 2,
                 'is_active' => true,
             ]
         );
 
         $afterPrayer = AdhkarCategory::updateOrCreate(
-            ['name_en' => 'After Prayer Adhkar'],
+            ['icon' => 'mosque_rounded'],
             [
+                'name_en' => 'After Prayer Adhkar',
                 'name_ku' => 'دوای نوێژ',
                 'name_ar' => 'أذكار بعد الصلاة',
-                'icon' => 'mosque_rounded',
                 'order' => 3,
                 'is_active' => true,
             ]
         );
 
         $beforeSleep = AdhkarCategory::updateOrCreate(
-            ['name_en' => 'Before Sleep Adhkar'],
+            ['icon' => 'bed_rounded'],
             [
+                'name_en' => 'Before Sleep Adhkar',
                 'name_ku' => 'پێش خەوتن',
                 'name_ar' => 'أذكار النوم',
-                'icon' => 'bed_rounded',
                 'order' => 4,
                 'is_active' => true,
             ]

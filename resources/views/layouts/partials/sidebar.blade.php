@@ -314,6 +314,46 @@
                 <span class="quran-nav-label">{{ __('sidebar.settings') }}</span>
             </a>
             
+            <!-- Languages -->
+            <a href="{{ route('languages.index') }}" class="quran-nav-item {{ request()->routeIs('languages.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-translate"></i>
+                </span>
+                <span class="quran-nav-label">{{ __('sidebar.languages') }}</span>
+            </a>
+            
+            <!-- Translation Manager Group Dropdown -->
+            <div class="quran-nav-group">
+                <a href="#translationManagerSubmenu"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('translations-manager.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                   aria-expanded="{{ request()->routeIs('translations-manager.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-journal-code"></i>
+                    </div>
+                    <span class="quran-nav-label">{{ __('sidebar.translations_manager') }}</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('translations-manager.*') ? 'show' : '' }}" id="translationManagerSubmenu">
+                    <a href="{{ route('translations-manager.index') }}" class="quran-submenu-item {{ request()->routeIs('translations-manager.index') ? 'active' : '' }}">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
+                        <span>List Keys</span>
+                    </a>
+                    <a href="{{ route('translations-manager.bulk') }}" class="quran-submenu-item {{ request()->routeIs('translations-manager.bulk') ? 'active' : '' }}">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
+                        <span>Bulk Editor</span>
+                    </a>
+                    <a href="{{ route('translations-manager.intelligence') }}" class="quran-submenu-item {{ request()->routeIs('translations-manager.intelligence') ? 'active' : '' }}">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
+                        <span>Intelligence Layer</span>
+                    </a>
+                    <a href="{{ route('translations-manager.analytics') }}" class="quran-submenu-item {{ request()->routeIs('translations-manager.analytics') ? 'active' : '' }}">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
+                        <span>Analytics &amp; Monitor</span>
+                    </a>
+                </div>
+            </div>
+            
             <!-- Banners -->
             <a href="{{ route('banners.index') }}" class="quran-nav-item {{ request()->routeIs('banners.*') ? 'active' : '' }}">
                 <span class="quran-nav-icon">

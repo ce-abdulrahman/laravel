@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Surah extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTranslations;
+
+    protected $translatable = ['name'];
+
+    protected $with = ['translations'];
 
     protected $fillable = [
         'number',
-        'name_ar',
-        'name_ku',
-        'name_en',
         'revelation_type',
         'ayah_count',
         'page_start',

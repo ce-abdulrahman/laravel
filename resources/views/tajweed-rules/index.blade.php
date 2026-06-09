@@ -156,19 +156,30 @@
                         </div>
                         @endif
                         <div class="flex-grow-1">
-                            <h6 class="mb-1">{{ $rule->name_ku ?? $rule->name }}</h6>
+                            @php
+                                $attrs = $rule->getTranslationAttributes('name');
+                            @endphp
+                            <h6 class="mb-1 {{ $attrs['class'] }}" dir="{{ $attrs['dir'] }}" style="{{ $attrs['style'] }}">
+                                {{ $attrs['value'] ?? __('common.missing_translation') }}
+                            </h6>
                             <div class="d-flex align-items-center gap-2">
-                                @if($rule->name_ar)
-                                <small class="text-success arabic-text" dir="rtl">{{ $rule->name_ar }}</small>
-                                @endif
                                 @if($rule->category)
-                                <span class="quran-table-badge info">{{ $rule->category->name_ku ?: $rule->category->name }}</span>
+                                <span class="quran-table-badge info">{{ $rule->category->name }}</span>
                                 @endif
                             </div>
                         </div>
                     </div>
 
-                    <p class="text-muted small mb-3" style="font-family: 'Cairo';">{{ Str::limit($rule->description_ku ?? $rule->description, 100) }}</p>
+                    @php
+                        $descAttrs = $rule->getTranslationAttributes('description');
+                    @endphp
+                    @if($descAttrs['value'])
+                        <p class="text-muted small mb-3 {{ $descAttrs['class'] }}" dir="{{ $descAttrs['dir'] }}" style="{{ $descAttrs['style'] }}">
+                            {{ Str::limit($descAttrs['value'], 100) }}
+                        </p>
+                    @else
+                        <p class="text-muted small mb-3 text-muted"><em>{{ __('common.missing_translation') }}</em></p>
+                    @endif
 
                     @if($rule->example_text)
                     <div class="bg-light p-3 rounded-3 mb-3">

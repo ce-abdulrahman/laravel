@@ -76,31 +76,8 @@
                 </div>
             </div>
 
-            {{-- Translations Card --}}
-            @if($adhkar->translation_ku || $adhkar->translation_en)
-            <div class="quran-card mb-4">
-                <div class="quran-card-header">
-                    <h5 class="quran-card-title">
-                        <i class="bi bi-translate me-2" style="color:#1B7340;"></i>
-                        {{ __('adhkars.fields.translation_ku') }} / {{ __('adhkars.fields.translation_en') }}
-                    </h5>
-                </div>
-                <div class="quran-card-body">
-                    @if($adhkar->translation_ku)
-                    <div class="mb-3">
-                        <label class="text-muted small d-block mb-1">{{ __('adhkars.fields.translation_ku') }}</label>
-                        <div style="line-height: 1.8; font-size: 0.95rem;">{{ $adhkar->translation_ku }}</div>
-                    </div>
-                    @endif
-                    @if($adhkar->translation_en)
-                    <div>
-                        <label class="text-muted small d-block mb-1">{{ __('adhkars.fields.translation_en') }}</label>
-                        <div style="line-height: 1.8; font-size: 0.95rem;">{{ $adhkar->translation_en }}</div>
-                    </div>
-                    @endif
-                </div>
-            </div>
-            @endif
+            <!-- Translations Card -->
+            <x-translations.show-tabs :model="$adhkar" :active-languages="$activeLanguages" />
 
             {{-- Virtue / Description Card --}}
             @if($adhkar->description)

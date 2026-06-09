@@ -33,68 +33,33 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-5">
-                        <label class="quran-form-label" for="name_ar">
-                            {{ __('surah.fields.name_ar') }}
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            name="name_ar"
-                            id="name_ar"
-                            class="quran-form-control arabic-text @error('name_ar') is-invalid @enderror"
-                            value="{{ old('name_ar', $surah->name_ar) }}"
-                            required
-                        >
-                        @error('name_ar')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-5">
-                        <label class="quran-form-label" for="name_ku">
-                            {{ __('surah.fields.name_ku') }}
-                        </label>
-                        <input
-                            type="text"
-                            name="name_ku"
-                            id="name_ku"
-                            class="quran-form-control @error('name_ku') is-invalid @enderror"
-                            value="{{ old('name_ku', $surah->name_ku) }}"
-                            dir="rtl"
-                        >
-                        @error('name_ku')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Translation Section -->
-        <div class="col-12">
-            <div class="quran-form-section">
-                <h6 class="quran-form-section-title">
-                    <i class="bi bi-translate me-2"></i>
-                    {{ __('surah.sections.translations') }}
-                </h6>
-
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="quran-form-label" for="name_en">
-                            {{ __('surah.fields.name_en') }}
-                        </label>
-                        <input
-                            type="text"
-                            name="name_en"
-                            id="name_en"
-                            class="quran-form-control @error('name_en') is-invalid @enderror"
-                            value="{{ old('name_en', $surah->name_en) }}"
-                        >
-                        @error('name_en')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        @php
+                            $isAr = $lang->code === 'ar';
+                        @endphp
+                        <div class="col-md-5">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_name">
+                                @if(Lang::has('surah.fields.name_' . $lang->code))
+                                    {{ __('surah.fields.name_' . $lang->code) }}
+                                @else
+                                    Name ({{ $lang->name }})
+                                @endif
+                                @if($isAr) <span class="text-danger">*</span> @endif
+                            </label>
+                            <input
+                                type="text"
+                                name="translations[{{ $lang->code }}][name]"
+                                id="translations_{{ $lang->code }}_name"
+                                class="quran-form-control @if($isAr) arabic-text @endif @error('translations.' . $lang->code . '.name') is-invalid @enderror"
+                                value="{{ old('translations.' . $lang->code . '.name', $surah->getTranslation('name', $lang->code)) }}"
+                                @if($lang->isRtl()) dir="rtl" @endif
+                                @if($isAr) required @endif
+                            >
+                            @error('translations.' . $lang->code . '.name')
+                                <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

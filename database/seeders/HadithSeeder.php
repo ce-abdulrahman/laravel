@@ -15,33 +15,33 @@ class HadithSeeder extends Seeder
     {
         // 1. Create Hadith Categories
         $ethics = HadithCategory::updateOrCreate(
-            ['name_en' => 'Ethics & Character'],
+            ['icon' => 'favorite_rounded'],
             [
+                'name_en' => 'Ethics & Character',
                 'name_ku' => 'ئاکار و ڕەوشت',
                 'name_ar' => 'الأخلاق والآداب',
-                'icon' => 'favorite_rounded',
                 'order' => 1,
                 'is_active' => true,
             ]
         );
 
         $worship = HadithCategory::updateOrCreate(
-            ['name_en' => 'Worship & Actions'],
+            ['icon' => 'mosque_rounded'],
             [
+                'name_en' => 'Worship & Actions',
                 'name_ku' => 'پەرستش و کارەکان',
                 'name_ar' => 'العبادات والأعمال',
-                'icon' => 'mosque_rounded',
                 'order' => 2,
                 'is_active' => true,
             ]
         );
 
         $creed = HadithCategory::updateOrCreate(
-            ['name_en' => 'Creed & Faith'],
+            ['icon' => 'shield_rounded'],
             [
+                'name_en' => 'Creed & Faith',
                 'name_ku' => 'بیروباوەڕ و ئیمان',
                 'name_ar' => 'العقيدة والإيمان',
-                'icon' => 'shield_rounded',
                 'order' => 3,
                 'is_active' => true,
             ]

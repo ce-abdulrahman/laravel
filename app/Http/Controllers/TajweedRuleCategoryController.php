@@ -6,30 +6,35 @@ use App\Models\TajweedRuleCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class TajweedRuleCategoryController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class TajweedRuleCategoryController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('admin', except: ['index', 'show']),
+        ];
+    }
     /**
      * Display a listing of all Tajweed rule categories.
      */
     public function index(Request $request)
     {
-        $query = TajweedRuleCategory::withCount('tajweedRules');
+        $query = TajweedRuleCategory::with(['translations'])->withCount('tajweedRules');
 
         if ($request->filled('status')) {
             $query->where('is_active', $request->status === 'active');
         }
 
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('name_ku', 'like', '%' . $request->search . '%')
-                  ->orWhere('name_ar', 'like', '%' . $request->search . '%');
-            });
+            $query->whereTranslationLikeAny('name', $request->search);
         }
 
         $categories = $query
             ->orderBy('order')
-            ->orderBy('name')
+            ->orderByTranslation('name', 'asc')
             ->paginate($request->per_page ?? 20)
             ->withQueryString();
 
@@ -61,20 +66,42 @@ class TajweedRuleCategoryController extends Controller
     {
         $this->authorizeAdmin();
 
-        $validated = $request->validate([
-            'name'           => 'required|string|max:255|unique:tajweed_rule_categories,name',
-            'name_ku'        => 'nullable|string|max:255',
-            'name_ar'        => 'nullable|string|max:255',
-            'description'    => 'nullable|string',
-            'description_ku' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'order'          => 'integer|min:0',
+        $rules = [
+            'order'          => 'nullable|integer|min:0',
             'is_active'      => 'boolean',
-        ]);
+            'translations'   => ['required', 'array'],
+        ];
 
-        $validated['slug'] = $this->generateUniqueSlug($validated['name']);
+        $customAttributes = [
+            'order' => __('tajweed_categories.fields.order'),
+            'is_active' => __('tajweed_categories.fields.is_active'),
+        ];
+
+        foreach (\App\Models\Language::activeList() as $lang) {
+            $isFallback = $lang->code === config('app.fallback_locale', 'en');
+            $rules["translations.{$lang->code}.name"] = [
+                $isFallback ? 'required' : 'nullable',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('tajweed_rule_category_translations', 'name')
+                    ->where('locale', $lang->code)
+            ];
+            $rules["translations.{$lang->code}.description"] = ['nullable', 'string'];
+            $customAttributes["translations.{$lang->code}.name"] = __('tajweed_categories.fields.name_' . $lang->code) ?? "Name ({$lang->name})";
+            $customAttributes["translations.{$lang->code}.description"] = __('tajweed_categories.fields.description_' . $lang->code) ?? "Description ({$lang->name})";
+        }
+
+        $validated = $request->validate($rules, [], $customAttributes);
+
+        $fallbackLocale = config('app.fallback_locale', 'en');
+        $slugSource = $validated['translations'][$fallbackLocale]['name'] ?? reset($validated['translations'])['name'] ?? 'category';
+        $validated['slug'] = $this->generateUniqueSlug($slugSource);
+        $validated['is_active'] = $request->boolean('is_active', true);
 
         $category = TajweedRuleCategory::create($validated);
+        if (isset($validated['translations'])) {
+            $category->saveTranslationsFromArray($validated['translations']);
+        }
 
         return redirect()
             ->route('tajweed-rule-categories.show', $category)
@@ -86,13 +113,21 @@ class TajweedRuleCategoryController extends Controller
      */
     public function show(TajweedRuleCategory $tajweedRuleCategory)
     {
+        $tajweedRuleCategory->loadMissing('translations');
+        $activeLanguages = \App\Models\Language::activeList();
+
         $rules = $tajweedRuleCategory->tajweedRules()
+            ->with(['translations'])
             ->withCount('ayahTajweedSegments')
             ->orderBy('priority', 'desc')
             ->orderBy('name')
             ->paginate(20);
 
-        return view('tajweed-rule-categories.show', compact('tajweedRuleCategory', 'rules'));
+        return view('tajweed-rule-categories.show', [
+            'tajweedRuleCategory' => $tajweedRuleCategory,
+            'rules' => $rules,
+            'activeLanguages' => $activeLanguages,
+        ]);
     }
 
     /**
@@ -114,20 +149,43 @@ class TajweedRuleCategoryController extends Controller
     {
         $this->authorizeAdmin();
 
-        $validated = $request->validate([
-            'name'           => 'required|string|max:255|unique:tajweed_rule_categories,name,' . $tajweedRuleCategory->id,
-            'name_ku'        => 'nullable|string|max:255',
-            'name_ar'        => 'nullable|string|max:255',
-            'description'    => 'nullable|string',
-            'description_ku' => 'nullable|string',
-            'description_ar' => 'nullable|string',
-            'order'          => 'integer|min:0',
+        $rules = [
+            'order'          => 'nullable|integer|min:0',
             'is_active'      => 'boolean',
-        ]);
+            'translations'   => ['required', 'array'],
+        ];
 
-        $validated['slug'] = $this->generateUniqueSlug($validated['name'], $tajweedRuleCategory->id);
+        $customAttributes = [
+            'order' => __('tajweed_categories.fields.order'),
+            'is_active' => __('tajweed_categories.fields.is_active'),
+        ];
+
+        foreach (\App\Models\Language::activeList() as $lang) {
+            $isFallback = $lang->code === config('app.fallback_locale', 'en');
+            $rules["translations.{$lang->code}.name"] = [
+                $isFallback ? 'required' : 'nullable',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('tajweed_rule_category_translations', 'name')
+                    ->where('locale', $lang->code)
+                    ->ignore($tajweedRuleCategory->id, 'tajweed_rule_category_id')
+            ];
+            $rules["translations.{$lang->code}.description"] = ['nullable', 'string'];
+            $customAttributes["translations.{$lang->code}.name"] = __('tajweed_categories.fields.name_' . $lang->code) ?? "Name ({$lang->name})";
+            $customAttributes["translations.{$lang->code}.description"] = __('tajweed_categories.fields.description_' . $lang->code) ?? "Description ({$lang->name})";
+        }
+
+        $validated = $request->validate($rules, [], $customAttributes);
+
+        $fallbackLocale = config('app.fallback_locale', 'en');
+        $slugSource = $validated['translations'][$fallbackLocale]['name'] ?? reset($validated['translations'])['name'] ?? 'category';
+        $validated['slug'] = $this->generateUniqueSlug($slugSource, $tajweedRuleCategory->id);
+        $validated['is_active'] = $request->boolean('is_active', true);
 
         $tajweedRuleCategory->update($validated);
+        if (isset($validated['translations'])) {
+            $tajweedRuleCategory->saveTranslationsFromArray($validated['translations']);
+        }
 
         return redirect()
             ->route('tajweed-rule-categories.show', $tajweedRuleCategory)

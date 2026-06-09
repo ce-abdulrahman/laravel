@@ -2,7 +2,7 @@
 
 @section('title', __('surah.titles.index'))
 @section('page-title', __('surah.titles.index'))
- 
+
 @section('breadcrumb')
     <li class="breadcrumb-item active" aria-current="page">{{ __('surah.titles.index') }}</li>
 @endsection
@@ -71,121 +71,124 @@
             </div>
         </div>
 
-        <!-- Table -->
-        <table class="quran-table quran-table-striped quran-surah-table">
-            <thead>
-                <tr>
-                    <th class="number-column">{{ __('surah.fields.number') }}</th>
-                    <th class="sortable">{{ __('surah.fields.name_ar') }}</th>
-                    <th>{{ __('surah.fields.name_ku') }}</th>
-                    <th>{{ __('surah.fields.name_en') }}</th>
-                    <th>{{ __('surah.fields.revelation_type') }}</th>
-                    <th class="text-center">{{ __('surah.fields.ayah_count') }}</th>
-                    <th class="text-center">{{ __('surah.fields.is_active') }}</th>
-                    <th class="text-end">{{ __('common.actions') }}</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($surahs as $surah)
+        @php
+            $totalColumns = 5 + \App\Models\Language::activeList()->count();
+        @endphp
+
+        <div class="table-responsive">
+            <table class="quran-table quran-table-striped quran-surah-table">
+                <thead>
                     <tr>
-                        <td class="number-column text-center">
-                            <div class="relative d-inline-flex align-items-center justify-content-center w-9 h-9 select-none">
-                                <svg class="absolute w-full h-full text-emerald-50 dark:text-emerald-950/40 fill-current stroke-emerald-600/50 dark:stroke-emerald-400/40 stroke-1" viewBox="0 0 24 24">
-                                    <path d="M12 2L15 5H19V9L22 12L19 15V19H15L12 22L9 19H5V15L2 12L5 9V5H9L12 2Z" />
-                                </svg>
-                                <span class="relative z-10 text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                                    {{ $surah->number }}
-                                </span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="surah-name-arabic arabic-text text-xl font-bold">{{ $surah->name_ar }}</div>
-                        </td>
-                        <td>
-                            @if($surah->name_ku)
-                                <span class="surah-name-english">{{ $surah->name_ku }}</span>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
-                        <td>
-                            @if($surah->name_en)
-                                <div class="surah-name-english">{{ $surah->name_en }}</div>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
-                        <td>
-                            @php
-                                $revelationClass = $surah->revelation_type === 'meccan' ? 'primary' : 'success';
-                            @endphp
-                            <span class="quran-table-badge {{ $revelationClass }}">
-                                {{ __('surah.revelation_types.' . $surah->revelation_type) }}
-                            </span>
-                        </td>
-                        <td class="text-center">
-                            <span class="quran-table-badge info">{{ $surah->ayah_count }}</span>
-                        </td>
-                        <td class="text-center">
-                            @if($surah->is_active)
-                                <span class="quran-table-badge success">
-                                    <i class="bi bi-check-circle me-1"></i>
-                                    {{ __('surah.status.active') }}
-                                </span>
-                            @else
-                                <span class="quran-table-badge danger">
-                                    <i class="bi bi-x-circle me-1"></i>
-                                    {{ __('surah.status.inactive') }}
-                                </span>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="quran-table-actions justify-content-end">
-                                <a href="{{ route('surahs.show', $surah) }}"
-                                   class="quran-table-action-btn view"
-                                   data-bs-toggle="tooltip"
-                                   title="{{ __('surah.actions.view') }}">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="{{ route('surahs.edit', $surah) }}"
-                                   class="quran-table-action-btn edit"
-                                   data-bs-toggle="tooltip"
-                                   title="{{ __('common.edit') }}">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <form method="POST"
-                                      action="{{ route('surahs.destroy', $surah) }}"
-                                      class="d-inline"
-                                      onsubmit="return confirmDelete(event, '{{ $surah->name_ar }}')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="quran-table-action-btn delete"
-                                            data-bs-toggle="tooltip"
-                                            title="{{ __('common.delete') }}">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+                        <th class="number-column">{{ __('surah.fields.number') }}</th>
+                        @foreach(\App\Models\Language::activeList() as $lang)
+                            <th>Name ({{ $lang->name }})</th>
+                        @endforeach
+                        <th>{{ __('surah.fields.revelation_type') }}</th>
+                        <th class="text-center">{{ __('surah.fields.ayah_count') }}</th>
+                        <th class="text-center">{{ __('surah.fields.is_active') }}</th>
+                        <th class="text-end">{{ __('common.actions') }}</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="8">
-                            <div class="quran-table-empty">
-                                <i class="bi bi-journal-x"></i>
-                                <h6>{{ __('common.no_data') }}</h6>
-                                <p>{{ __('surah.messages.no_surahs_found') }}</p>
-                                <a href="{{ route('surahs.create') }}" class="quran-btn quran-btn-primary mt-3">
-                                    <i class="bi bi-plus-lg me-1"></i>
-                                    {{ __('surah.actions.create_first') }}
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($surahs as $surah)
+                        <tr>
+                            <td class="number-column text-center">
+                                <div class="relative d-inline-flex align-items-center justify-content-center w-9 h-9 select-none">
+                                    <svg class="absolute w-full h-full text-emerald-50 dark:text-emerald-950/40 fill-current stroke-emerald-600/50 dark:stroke-emerald-400/40 stroke-1" viewBox="0 0 24 24">
+                                        <path d="M12 2L15 5H19V9L22 12L19 15V19H15L12 22L9 19H5V15L2 12L5 9V5H9L12 2Z" />
+                                    </svg>
+                                    <span class="relative z-10 text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                                        {{ $surah->number }}
+                                    </span>
+                                </div>
+                            </td>
+                            @foreach(\App\Models\Language::activeList() as $lang)
+                                <td>
+                                    @php
+                                        $val = $surah->getTranslation('name', $lang->code);
+                                        $attrs = $surah->getTranslationAttributes('name', $lang->code);
+                                    @endphp
+                                    @if($val !== null && $val !== '')
+                                        <div class="{{ $attrs['class'] }}" dir="{{ $attrs['dir'] }}" style="{{ $attrs['style'] }}">
+                                            {{ $val }}
+                                        </div>
+                                    @else
+                                        <span class="badge bg-light text-muted border small">{{ __('common.missing_translation') ?? 'Missing' }}</span>
+                                    @endif
+                                </td>
+                            @endforeach
+                            <td>
+                                @php
+                                    $revelationClass = $surah->revelation_type === 'meccan' ? 'primary' : 'success';
+                                @endphp
+                                <span class="quran-table-badge {{ $revelationClass }}">
+                                    {{ __('surah.revelation_types.' . $surah->revelation_type) }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="quran-table-badge info">{{ $surah->ayah_count }}</span>
+                            </td>
+                            <td class="text-center">
+                                @if($surah->is_active)
+                                    <span class="quran-table-badge success">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        {{ __('surah.status.active') }}
+                                    </span>
+                                @else
+                                    <span class="quran-table-badge danger">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        {{ __('surah.status.inactive') }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="quran-table-actions justify-content-end">
+                                    <a href="{{ route('surahs.show', $surah) }}"
+                                       class="quran-table-action-btn view"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ __('surah.actions.view') }}">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ route('surahs.edit', $surah) }}"
+                                       class="quran-table-action-btn edit"
+                                       data-bs-toggle="tooltip"
+                                       title="{{ __('common.edit') }}">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form method="POST"
+                                          action="{{ route('surahs.destroy', $surah) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirmDelete(event, '{{ $surah->name_ar }}')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                class="quran-table-action-btn delete"
+                                                data-bs-toggle="tooltip"
+                                                title="{{ __('common.delete') }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="{{ $totalColumns }}">
+                                <div class="quran-table-empty">
+                                    <i class="bi bi-journal-x"></i>
+                                    <h6>{{ __('common.no_data') }}</h6>
+                                    <p>{{ __('surah.messages.no_surahs_found') }}</p>
+                                    <a href="{{ route('surahs.create') }}" class="quran-btn quran-btn-primary mt-3">
+                                        <i class="bi bi-plus-lg me-1"></i>
+                                        {{ __('surah.actions.create_first') }}
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
         <!-- Table Footer with Pagination -->
         @if($surahs->hasPages())
@@ -248,7 +251,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>The JSON file must be an array of objects structured as shown below:</p>
+                <p>The JSON file must be an array of objects with the Surah table fields plus localized name values:</p>
                 <div class="bg-dark text-light p-3 rounded-3" style="max-height: 400px; overflow-y: auto;">
                     <pre><code class="text-info">[
   {
@@ -256,12 +259,18 @@
     "name_ar": "الفاتحة",
     "name_ku": "الفاتحة",
     "name_en": "Al-Fatihah",
-    "revelation_type": "makki",
+    "revelation_type": "meccan",
     "ayah_count": 7,
+    "page_start": 1,
+    "page_end": 1,
+    "juz_start": 1,
+    "juz_end": 1,
+    "description": "The opening chapter of the Quran.",
     "is_active": true
   }
 ]</code></pre>
                 </div>
+                <p class="mt-3 text-muted small">Required fields: <code>number</code>, <code>name_ar</code>, <code>revelation_type</code>, <code>ayah_count</code>. Optional fields: <code>name_ku</code>, <code>name_en</code>, <code>page_start</code>, <code>page_end</code>, <code>juz_start</code>, <code>juz_end</code>, <code>description</code>, <code>is_active</code>.</p>
             </div>
             <div class="modal-footer border-0">
                 <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Close</button>

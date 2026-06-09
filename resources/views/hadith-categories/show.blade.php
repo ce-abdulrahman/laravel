@@ -34,63 +34,8 @@
     <div class="row g-4">
         {{-- Main Card --}}
         <div class="col-lg-8">
-            {{-- Names Card --}}
-            <div class="quran-card mb-4" style="
-                background: linear-gradient(135deg, rgba(27,115,64,0.05) 0%, rgba(212,175,55,0.03) 100%);
-                border: 1px solid rgba(27,115,64,0.12);
-                overflow: hidden; position: relative;">
-                <div style="position:absolute;top:-30px;right:-30px;width:130px;height:130px;
-                            background:radial-gradient(circle,rgba(212,175,55,0.07) 0%,transparent 70%);
-                            border-radius:50%;pointer-events:none;"></div>
-
-                <div class="quran-card-header border-0" style="background: transparent;">
-                    <h5 class="quran-card-title mb-0">
-                        <i class="bi bi-tag-fill me-2" style="color: #1B7340;"></i>
-                        {{ __('hadith_categories.sections.info') }}
-                    </h5>
-                </div>
-                <div class="quran-card-body pt-0">
-                    <div class="row g-4">
-                        {{-- Kurdish --}}
-                        <div class="col-md-4">
-                            <label class="text-muted small d-block mb-1">{{ __('hadith_categories.fields.name_ku') }}</label>
-                            <div style="font-size: 1.1rem; font-weight: 600;">{{ $category->name_ku }}</div>
-                        </div>
-                        {{-- Arabic --}}
-                        <div class="col-md-4">
-                            <label class="text-muted small d-block mb-1">{{ __('hadith_categories.fields.name_ar') }}</label>
-                            <div class="surah-name-arabic" style="font-size: 1.3rem; direction: rtl; text-align: right;">
-                                {{ $category->name_ar }}
-                            </div>
-                        </div>
-                        {{-- English --}}
-                        <div class="col-md-4">
-                            <label class="text-muted small d-block mb-1">{{ __('hadith_categories.fields.name_en') }}</label>
-                            <div style="font-size: 1rem; color: var(--quran-text-secondary);">
-                                {{ $category->name_en ?? '—' }}
-                            </div>
-                        </div>
-                    </div>
-
-                    @if($category->icon)
-                    <hr style="border-color: rgba(27,115,64,0.1); margin: 1.25rem 0;">
-                    <div>
-                        <label class="text-muted small d-block mb-2">{{ __('hadith_categories.fields.icon') }}</label>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="surah-number" style="width:52px;height:52px;font-size:1.4rem;display:inline-flex;">
-                                <i class="bi bi-book"></i>
-                            </div>
-                            <div>
-                                <code class="badge bg-light text-dark border" style="font-size:0.9rem;padding:0.5em 0.8em;">
-                                    {{ $category->icon }}
-                                </code>
-                                <p class="text-muted small mb-0 mt-1">{{ __('hadith_categories.fields.icon_hint') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-                </div>
-            </div>
+            <!-- Translations Card -->
+            <x-translations.show-tabs :model="$category" :active-languages="$activeLanguages" />
 
             {{-- Hadiths Link Card --}}
             <div class="quran-card">
@@ -141,6 +86,13 @@
                                 {{ $category->order }}
                             </span>
                         </dd>
+
+                        @if($category->icon)
+                        <dt class="col-sm-5 text-muted small fw-normal">{{ __('hadith_categories.fields.icon') }}</dt>
+                        <dd class="col-sm-7 mb-0">
+                            <code class="badge bg-light text-dark border" style="font-size: 0.85rem;">{{ $category->icon }}</code>
+                        </dd>
+                        @endif
 
                         @if($category->created_at)
                         <dt class="col-sm-5 text-muted small fw-normal">{{ __('common.created_at') }}</dt>

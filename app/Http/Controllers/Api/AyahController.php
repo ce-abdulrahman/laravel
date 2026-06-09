@@ -27,21 +27,26 @@ class AyahController extends Controller
         }
 
         $ttl = config('quran_api.cache_ttl', 3600);
-        $cacheKey = QuranApiCache::keyAyahsForSurah($id);
+        $locale = \App\Helpers\LanguageHelper::resolveLocale(request());
+        app()->setLocale($locale);
+
+        $cacheKey = QuranApiCache::getAyahsKey($id, $locale);
 
         $data = Cache::remember($cacheKey, $ttl, function () use ($id) {
             $surah = Surah::query()
                 ->active()
-                ->select(['id', 'number', 'name_ar', 'name_en', 'name_ku', 'ayah_count'])
+                ->select(['id', 'number', 'revelation_type', 'ayah_count'])
                 ->where('number', $id)
                 ->firstOrFail();
+
+            $activeCodes = \App\Models\Language::activeCodes();
 
             $ayahs = $surah->ayahs()
                 ->active()
                 ->select(['id', 'surah_id', 'ayah_number', 'text_uthmani'])
                 ->with([
-                    'translations' => function ($query) {
-                        $query->whereIn('language_code', ['en', 'ku'])->where('is_active', true);
+                    'translations' => function ($query) use ($activeCodes) {
+                        $query->whereIn('language_code', $activeCodes)->where('is_active', true);
                     },
                     'tajweedSegments.tajweedRule' => function ($query) {
                         $query->where('is_active', true);
@@ -55,6 +60,15 @@ class AyahController extends Controller
                 'ayahs' => AyahResource::collection($ayahs)->resolve(request()),
             ];
         });
+
+        if (request()->has('fields')) {
+            $fields = explode(',', request()->query('fields'));
+            if (isset($data['ayahs']) && is_array($data['ayahs'])) {
+                $data['ayahs'] = collect($data['ayahs'])->map(function ($item) use ($fields) {
+                    return array_intersect_key((array)$item, array_flip($fields));
+                })->all();
+            }
+        }
 
         return $this->success($data);
     }

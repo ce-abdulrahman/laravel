@@ -158,8 +158,7 @@
                         </span>
                     </td>
                     <td>
-                        <div class="fw-bold text-zinc-800 dark:text-zinc-200">{{ $ayah->surah->name_simple }}</div>
-                        <span class="arabic-text text-zinc-500 dark:text-zinc-400 text-xs">{{ $ayah->surah->name_arabic }}</span>
+                        <div class="fw-bold text-zinc-800 dark:text-zinc-200">{{ $ayah->surah->name }}</div> 
                     </td>
                     <td class="text-center">
                         <div class="relative d-inline-flex align-items-center justify-content-center w-8 h-8 select-none">
@@ -173,7 +172,7 @@
                     </td>
                     <td>
                         <div class="arabic-text text-zinc-900 dark:text-white text-lg leading-relaxed select-none" dir="rtl" style="font-family: 'CustomArFont', 'Amiri', serif !important;">
-                            {{ Str::limit($ayah->text_uthmani, 80) }}
+                            {{ Str::limit($ayah->text_uthmani, 40) }}
                         </div>
                     </td>
                     <td class="text-center">

@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Adhkar extends Model
 {
+    use HasTranslations;
+
     protected $table = 'adhkars';
+
+    protected $translatable = ['translation'];
+
+    protected $with = ['translations'];
 
     protected $fillable = [
         'category_id',

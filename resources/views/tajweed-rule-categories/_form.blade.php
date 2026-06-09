@@ -14,46 +14,32 @@
                     {{ __('tajweed_categories.sections.basic_info') }}
                 </h6>
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name">
-                            {{ __('tajweed_categories.fields.name') }}
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" name="name" id="name"
-                               class="quran-form-control @error('name') is-invalid @enderror"
-                               value="{{ old('name', $category->name) }}" required
-                               placeholder="{{ __('tajweed_categories.placeholders.name') }}">
-                        @error('name')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name_ku">
-                            {{ __('tajweed_categories.fields.name_ku') }}
-                        </label>
-                        <input type="text" name="name_ku" id="name_ku"
-                               class="quran-form-control @error('name_ku') is-invalid @enderror"
-                               value="{{ old('name_ku', $category->name_ku) }}"
-                               placeholder="{{ __('tajweed_categories.placeholders.name_ku') }}">
-                        @error('name_ku')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name_ar">
-                            {{ __('tajweed_categories.fields.name_ar') }}
-                        </label>
-                        <input type="text" name="name_ar" id="name_ar"
-                               class="quran-form-control @error('name_ar') is-invalid @enderror"
-                               value="{{ old('name_ar', $category->name_ar) }}"
-                               dir="rtl"
-                               placeholder="{{ __('tajweed_categories.placeholders.name_ar') }}">
-                        @error('name_ar')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        @php
+                            $isFallback = $lang->code === config('app.fallback_locale', 'en');
+                        @endphp
+                        <div class="col-md-4">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_name">
+                                @if(Lang::has('tajweed_categories.fields.name_' . $lang->code))
+                                    {{ __('tajweed_categories.fields.name_' . $lang->code) }}
+                                @elseif($lang->code === 'en' && Lang::has('tajweed_categories.fields.name'))
+                                    {{ __('tajweed_categories.fields.name') }}
+                                @else
+                                    Name ({{ $lang->name }})
+                                @endif
+                                @if($isFallback) <span class="text-danger">*</span> @endif
+                            </label>
+                            <input type="text" name="translations[{{ $lang->code }}][name]" id="translations_{{ $lang->code }}_name"
+                                   class="quran-form-control @error('translations.' . $lang->code . '.name') is-invalid @enderror"
+                                   value="{{ old('translations.' . $lang->code . '.name', $category->getTranslation('name', $lang->code)) }}"
+                                   @if($isFallback) required @endif
+                                   @if($lang->isRtl()) dir="rtl" @endif
+                                   placeholder="{{ __('tajweed_categories.placeholders.name_' . $lang->code) ?? ('Enter ' . $lang->name . ' name') }}">
+                            @error('translations.' . $lang->code . '.name')
+                            <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
 
                     <div class="col-md-4">
                         <label class="quran-form-label" for="order">
@@ -78,42 +64,26 @@
                     {{ __('tajweed_categories.sections.description') }}
                 </h6>
                 <div class="row g-3">
-                    <div class="col-12">
-                        <label class="quran-form-label" for="description">
-                            {{ __('tajweed_categories.fields.description') }}
-                        </label>
-                        <textarea name="description" id="description" rows="3"
-                                  class="quran-form-control @error('description') is-invalid @enderror"
-                                  placeholder="{{ __('tajweed_categories.placeholders.description') }}">{{ old('description', $category->description) }}</textarea>
-                        @error('description')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-12">
-                        <label class="quran-form-label" for="description_ku">
-                            {{ __('tajweed_categories.fields.description_ku') }}
-                        </label>
-                        <textarea name="description_ku" id="description_ku" rows="3"
-                                  class="quran-form-control @error('description_ku') is-invalid @enderror"
-                                  placeholder="{{ __('tajweed_categories.placeholders.description_ku') }}">{{ old('description_ku', $category->description_ku) }}</textarea>
-                        @error('description_ku')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-12">
-                        <label class="quran-form-label" for="description_ar">
-                            {{ __('tajweed_categories.fields.description_ar') }}
-                        </label>
-                        <textarea name="description_ar" id="description_ar" rows="3"
-                                  class="quran-form-control @error('description_ar') is-invalid @enderror"
-                                  dir="rtl"
-                                  placeholder="{{ __('tajweed_categories.placeholders.description_ar') }}">{{ old('description_ar', $category->description_ar) }}</textarea>
-                        @error('description_ar')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        <div class="col-12">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_description">
+                                @if(Lang::has('tajweed_categories.fields.description_' . $lang->code))
+                                    {{ __('tajweed_categories.fields.description_' . $lang->code) }}
+                                @elseif($lang->code === 'en' && Lang::has('tajweed_categories.fields.description'))
+                                    {{ __('tajweed_categories.fields.description') }}
+                                @else
+                                    Description ({{ $lang->name }})
+                                @endif
+                            </label>
+                            <textarea name="translations[{{ $lang->code }}][description]" id="translations_{{ $lang->code }}_description" rows="3"
+                                      class="quran-form-control @error('translations.' . $lang->code . '.description') is-invalid @enderror"
+                                      @if($lang->isRtl()) dir="rtl" @endif
+                                      placeholder="{{ __('tajweed_categories.placeholders.description_' . $lang->code) ?? ('Enter ' . $lang->name . ' description') }}">{{ old('translations.' . $lang->code . '.description', $category->getTranslation('description', $lang->code)) }}</textarea>
+                            @error('translations.' . $lang->code . '.description')
+                            <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

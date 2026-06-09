@@ -292,8 +292,12 @@ class ReadingHistoryController extends Controller
         return ReadingHistory::where('user_id', $userId)
             ->join('ayahs', 'reading_histories.ayah_id', '=', 'ayahs.id')
             ->join('surahs', 'ayahs.surah_id', '=', 'surahs.id')
-            ->selectRaw('surahs.id, surahs.name_ar, COUNT(*) as count, SUM(seconds_spent) as time')
-            ->groupBy('surahs.id', 'surahs.name_ar')
+            ->leftJoin('surah_translations as st', function ($join) {
+                $join->on('st.surah_id', '=', 'surahs.id')
+                     ->where('st.locale', '=', 'ar');
+            })
+            ->selectRaw('surahs.id, st.name as name_ar, COUNT(*) as count, SUM(seconds_spent) as time')
+            ->groupBy('surahs.id', 'st.name')
             ->orderBy('count', 'desc')
             ->get()
             ->toArray();

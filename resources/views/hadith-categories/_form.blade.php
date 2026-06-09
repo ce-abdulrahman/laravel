@@ -14,61 +14,35 @@
                 </h6>
 
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name_ku">
-                            {{ __('hadith_categories.fields.name_ku') }}
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            name="name_ku"
-                            id="name_ku"
-                            class="quran-form-control @error('name_ku') is-invalid @enderror"
-                            value="{{ old('name_ku', $category->name_ku) }}"
-                            required
-                            placeholder="{{ __('hadith_categories.placeholders.name_ku') }}"
-                        >
-                        @error('name_ku')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name_ar">
-                            {{ __('hadith_categories.fields.name_ar') }}
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            name="name_ar"
-                            id="name_ar"
-                            class="quran-form-control arabic-text @error('name_ar') is-invalid @enderror"
-                            value="{{ old('name_ar', $category->name_ar) }}"
-                            required
-                            dir="rtl"
-                            placeholder="{{ __('hadith_categories.placeholders.name_ar') }}"
-                        >
-                        @error('name_ar')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name_en">
-                            {{ __('hadith_categories.fields.name_en') }}
-                        </label>
-                        <input
-                            type="text"
-                            name="name_en"
-                            id="name_en"
-                            class="quran-form-control @error('name_en') is-invalid @enderror"
-                            value="{{ old('name_en', $category->name_en) }}"
-                            placeholder="{{ __('hadith_categories.placeholders.name_en') }}"
-                        >
-                        @error('name_en')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        @php
+                            $isRequired = in_array($lang->code, ['ku', 'ar']);
+                            $isAr = $lang->code === 'ar';
+                        @endphp
+                        <div class="col-md-4">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_name">
+                                @if(Lang::has('hadith_categories.fields.name_' . $lang->code))
+                                    {{ __('hadith_categories.fields.name_' . $lang->code) }}
+                                @else
+                                    Name ({{ $lang->name }})
+                                @endif
+                                @if($isRequired) <span class="text-danger">*</span> @endif
+                            </label>
+                            <input
+                                type="text"
+                                name="translations[{{ $lang->code }}][name]"
+                                id="translations_{{ $lang->code }}_name"
+                                class="quran-form-control @if($isAr) arabic-text @endif @error('translations.' . $lang->code . '.name') is-invalid @enderror"
+                                value="{{ old('translations.' . $lang->code . '.name', $category->getTranslation('name', $lang->code)) }}"
+                                @if($isRequired) required @endif
+                                @if($lang->isRtl()) dir="rtl" @endif
+                                placeholder="{{ __('hadith_categories.placeholders.name_' . $lang->code) ?? ('Enter ' . $lang->name . ' name') }}"
+                            >
+                            @error('translations.' . $lang->code . '.name')
+                                <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

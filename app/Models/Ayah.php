@@ -9,6 +9,8 @@ class Ayah extends Model
 {
     use HasFactory;
 
+    protected $with = ['translations'];
+
     protected $fillable = [
         'surah_id',
         'ayah_number',
@@ -98,5 +100,27 @@ class Ayah extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    /**
+     * Override Eloquent's toArray to dynamically append current locale translation.
+     */
+    public function toArray(): array
+    {
+        $array = parent::toArray();
+
+        $translations = $this->relationLoaded('translations') ? $this->translations : $this->translations()->get();
+        
+        $currentLocale = app()->getLocale();
+        $activeCodes = \App\Models\Language::activeCodes();
+
+        $textEn = $translations->firstWhere('language_code', 'en')?->content;
+        $array['translation'] = $translations->firstWhere('language_code', $currentLocale)?->content ?? $textEn;
+        
+        foreach ($activeCodes as $code) {
+            $array['text_' . $code] = $translations->firstWhere('language_code', $code)?->content;
+        }
+
+        return $array;
     }
 }

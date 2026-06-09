@@ -14,43 +14,33 @@
                 </h6>
 
                 <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name">
-                            {{ __('tajweed_rules.fields.name') }} (English)
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" name="name" id="name" 
-                               class="quran-form-control @error('name') is-invalid @enderror"
-                               value="{{ old('name', $tajweedRule->name) }}" required>
-                        @error('name')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name_ku">
-                            ناو بە کوردی
-                            <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" name="name_ku" id="name_ku" 
-                               class="quran-form-control @error('name_ku') is-invalid @enderror"
-                               value="{{ old('name_ku', $tajweedRule->name_ku) }}" required>
-                        @error('name_ku')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="quran-form-label" for="name_ar">
-                            ناو بە عەرەبی
-                        </label>
-                        <input type="text" name="name_ar" id="name_ar" 
-                               class="quran-form-control @error('name_ar') is-invalid @enderror"
-                               value="{{ old('name_ar', $tajweedRule->name_ar) }}" dir="rtl">
-                        @error('name_ar')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        @php
+                            $isRequired = in_array($lang->code, ['en', 'ku']);
+                        @endphp
+                        <div class="col-md-4">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_name">
+                                @if($lang->code === 'en')
+                                    {{ __('tajweed_rules.fields.name') }} (English)
+                                @elseif($lang->code === 'ku')
+                                    ناو بە کوردی
+                                @elseif($lang->code === 'ar')
+                                    ناو بە عەرەبی
+                                @else
+                                    Name ({{ $lang->name }})
+                                @endif
+                                @if($isRequired) <span class="text-danger">*</span> @endif
+                            </label>
+                            <input type="text" name="translations[{{ $lang->code }}][name]" id="translations_{{ $lang->code }}_name" 
+                                   class="quran-form-control @error('translations.' . $lang->code . '.name') is-invalid @enderror"
+                                   value="{{ old('translations.' . $lang->code . '.name', $tajweedRule->getTranslation('name', $lang->code)) }}"
+                                   @if($lang->isRtl()) dir="rtl" @endif
+                                   @if($isRequired) required @endif>
+                            @error('translations.' . $lang->code . '.name')
+                            <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
 
                     <div class="col-md-6">
                         <label class="quran-form-label" for="tajweed_rule_category_id">
@@ -133,33 +123,31 @@
                 </h6>
 
                 <div class="row g-3">
-                    <div class="col-12">
-                        <label class="quran-form-label" for="description">
-                            {{ __('tajweed_rules.fields.description') }} (English)
-                            <span class="text-danger">*</span>
-                        </label>
-                        <textarea name="description" id="description" rows="3"
-                                  class="quran-form-control @error('description') is-invalid @enderror"
-                                  placeholder="{{ __('tajweed_rules.placeholders.description') }}"
-                                  required>{{ old('description', $tajweedRule->description) }}</textarea>
-                        @error('description')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-12">
-                        <label class="quran-form-label" for="description_ku">
-                            وەسف و شیکردنەوە بە کوردی
-                            <span class="text-danger">*</span>
-                        </label>
-                        <textarea name="description_ku" id="description_ku" rows="3"
-                                  class="quran-form-control @error('description_ku') is-invalid @enderror"
-                                  placeholder="شیکردنەوەی حوکمی تەجویدەکە بە کوردی لێرە بنووسە..."
-                                  required>{{ old('description_ku', $tajweedRule->description_ku) }}</textarea>
-                        @error('description_ku')
-                        <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        @php
+                            $isRequired = in_array($lang->code, ['en', 'ku']);
+                        @endphp
+                        <div class="col-12">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_description">
+                                @if($lang->code === 'en')
+                                    {{ __('tajweed_rules.fields.description') }} (English)
+                                @elseif($lang->code === 'ku')
+                                    وەسف و شیکردنەوە بە کوردی
+                                @else
+                                    Description ({{ $lang->name }})
+                                @endif
+                                @if($isRequired) <span class="text-danger">*</span> @endif
+                            </label>
+                            <textarea name="translations[{{ $lang->code }}][description]" id="translations_{{ $lang->code }}_description" rows="3"
+                                      class="quran-form-control @error('translations.' . $lang->code . '.description') is-invalid @enderror"
+                                      placeholder="{{ $lang->code === 'ku' ? 'شیکردنەوەی حوکمی تەجویدەکە بە کوردی لێرە بنووسە...' : ($lang->code === 'en' ? __('tajweed_rules.placeholders.description') : 'Enter ' . $lang->name . ' description') }}"
+                                      @if($lang->isRtl()) dir="rtl" @endif
+                                      @if($isRequired) required @endif>{{ old('translations.' . $lang->code . '.description', $tajweedRule->getTranslation('description', $lang->code)) }}</textarea>
+                            @error('translations.' . $lang->code . '.description')
+                            <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
 
                     <div class="col-12">
                         <label class="quran-form-label" for="example_text">

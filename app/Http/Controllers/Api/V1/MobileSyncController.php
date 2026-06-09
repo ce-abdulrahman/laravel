@@ -24,12 +24,16 @@ class MobileSyncController extends Controller
             ->where('user_id', $userId)
             ->join('ayahs', 'ayahs.id', '=', 'bookmarks.ayah_id')
             ->join('surahs', 'surahs.id', '=', 'ayahs.surah_id')
+            ->leftJoin('surah_translations as st', function ($join) {
+                $join->on('st.surah_id', '=', 'surahs.id')
+                     ->where('st.locale', '=', 'ar');
+            })
             ->select([
                 'bookmarks.ayah_id as ayah_id',
                 'ayahs.surah_id as surah_id',
                 'ayahs.ayah_number as ayah_number',
                 'ayahs.text_uthmani as text_uthmani',
-                'surahs.name_ar as surah_name_ar',
+                'st.name as surah_name_ar',
                 'bookmarks.created_at as created_at',
             ])
             ->orderByDesc('bookmarks.created_at')

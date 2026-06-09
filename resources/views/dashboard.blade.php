@@ -159,6 +159,83 @@
     <div class="row g-4">
         <!-- Left Column - Continue Reading & Recent Activity -->
         <div class="col-xl-8">
+            @if(auth()->user()?->role === 'admin')
+                <!-- Translation Dashboard Widget -->
+                <div class="quran-card mb-4 border-start border-primary border-4">
+                    <div class="quran-card-header bg-transparent border-0 pb-0">
+                        <h5 class="quran-card-title text-primary">
+                            <i class="bi bi-translate me-2"></i>
+                            {{ __('dashboard.translation_status') ?? 'Translation Coverage & Status' }}
+                        </h5>
+                        <a href="{{ route('translations-manager.index') }}" class="quran-card-link text-primary fw-semibold">
+                            {{ __('dashboard.manage_translations') ?? 'Manage Translations' }} <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="quran-card-body pt-2">
+                        <div class="row align-items-center">
+                            <!-- Coverage Circular Visualizer -->
+                            <div class="col-md-4 text-center my-3 my-md-0">
+                                <div class="d-inline-block position-relative">
+                                    <div class="translation-coverage-radial" style="
+                                        width: 130px; 
+                                        height: 130px; 
+                                        border-radius: 50%; 
+                                        background: radial-gradient(closest-side, var(--quran-bg-card, #ffffff) 78%, transparent 80% 100%), conic-gradient(var(--quran-primary, #1B7340) {{ $stats['translation_coverage'] ?? 0 }}%, var(--quran-border-light, #e9ecef) 0);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        margin: 0 auto;
+                                        box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+                                    ">
+                                        <div class="text-center">
+                                            <span class="fs-3 fw-extrabold text-primary d-block">{{ number_format($stats['translation_coverage'] ?? 0, 1) }}%</span>
+                                            <small class="text-muted text-uppercase fw-semibold" style="font-size: 10px; letter-spacing: 0.5px;">{{ __('dashboard.coverage') ?? 'Coverage' }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Metrics Cards Grid -->
+                            <div class="col-md-8">
+                                <div class="row g-3">
+                                    <!-- Metric 1: Total Languages -->
+                                    <div class="col-6">
+                                        <div class="p-3 rounded border border-light" style="background: rgba(27, 115, 64, 0.03); border-left: 3px solid var(--quran-primary, #1B7340) !important;">
+                                            <small class="text-muted d-block text-uppercase fw-semibold mb-1" style="font-size: 10px; letter-spacing: 0.5px;">{{ __('dashboard.total_languages') ?? 'Total Languages' }}</small>
+                                            <span class="fs-4 fw-bold text-dark">{{ $stats['total_languages'] ?? 0 }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- Metric 2: Total Translation Records -->
+                                    <div class="col-6">
+                                        <div class="p-3 rounded border border-light" style="background: rgba(16, 185, 129, 0.03); border-left: 3px solid #10B981 !important;">
+                                            <small class="text-muted d-block text-uppercase fw-semibold mb-1" style="font-size: 10px; letter-spacing: 0.5px;">{{ __('dashboard.total_records') ?? 'Translation Records' }}</small>
+                                            <span class="fs-4 fw-bold text-dark">{{ number_format($stats['total_translation_records'] ?? 0) }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- Metric 3: Missing Translations -->
+                                    <div class="col-6">
+                                        <div class="p-3 rounded border border-light" style="background: @if(($stats['missing_translations'] ?? 0) > 0) rgba(239, 68, 68, 0.03) @else rgba(16, 185, 129, 0.03) @endif; border-left: 3px solid @if(($stats['missing_translations'] ?? 0) > 0) #EF4444 @else #10B981 @endif !important;">
+                                            <small class="text-muted d-block text-uppercase fw-semibold mb-1" style="font-size: 10px; letter-spacing: 0.5px;">{{ __('dashboard.missing_translations') ?? 'Missing Count' }}</small>
+                                            <span class="fs-4 fw-bold @if(($stats['missing_translations'] ?? 0) > 0) text-danger @else text-success @endif">
+                                                {{ number_format($stats['missing_translations'] ?? 0) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- Metric 4: Active Locales -->
+                                    <div class="col-6">
+                                        <div class="p-3 rounded border border-light" style="background: rgba(245, 158, 11, 0.03); border-left: 3px solid #F59E0B !important;">
+                                            <small class="text-muted d-block text-uppercase fw-semibold mb-1" style="font-size: 10px; letter-spacing: 0.5px;">{{ __('dashboard.active_locales') ?? 'Active Locales' }}</small>
+                                            <span class="fs-6 fw-bold text-dark text-truncate d-block" title="{{ implode(', ', $stats['active_locales'] ?? []) }}">
+                                                {{ implode(', ', array_map('strtoupper', $stats['active_locales'] ?? [])) }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- Continue Reading Section -->
             <div class="quran-card mb-4">
                 <div class="quran-card-header">

@@ -75,37 +75,28 @@
                         @enderror
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="quran-form-label" for="translation_ku">
-                            {{ __('adhkars.fields.translation_ku') }}
-                        </label>
-                        <textarea
-                            name="translation_ku"
-                            id="translation_ku"
-                            rows="3"
-                            class="quran-form-control @error('translation_ku') is-invalid @enderror"
-                            placeholder="{{ __('adhkars.placeholders.translation_ku') }}"
-                        >{{ old('translation_ku', $adhkar->translation_ku) }}</textarea>
-                        @error('translation_ku')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="quran-form-label" for="translation_en">
-                            {{ __('adhkars.fields.translation_en') }}
-                        </label>
-                        <textarea
-                            name="translation_en"
-                            id="translation_en"
-                            rows="3"
-                            class="quran-form-control @error('translation_en') is-invalid @enderror"
-                            placeholder="{{ __('adhkars.placeholders.translation_en') }}"
-                        >{{ old('translation_en', $adhkar->translation_en) }}</textarea>
-                        @error('translation_en')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    @foreach(\App\Models\Language::activeList() as $lang)
+                        <div class="col-md-6">
+                            <label class="quran-form-label" for="translations_{{ $lang->code }}_translation">
+                                @if(Lang::has('adhkars.fields.translation_' . $lang->code))
+                                    {{ __('adhkars.fields.translation_' . $lang->code) }}
+                                @else
+                                    Translation ({{ $lang->name }})
+                                @endif
+                            </label>
+                            <textarea
+                                name="translations[{{ $lang->code }}][translation]"
+                                id="translations_{{ $lang->code }}_translation"
+                                rows="3"
+                                class="quran-form-control @error('translations.' . $lang->code . '.translation') is-invalid @enderror"
+                                @if($lang->isRtl()) dir="rtl" @endif
+                                placeholder="{{ __('adhkars.placeholders.translation_' . $lang->code) ?? ('Enter ' . $lang->name . ' translation') }}"
+                            >{{ old('translations.' . $lang->code . '.translation', $adhkar->getTranslation('translation', $lang->code)) }}</textarea>
+                            @error('translations.' . $lang->code . '.translation')
+                                <div class="quran-invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('surahs', function (Blueprint $table) {
             $table->id();
             $table->unsignedTinyInteger('number')->unique();
-            $table->string('name_ar');
-            $table->string('name_ku')->nullable();
-            $table->string('name_en')->nullable();
             $table->string('revelation_type', 20);
             $table->unsignedSmallInteger('ayah_count');
             $table->unsignedSmallInteger('page_start')->nullable();

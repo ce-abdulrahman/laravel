@@ -128,12 +128,11 @@ class CategoryTajweedRulesSeeder extends Seeder
             ],
         ];
 
-        foreach ($categories as &$cat) {
-            $cat['created_at'] = $now;
-            $cat['updated_at'] = $now;
+        foreach ($categories as $cat) {
+            \App\Models\TajweedRuleCategory::updateOrCreate(
+                ['slug' => $cat['slug']],
+                $cat
+            );
         }
-        unset($cat);
-
-        DB::table('tajweed_rule_categories')->insert($categories);
     }
 }

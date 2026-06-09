@@ -6,24 +6,33 @@ use App\Models\AdhkarCategory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class AdhkarCategoryController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class AdhkarCategoryController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('admin', except: ['index', 'show']),
+        ];
+    }
     public function index(Request $request): View
     {
         $search = trim((string) $request->query('q', ''));
-        $query = AdhkarCategory::query()->orderBy('order');
+        $query = AdhkarCategory::query()->with('translations')->orderBy('order');
 
         if ($search !== '') {
-            $query->where('name_ku', 'like', "%{$search}%")
-                  ->orWhere('name_ar', 'like', "%{$search}%")
-                  ->orWhere('name_en', 'like', "%{$search}%");
+            $query->whereTranslationLikeAny('name', $search);
         }
 
         $categories = $query->paginate(15)->withQueryString();
+        $activeLanguages = \App\Models\Language::activeList();
 
         return view('adhkar-categories.index', [
             'categories' => $categories,
             'search'     => $search,
+            'activeLanguages' => $activeLanguages,
         ]);
     }
 
@@ -41,7 +50,10 @@ class AdhkarCategoryController extends Controller
     {
         $validated = $this->validateCategory($request);
 
-        AdhkarCategory::create($validated);
+        $category = AdhkarCategory::create($validated);
+        if (isset($validated['translations'])) {
+            $category->saveTranslationsFromArray($validated['translations']);
+        }
 
         return redirect()
             ->route('adhkar-categories.index')
@@ -50,8 +62,12 @@ class AdhkarCategoryController extends Controller
 
     public function show(AdhkarCategory $adhkarCategory): View
     {
+        $adhkarCategory->loadMissing('translations');
+        $activeLanguages = \App\Models\Language::activeList();
+
         return view('adhkar-categories.show', [
             'category' => $adhkarCategory,
+            'activeLanguages' => $activeLanguages,
         ]);
     }
 
@@ -67,6 +83,9 @@ class AdhkarCategoryController extends Controller
         $validated = $this->validateCategory($request, $adhkarCategory);
 
         $adhkarCategory->update($validated);
+        if (isset($validated['translations'])) {
+            $adhkarCategory->saveTranslationsFromArray($validated['translations']);
+        }
 
         return redirect()
             ->route('adhkar-categories.index')
@@ -87,13 +106,25 @@ class AdhkarCategoryController extends Controller
      */
     private function validateCategory(Request $request, ?AdhkarCategory $category = null): array
     {
-        $validated = $request->validate([
-            'name_ku' => ['required', 'string', 'max:255'],
-            'name_ar' => ['required', 'string', 'max:255'],
-            'name_en' => ['nullable', 'string', 'max:255'],
+        $rules = [
             'icon'    => ['nullable', 'string', 'max:255'],
             'order'   => ['required', 'integer'],
-        ]);
+            'translations' => ['required', 'array'],
+        ];
+
+        $customAttributes = [
+            'icon' => __('adhkar_categories.fields.icon'),
+            'order' => __('adhkar_categories.fields.order'),
+            'is_active' => __('adhkar_categories.fields.is_active'),
+        ];
+
+        foreach (\App\Models\Language::activeList() as $lang) {
+            $isRequired = in_array($lang->code, ['ku', 'ar']);
+            $rules["translations.{$lang->code}.name"] = $isRequired ? ['required', 'string', 'max:255'] : ['nullable', 'string', 'max:255'];
+            $customAttributes["translations.{$lang->code}.name"] = __('adhkar_categories.fields.name_' . $lang->code) ?? "Name ({$lang->name})";
+        }
+
+        $validated = $request->validate($rules, [], $customAttributes);
 
         $validated['is_active'] = $request->boolean('is_active', true);
 

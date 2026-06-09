@@ -13,7 +13,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(append: [
-            \App\Http\Middleware\Localization::class,
+            \App\Http\Middleware\SetLocaleMiddleware::class,
+            \App\Http\Middleware\TranslationAnalyticsMiddleware::class,
+        ]);
+        $middleware->api(append: [
+            \App\Http\Middleware\SetLocaleMiddleware::class,
+        ]);
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

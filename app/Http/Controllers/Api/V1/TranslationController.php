@@ -14,12 +14,11 @@ class TranslationController extends Controller
     {
         $query = Translation::where('is_active', true);
 
-        if ($request->has('language_code')) {
-            $query->where('language_code', $request->language_code);
-        }
+        $languageCode = $request->input('language_code', app()->getLocale());
+        $query->where('language_code', $languageCode);
 
         $ttl = config('quran_api.cache_ttl', 3600);
-        $cacheKey = 'api:v1:translations:' . md5(json_encode($request->only(['language_code'])));
+        $cacheKey = 'api:v1:translations:' . md5(json_encode(['language_code' => $languageCode]));
 
         $translations = Cache::remember($cacheKey, $ttl, function () use ($query) {
             return $query->get();
@@ -34,15 +33,14 @@ class TranslationController extends Controller
 
     public function ayahTranslations(Request $request, $ayahId)
     {
+        $languageCode = $request->input('language_code', app()->getLocale());
         $ttl = config('quran_api.cache_ttl', 3600);
-        $cacheKey = 'api:v1:ayah_translations:' . md5(json_encode([$ayahId, $request->language_code]));
+        $cacheKey = 'api:v1:ayah_translations:' . md5(json_encode([$ayahId, $languageCode]));
 
-        $translations = Cache::remember($cacheKey, $ttl, function () use ($request, $ayahId) {
+        $translations = Cache::remember($cacheKey, $ttl, function () use ($languageCode, $ayahId) {
             return Translation::where('ayah_id', $ayahId)
                 ->where('is_active', true)
-                ->when($request->language_code, function ($q) use ($request) {
-                    return $q->where('language_code', $request->language_code);
-                })
+                ->where('language_code', $languageCode)
                 ->get();
         });
 
@@ -66,14 +64,15 @@ class TranslationController extends Controller
             'translator_name' => 'nullable|string|max:190',
         ]);
 
+        $languageCode = $request->input('language_code', app()->getLocale());
         $ttl = config('quran_api.cache_ttl', 3600);
         $cacheKey = 'api:v1:surah_translations:' . md5(json_encode([
             'surah_id' => (int) $surahId,
-            'language_code' => $request->language_code,
+            'language_code' => $languageCode,
             'translator_name' => $request->translator_name,
         ]));
 
-        $rows = Cache::remember($cacheKey, $ttl, function () use ($request, $surahId) {
+        $rows = Cache::remember($cacheKey, $ttl, function () use ($request, $surahId, $languageCode) {
             $q = DB::table('translations')
                 ->join('ayahs', 'translations.ayah_id', '=', 'ayahs.id')
                 ->where('translations.is_active', true)
@@ -89,9 +88,7 @@ class TranslationController extends Controller
                 ])
                 ->orderBy('ayahs.ayah_number');
 
-            if ($request->has('language_code')) {
-                $q->where('translations.language_code', $request->language_code);
-            }
+            $q->where('translations.language_code', $languageCode);
 
             if ($request->has('translator_name')) {
                 $q->where('translations.translator_name', $request->translator_name);

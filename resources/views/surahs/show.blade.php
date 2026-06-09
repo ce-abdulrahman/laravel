@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('title', __('surah.titles.show'))
-@section('page-title', $surah->name_ar)
+@section('page-title', $surah->name ?? '')
 
 @section('breadcrumb')
     <li class="breadcrumb-item">
         <a href="{{ route('surahs.index') }}">{{ __('surah.titles.index') }}</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">{{ $surah->name_ar }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ $surah->name }}</li>
 @endsection
 
 @section('content')
@@ -17,7 +17,7 @@
         <div>
             <div class="d-flex align-items-center gap-3 mb-2">
                 <span class="quran-surah-number">{{ $surah->number }}</span>
-                <h1 class="h3 mb-0 quran-surah-arabic">{{ $surah->name_ar }}</h1>
+                <h1 class="h3 mb-0 quran-surah-arabic">{{ $surah->name }}</h1>
             </div>
             <div class="text-muted d-flex gap-4">
                 <span>
@@ -67,39 +67,6 @@
 
         <div class="quran-card-body">
             <div class="row g-4">
-                <!-- Arabic Name -->
-                <div class="col-md-6">
-                    <div class="quran-detail-item">
-                        <label class="quran-detail-label">
-                            <i class="bi bi-book me-1"></i>
-                            {{ __('surah.fields.name_ar') }}
-                        </label>
-                        <div class="quran-detail-value arabic-text">{{ $surah->name_ar }}</div>
-                    </div>
-                </div>
-
-                <!-- Kurdish Name -->
-                <div class="col-md-6">
-                    <div class="quran-detail-item">
-                        <label class="quran-detail-label">
-                            <i class="bi bi-translate me-1"></i>
-                            {{ __('surah.fields.name_ku') }}
-                        </label>
-                        <div class="quran-detail-value">{{ $surah->name_ku ?: '—' }}</div>
-                    </div>
-                </div>
-
-                <!-- English Name -->
-                <div class="col-md-6">
-                    <div class="quran-detail-item">
-                        <label class="quran-detail-label">
-                            <i class="bi bi-translate me-1"></i>
-                            {{ __('surah.fields.name_en') }}
-                        </label>
-                        <div class="quran-detail-value">{{ $surah->name_en ?: '—' }}</div>
-                    </div>
-                </div>
-
                 <!-- Revelation Type -->
                 <div class="col-md-6">
                     <div class="quran-detail-item">
@@ -243,6 +210,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Translations Card -->
+    <x-translations.show-tabs :model="$surah" :active-languages="$activeLanguages" />
 
     <!-- Quick Actions Card -->
     <div class="quran-card mt-4">

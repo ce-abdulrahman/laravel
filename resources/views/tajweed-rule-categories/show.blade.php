@@ -1,14 +1,14 @@
 {{-- resources/views/tajweed-rule-categories/show.blade.php --}}
 @extends('layouts.app')
 
-@section('title', __('tajweed_categories.titles.show') . ' - ' . ($tajweedRuleCategory->name_ku ?: $tajweedRuleCategory->name))
+@section('title', __('tajweed_categories.titles.show') . ' - ' . $tajweedRuleCategory->name)
 @section('page-title', __('tajweed_categories.titles.show'))
 
 @section('breadcrumb')
     <li class="breadcrumb-item">
         <a href="{{ route('tajweed-rule-categories.index') }}">{{ __('tajweed_categories.titles.index') }}</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">{{ $tajweedRuleCategory->name_ku ?: $tajweedRuleCategory->name }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ $tajweedRuleCategory->name }}</li>
 @endsection
 
 @section('content')
@@ -17,11 +17,7 @@
     {{-- Header --}}
     <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">{{ $tajweedRuleCategory->name_ku ?: $tajweedRuleCategory->name }}</h1>
-            @if($tajweedRuleCategory->name_ar)
-            <div class="arabic-text text-muted" dir="rtl">{{ $tajweedRuleCategory->name_ar }}</div>
-            @endif
-            <small class="text-muted">{{ $tajweedRuleCategory->name }}</small>
+            <h1 class="h4 mb-1">{{ $tajweedRuleCategory->name }}</h1>
         </div>
         <div class="d-flex gap-2">
             @if(auth()->user()?->role === 'admin')
@@ -44,7 +40,7 @@
                         <div class="quran-plan-icon mx-auto mb-3" style="width:72px;height:72px;font-size:2rem;">
                             <i class="bi bi-folder2-open"></i>
                         </div>
-                        <h5>{{ $tajweedRuleCategory->name_ku ?: $tajweedRuleCategory->name }}</h5>
+                        <h5>{{ $tajweedRuleCategory->name }}</h5>
                         <span class="quran-table-badge {{ $tajweedRuleCategory->is_active ? 'success' : 'danger' }}">
                             {{ $tajweedRuleCategory->is_active ? __('common.active') : __('common.inactive') }}
                         </span>
@@ -62,24 +58,11 @@
                         <span class="text-muted small">{{ __('tajweed_categories.fields.slug') }}</span>
                         <code class="small">{{ $tajweedRuleCategory->slug }}</code>
                     </div>
-
-                    @if($tajweedRuleCategory->description_ku ?: $tajweedRuleCategory->description)
-                    <div class="mt-3">
-                        <div class="text-muted small mb-1">{{ __('tajweed_categories.fields.description_ku') }}</div>
-                        <p class="small" style="font-family:'Cairo';">
-                            {{ $tajweedRuleCategory->description_ku ?: $tajweedRuleCategory->description }}
-                        </p>
-                    </div>
-                    @endif
-
-                    @if($tajweedRuleCategory->description_ar)
-                    <div class="mt-2">
-                        <div class="text-muted small mb-1">{{ __('tajweed_categories.fields.description_ar') }}</div>
-                        <p class="small arabic-text" dir="rtl">{{ $tajweedRuleCategory->description_ar }}</p>
-                    </div>
-                    @endif
                 </div>
             </div>
+
+            <!-- Translations Card -->
+            <x-translations.show-tabs :model="$tajweedRuleCategory" :active-languages="$activeLanguages" />
         </div>
 
         {{-- Rules in This Category --}}

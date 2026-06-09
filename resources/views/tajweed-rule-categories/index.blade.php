@@ -103,20 +103,24 @@
                             <i class="bi bi-folder2-open"></i>
                         </div>
                         <div class="flex-grow-1 min-w-0">
-                            <h6 class="mb-1 text-truncate">{{ $cat->name_ku ?: $cat->name }}</h6>
-                            @if($cat->name_ar)
-                            <div class="arabic-text text-muted small" dir="rtl">{{ $cat->name_ar }}</div>
-                            @endif
-                            <small class="text-muted">{{ $cat->name }}</small>
+                            @php
+                                $attrs = $cat->getTranslationAttributes('name');
+                            @endphp
+                            <h6 class="mb-1 text-truncate {{ $attrs['class'] }}" dir="{{ $attrs['dir'] }}" style="{{ $attrs['style'] }}">
+                                {{ $attrs['value'] ?? __('common.missing_translation') }}
+                            </h6>
                         </div>
                         <span class="quran-table-badge {{ $cat->is_active ? 'success' : 'danger' }} flex-shrink-0">
                             {{ $cat->is_active ? __('common.active') : __('common.inactive') }}
                         </span>
                     </div>
 
-                    @if($cat->description_ku ?: $cat->description)
-                    <p class="text-muted small mb-3" style="font-family:'Cairo';">
-                        {{ Str::limit($cat->description_ku ?: $cat->description, 120) }}
+                    @php
+                        $descAttrs = $cat->getTranslationAttributes('description');
+                    @endphp
+                    @if($descAttrs['value'])
+                    <p class="text-muted small mb-3 {{ $descAttrs['class'] }}" dir="{{ $descAttrs['dir'] }}" style="{{ $descAttrs['style'] }}">
+                        {{ Str::limit($descAttrs['value'], 120) }}
                     </p>
                     @endif
 

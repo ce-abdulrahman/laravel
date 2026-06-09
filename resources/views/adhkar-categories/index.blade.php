@@ -67,14 +67,18 @@
         </div>
 
         {{-- Table --}}
-        <div class="quran-table-container">
+        @php
+            $totalColumns = 4 + \App\Models\Language::activeList()->count();
+        @endphp
+
+        <div class="table-responsive">
             <table class="quran-table quran-table-striped quran-surah-table">
                 <thead>
                     <tr>
                         <th class="number-column" style="width: 80px;">{{ __('adhkar_categories.table.order') }}</th>
-                        <th>{{ __('adhkar_categories.table.name_ku') }}</th>
-                        <th>{{ __('adhkar_categories.table.name_ar') }}</th>
-                        <th>{{ __('adhkar_categories.table.name_en') }}</th>
+                        @foreach(\App\Models\Language::activeList() as $lang)
+                            <th>Name ({{ $lang->name }})</th>
+                        @endforeach
                         <th style="width: 140px;">{{ __('adhkar_categories.table.icon') }}</th>
                         <th class="text-center" style="width: 120px;">{{ __('adhkar_categories.table.status') }}</th>
                         <th class="text-end" style="width: 160px;">{{ __('adhkar_categories.table.actions') }}</th>
@@ -86,19 +90,21 @@
                             <td class="number-column">
                                 <span class="surah-number">{{ $cat->order }}</span>
                             </td>
-                            <td>
-                                <div style="font-weight: 600;">{{ $cat->name_ku }}</div>
-                            </td>
-                            <td>
-                                <div class="surah-name-arabic">{{ $cat->name_ar }}</div>
-                            </td>
-                            <td>
-                                @if($cat->name_en)
-                                    <span class="text-muted">{{ $cat->name_en }}</span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
-                            </td>
+                            @foreach(\App\Models\Language::activeList() as $lang)
+                                <td>
+                                    @php
+                                        $val = $cat->getTranslation('name', $lang->code);
+                                        $attrs = $cat->getTranslationAttributes('name', $lang->code);
+                                    @endphp
+                                    @if($val !== null && $val !== '')
+                                        <div class="{{ $attrs['class'] }}" dir="{{ $attrs['dir'] }}" style="{{ $attrs['style'] }} font-weight: 600;">
+                                            {{ $val }}
+                                        </div>
+                                    @else
+                                        <span class="badge bg-light text-muted border small">{{ __('common.missing_translation') ?? 'Missing' }}</span>
+                                    @endif
+                                </td>
+                            @endforeach
                             <td>
                                 @if($cat->icon)
                                     <span class="badge bg-light text-dark border" style="font-family: monospace; font-size: 0.75rem;">
@@ -143,10 +149,10 @@
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <button type="button"
-                                            class="quran-table-action-btn delete"
-                                            data-bs-toggle="tooltip"
-                                            title="{{ __('adhkar_categories.actions.delete') }}"
-                                            onclick="confirmDelete({{ $cat->id }}, '{{ addslashes($cat->name_ku) }}')">
+                                             class="quran-table-action-btn delete"
+                                             data-bs-toggle="tooltip"
+                                             title="{{ __('adhkar_categories.actions.delete') }}"
+                                             onclick="confirmDelete({{ $cat->id }}, '{{ addslashes($cat->name) }}')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -154,7 +160,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7">
+                            <td colspan="{{ $totalColumns }}">
                                 <div class="quran-table-empty">
                                     <i class="bi bi-tag" style="font-size: 3rem;"></i>
                                     <h6 class="mt-3">{{ __('adhkar_categories.empty.title') }}</h6>

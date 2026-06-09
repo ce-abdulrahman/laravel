@@ -19,9 +19,9 @@ class SurahController extends Controller
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name_ar', 'like', "%{$search}%")
-                  ->orWhere('name_en', 'like', "%{$search}%")
-                  ->orWhere('name_ku', 'like', "%{$search}%");
+                $q->whereHas('translations', function ($transQuery) use ($search) {
+                    $transQuery->where('name', 'like', "%{$search}%");
+                });
             });
         }
 
