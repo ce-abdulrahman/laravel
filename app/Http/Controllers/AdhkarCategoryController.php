@@ -118,8 +118,9 @@ class AdhkarCategoryController extends Controller implements HasMiddleware
             'is_active' => __('adhkar_categories.fields.is_active'),
         ];
 
+        $defaultCode = \App\Models\Language::default()?->code;
         foreach (\App\Models\Language::activeList() as $lang) {
-            $isRequired = in_array($lang->code, ['ku', 'ar']);
+            $isRequired = $lang->code === $defaultCode;
             $rules["translations.{$lang->code}.name"] = $isRequired ? ['required', 'string', 'max:255'] : ['nullable', 'string', 'max:255'];
             $customAttributes["translations.{$lang->code}.name"] = __('adhkar_categories.fields.name_' . $lang->code) ?? "Name ({$lang->name})";
         }

@@ -158,6 +158,10 @@ Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('l
 Route::get('/lang/{code}', [LanguageController::class, 'switchLang'])->name('lang.switch');
 Route::get('/language/current', [LanguageController::class, 'getCurrentLanguage'])->name('language.current');
 
+// JavaScript Localization Bridge — served publicly, cached per locale
+Route::get('/localization/js-translations', [App\Http\Controllers\LocalizationJsController::class, 'translations'])
+    ->name('localization.js-translations');
+
 Route::middleware('auth')->group(function () {
     Route::get('/juz', [App\Http\Controllers\ReadController::class, 'juzIndex'])->name('juz.index');
     Route::get('/page', [App\Http\Controllers\ReadController::class, 'pageIndex'])->name('page.index');
@@ -205,6 +209,12 @@ Route::middleware('auth')->group(function () {
     Route::get('translations-manager/sync', [App\Http\Controllers\TranslationManagerController::class, 'syncPage'])->name('translations-manager.sync-page');
     Route::post('translations-manager/sync/pull', [App\Http\Controllers\TranslationManagerController::class, 'syncPull'])->name('translations-manager.sync-pull');
     Route::post('translations-manager/sync/push', [App\Http\Controllers\TranslationManagerController::class, 'syncPush'])->name('translations-manager.sync-push');
+
+    // Automatic UI Translation Discovery & Diagnostics Routes
+    Route::get('translations-manager/report', [App\Http\Controllers\TranslationManagerController::class, 'report'])->name('translations-manager.report');
+    Route::post('translations-manager/scan', [App\Http\Controllers\TranslationManagerController::class, 'scan'])->name('translations-manager.scan');
+    Route::post('translations-manager/sync', [App\Http\Controllers\TranslationManagerController::class, 'sync'])->name('translations-manager.sync');
+    Route::post('translations-manager/clear-cache', [App\Http\Controllers\TranslationManagerController::class, 'clearCache'])->name('translations-manager.clear-cache');
 
     // Bulk Translation Controller Routes
     Route::get('translations-manager/bulk', [App\Http\Controllers\BulkTranslationController::class, 'index'])->name('translations-manager.bulk');

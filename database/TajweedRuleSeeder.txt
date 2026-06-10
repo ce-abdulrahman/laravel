@@ -1,0 +1,64 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+class TajweedRuleSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $now = Carbon::now();
+
+        $rules = [
+            // --- Noon Sakinah (Category 1) ---
+            ['name' => 'الإظهار الحلقي', 'slug' => 'al-izhar-al-halqi', 'color_code' => null, 'tajweed_rule_category_id' => 1, 'description' => 'دەرکردنی پیتی نوون یان تەنووین لە شوێنی خۆی بەبێ غوننەی زیادە.', 'example_text' => 'مِنْ ءَامَنَ', 'priority' => 10],
+            ['name' => 'الإدغام بغنة', 'slug' => 'al-idgham-bighunnah', 'color_code' => '#165B33', 'tajweed_rule_category_id' => 1, 'description' => 'تێکەڵکردن لەگەڵ پیتەکانی (ي، ن، م، و) بە دروستبوونی غوننە.', 'example_text' => 'مِنْ يَعْمَل', 'priority' => 20],
+            ['name' => 'الإدغام بغير غنة (الكامل)', 'slug' => 'al-idgham-bighair-ghunnah', 'color_code' => '#808080', 'tajweed_rule_category_id' => 1, 'description' => 'تواندنەوەی تەواو لە ناو پیتەکانی (ل، ر) بەبێ غوننە.', 'example_text' => 'مِنْ رَبِّهِمْ', 'priority' => 30],
+            ['name' => 'الإظهار المطلق (الكلمات المستثناة)', 'slug' => 'al-izhar-al-mutlaq', 'color_code' => null, 'tajweed_rule_category_id' => 1, 'description' => 'حاڵەتە شازەکان لە یەک وشەدا کە تێکەڵ ناکرێن.', 'example_text' => 'دُنْيَا، صِنْوَان', 'priority' => 40],
+            ['name' => 'القلب', 'slug' => 'al-qalb', 'color_code' => '#0000FF', 'tajweed_rule_category_id' => 1, 'description' => 'گۆڕین بۆ میمێکی شاراوە لەگەڵ بوونی غوننە.', 'example_text' => 'مِنْ بَعْدِ', 'priority' => 50],
+            ['name' => 'الإخفاء الحقيقي', 'slug' => 'al-ikhfa-al-haqiqi', 'color_code' => '#FF0000', 'tajweed_rule_category_id' => 1, 'description' => 'شاردنەوە لەلای ١٥ پیتەکەی تر.', 'example_text' => 'يَنْصُرُكُمْ', 'priority' => 60],
+            
+            // --- Meem Sakinah (Category 2) ---
+            ['name' => 'الإخفاء الشفوي', 'slug' => 'al-ikhfa-al-shafawi', 'color_code' => '#8B008B', 'tajweed_rule_category_id' => 2, 'description' => 'شاردنەوەی میمی ساکن کاتێک پیتی (ب) بەدوایدا دێت.', 'example_text' => 'وَمَا هُمْ بِمُؤْمِنِينَ', 'priority' => 70],
+            ['name' => 'إدغام المِثْلَين الصغير', 'slug' => 'idgham-al-mithlayn-as-sagheer', 'color_code' => '#165B33', 'tajweed_rule_category_id' => 2, 'description' => 'تێکەڵکردنی میمی ساکن لەگەڵ میمێکی بزوێنەر.', 'example_text' => 'وَلَكُمْ مَا كَسَبْتُمْ', 'priority' => 80],
+            ['name' => 'الإظهار الشفوي', 'slug' => 'al-izhar-al-shafawi', 'color_code' => null, 'tajweed_rule_category_id' => 2, 'description' => 'ڕوونکردنەوەی میمی ساکن لەلای ٢٦ پیتەکەی تر.', 'example_text' => 'هُمْ فِيهَا', 'priority' => 90],
+
+            // --- Madd (Category 3) ---
+            ['name' => 'المد الطبيعي (الأصلي)', 'slug' => 'al-madd-al-tabeei', 'color_code' => null, 'tajweed_rule_category_id' => 3, 'description' => 'درێژکردنەوەی سروشتی بە بڕی ٢ حەرەکە.', 'example_text' => 'نُوحِيهَا', 'priority' => 100],
+            ['name' => 'مد البدل', 'slug' => 'madd-al-badal', 'color_code' => null, 'tajweed_rule_category_id' => 3, 'description' => 'کاتێک هەمزە دەکەوێتە پێش پیتی مەدەوە.', 'example_text' => 'ءَامَنُوا', 'priority' => 110],
+            ['name' => 'مد العوض', 'slug' => 'madd-al-iwadh', 'color_code' => null, 'tajweed_rule_category_id' => 3, 'description' => 'گۆڕینی تەنوینی فەتحە بۆ ئەلف لە کاتی وەستاندا.', 'example_text' => 'عَلِيمًا', 'priority' => 120],
+            ['name' => 'مد الصلة الصغرى', 'slug' => 'madd-al-silah-as-sughra', 'color_code' => null, 'tajweed_rule_category_id' => 3, 'description' => 'درێژکردنەوەی هائی ڕاناو بە بڕی ٢ حەرەکە.', 'example_text' => 'إِنَّهُ كَانَ', 'priority' => 130],
+            ['name' => 'المد الواجب المتصل', 'slug' => 'al-madd-al-wajib-al-muttasil', 'color_code' => '#FF0000', 'tajweed_rule_category_id' => 3, 'description' => 'بوونی هەمزە دوای مەد لە یەک وشەدا (٤-٥ حەرەکە).', 'example_text' => 'السَّمَاء', 'priority' => 140],
+            ['name' => 'المد الجائز المنفصل', 'slug' => 'al-madd-al-jaaiz-al-munfasil', 'color_code' => '#FF7F00', 'tajweed_rule_category_id' => 3, 'description' => 'بوونی هەمزە لە وشەی دواتر (٤-٥ حەرەکە).', 'example_text' => 'بِمَا أُنْزِلَ', 'priority' => 150],
+            ['name' => 'مد الصلة الكبرى', 'slug' => 'madd-al-silah-al-kubra', 'color_code' => '#FF7F00', 'tajweed_rule_category_id' => 3, 'description' => 'درێژکردنەوەی هائی ڕاناو کاتێک هەمزەی بەدوادا دێت.', 'example_text' => 'مَالَهُ أَخْلَدَهُ', 'priority' => 160],
+            ['name' => 'المد العارض للسكون', 'slug' => 'al-madd-al-aaridh-lis-sukoon', 'color_code' => '#FF8C00', 'tajweed_rule_category_id' => 3, 'description' => 'وەستان لەسەر پیتی دوای مەد (٢، ٤، ٦ حەرەکە).', 'example_text' => 'الْعَالَمِينَ', 'priority' => 170],
+            ['name' => 'مد اللين', 'slug' => 'madd-al-leen', 'color_code' => '#FF8C00', 'tajweed_rule_category_id' => 3, 'description' => 'وەستان لەسەر پیتی دوای پیتی لین.', 'example_text' => 'قُرَيْشٍ', 'priority' => 180],
+            ['name' => 'المد اللازم', 'slug' => 'al-madd-al-laazim', 'color_code' => '#800080', 'tajweed_rule_category_id' => 3, 'description' => 'ساکن یان شەددە دوای مەد بێت (٦ حەرەکە).', 'example_text' => 'الضَّالِّينَ', 'priority' => 190],
+
+            // --- Raa (Category 4) ---
+            ['name' => 'تفخيم الراء', 'slug' => 'tafkheem-al-raa', 'color_code' => '#0000FF', 'tajweed_rule_category_id' => 4, 'description' => 'قەڵەوکردنی پیتی ڕاء.', 'example_text' => 'رَبَّنَا', 'priority' => 200],
+            ['name' => 'ترقيق الراء', 'slug' => 'tarqeeq-al-raa', 'color_code' => '#008000', 'tajweed_rule_category_id' => 4, 'description' => 'تەنککردنی پیتی ڕاء.', 'example_text' => 'فِرْعَوْنَ', 'priority' => 210],
+            ['name' => 'جواز الوجهين في الراء', 'slug' => 'jawaz-al-wajhayn-raa', 'color_code' => '#808080', 'tajweed_rule_category_id' => 4, 'description' => 'حاڵەتە دروستەکان بۆ هەردووکیان.', 'example_text' => 'فِرْقٍ', 'priority' => 220],
+
+            // --- Qalqalah (Category 5) ---
+            ['name' => 'القلقلة', 'slug' => 'al-qalqalah', 'color_code' => '#00BFFF', 'tajweed_rule_category_id' => 5, 'description' => 'لەرزاندنی پیتەکانی (ق، ط، ب، ج، د) لە کاتی ساکنیدا.', 'example_text' => 'يَقْطَعُونَ', 'priority' => 300],
+
+            // --- Ghunnah (Category 6) ---
+            ['name' => 'النون والميم المشددتان (الغنة)', 'slug' => 'noon-meem-mushaddadah', 'color_code' => '#008000', 'tajweed_rule_category_id' => 6, 'description' => 'غوننەی دوو حەرەکەیی بۆ نوون و میمی شەددەدار.', 'example_text' => 'إِنَّ، ثُمَّ', 'priority' => 310],
+
+            // --- Silent Letters (Category 7) ---
+            ['name' => 'حروف لا تلفظ', 'slug' => 'silent-letters', 'color_code' => '#A9A9A9', 'tajweed_rule_category_id' => 7, 'description' => 'ئەو پیتانەی لە ڕێنووسدا هەن بەڵام ناخوێندرێنەوە.', 'example_text' => 'الشَّمْس، قَالُوا', 'priority' => 320],
+        ];
+
+        foreach ($rules as &$rule) {
+            $rule['is_active'] = true;
+            $rule['created_at'] = $now;
+            $rule['updated_at'] = $now;
+        }
+
+        DB::table('tajweed_rules')->insert($rules);
+    }
+}

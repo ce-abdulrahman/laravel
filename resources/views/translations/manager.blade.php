@@ -1,11 +1,11 @@
 {{-- resources/views/translations/manager.blade.php --}}
 @extends('layouts.app')
 
-@section('title', 'Translation Manager')
-@section('page-title', 'Translation Manager')
+@section('title', __('translations_manager.title'))
+@section('page-title', __('translations_manager.title'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item active" aria-current="page">Translation Manager</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('translations_manager.title') }}</li>
 @endsection
 
 @section('content')
@@ -13,30 +13,107 @@
     {{-- Header --}}
     <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">UI Translation Manager</h1>
-            <div class="text-muted">Manage dynamic translations and interface keys across all languages in real-time.</div>
+            <h1 class="h4 mb-1">{{ __('translations_manager.heading') }}</h1>
+            <div class="text-muted">{{ __('translations_manager.subheading') }}</div>
         </div>
-        <div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <form action="{{ route('translations-manager.scan') }}" method="POST" class="d-inline m-0">
+                @csrf
+                <button type="submit" class="quran-btn quran-btn-outline-secondary" title="{{ __('translations_manager.actions.scan_project') }}">
+                    <i class="bi bi-search me-1"></i> {{ __('translations_manager.actions.scan_project') }}
+                </button>
+            </form>
+            <form action="{{ route('translations-manager.sync') }}" method="POST" class="d-inline m-0">
+                @csrf
+                <button type="submit" class="quran-btn quran-btn-outline-secondary" title="{{ __('translations_manager.actions.sync_keys') }}">
+                    <i class="bi bi-arrow-repeat me-1"></i> {{ __('translations_manager.actions.sync_keys') }}
+                </button>
+            </form>
+            <form action="{{ route('translations-manager.clear-cache') }}" method="POST" class="d-inline m-0">
+                @csrf
+                <button type="submit" class="quran-btn quran-btn-outline-secondary" title="{{ __('translations_manager.actions.rebuild_cache') }}">
+                    <i class="bi bi-arrow-clockwise me-1"></i> {{ __('translations_manager.actions.rebuild_cache') }}
+                </button>
+            </form>
+            <a href="{{ route('translations-manager.report') }}" class="quran-btn quran-btn-outline-primary" title="{{ __('translations_manager.actions.coverage_report') }}">
+                <i class="bi bi-file-earmark-bar-graph me-1"></i> {{ __('translations_manager.actions.coverage_report') }}
+            </a>
             <a href="{{ route('translations-manager.bulk') }}" class="quran-btn quran-btn-outline-primary">
                 <i class="bi bi-grid-3x3-gap me-1"></i>
-                Bulk Editor Grid
-            </a>
-            <a href="{{ route('translations-manager.audit') }}" class="quran-btn quran-btn-outline-primary">
-                <i class="bi bi-shield-check me-1"></i>
-                Integrity Scan
-            </a>
-            <a href="{{ route('translations-manager.sync-page') }}" class="quran-btn quran-btn-outline-primary">
-                <i class="bi bi-arrow-left-right me-1"></i>
-                Sync Environments
+                {{ __('translations_manager.actions.bulk_grid') }}
             </a>
             <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importExportModal">
                 <i class="bi bi-download me-1"></i>
-                Import / Export
+                {{ __('translations_manager.actions.import_export') }}
             </button>
             <button type="button" class="quran-btn quran-btn-primary" data-bs-toggle="modal" data-bs-target="#createKeyModal">
                 <i class="bi bi-plus-lg me-1"></i>
-                Add Translation Key
+                {{ __('translations_manager.actions.add_key') }}
             </button>
+        </div>
+    </div>
+
+    {{-- Premium Statistics Widget --}}
+    <div class="row g-4 mb-4">
+        <!-- Total Keys Card -->
+        <div class="col-6 col-md-3">
+            <div class="quran-stat-card quran-stat-primary" style="padding: 1rem;">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <div class="quran-stat-label text-uppercase fw-semibold small text-muted" style="font-size: 0.7rem; letter-spacing: 0.5px;">Total Keys</div>
+                        <div class="quran-stat-value fw-bold my-1" style="font-size: 1.5rem;">{{ number_format($reportStats['total_keys'] ?? 0) }}</div>
+                        <span class="quran-stat-sub small text-muted">Registered keys</span>
+                    </div>
+                    <div class="quran-stat-icon" style="font-size: 1.5rem;">
+                        <i class="bi bi-key-fill text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Missing Keys Card -->
+        <div class="col-6 col-md-3">
+            <div class="quran-stat-card @if(($reportStats['missing_translations'] ?? 0) > 0) quran-stat-warning @else quran-stat-success @endif" style="padding: 1rem;">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <div class="quran-stat-label text-uppercase fw-semibold small text-muted" style="font-size: 0.7rem; letter-spacing: 0.5px;">Missing Units</div>
+                        <div class="quran-stat-value fw-bold my-1" style="font-size: 1.5rem;">{{ number_format($reportStats['missing_translations'] ?? 0) }}</div>
+                        <span class="quran-stat-sub small text-muted">Requires translation</span>
+                    </div>
+                    <div class="quran-stat-icon" style="font-size: 1.5rem;">
+                        <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Coverage Card -->
+        <div class="col-6 col-md-3">
+            <div class="quran-stat-card quran-stat-success" style="padding: 1rem;">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <div class="quran-stat-label text-uppercase fw-semibold small text-muted" style="font-size: 0.7rem; letter-spacing: 0.5px;">Coverage</div>
+                        <div class="quran-stat-value fw-bold my-1" style="font-size: 1.5rem;">{{ number_format($reportStats['coverage_percentage'] ?? 100.0, 2) }}%</div>
+                        <span class="quran-stat-sub small text-muted">UI coverage rate</span>
+                    </div>
+                    <div class="quran-stat-icon" style="font-size: 1.5rem;">
+                        <i class="bi bi-patch-check-fill text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Languages Count Card -->
+        <div class="col-6 col-md-3">
+            <div class="quran-stat-card quran-stat-info" style="padding: 1rem;">
+                <div class="quran-stat-content">
+                    <div class="quran-stat-info">
+                        <div class="quran-stat-label text-uppercase fw-semibold small text-muted" style="font-size: 0.7rem; letter-spacing: 0.5px;">Last Scan</div>
+                        <div class="quran-stat-value fw-bold my-1 text-truncate" style="font-size: 0.95rem;" title="{{ $lastScan }}">{{ $lastScan }}</div>
+                        <span class="quran-stat-sub small text-muted">{{ $reportStats['active_languages_count'] ?? 0 }} active languages</span>
+                    </div>
+                    <div class="quran-stat-icon" style="font-size: 1.5rem;">
+                        <i class="bi bi-globe text-info"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -54,7 +131,7 @@
     <div class="quran-card p-4 mb-4">
         <form method="GET" action="{{ route('translations-manager.index') }}" class="row g-3 align-items-end">
             <div class="col-12 col-md-4">
-                <label for="search" class="form-label fw-semibold text-muted small text-uppercase">Search Keys / Values</label>
+                <label for="search" class="form-label fw-semibold text-muted small text-uppercase">{{ __('translations_manager.filter.search_label') }}</label>
                 <div class="input-group">
                     <span class="input-group-text bg-transparent border-end-0 text-muted">
                         <i class="bi bi-search"></i>
@@ -63,15 +140,15 @@
                            id="search" 
                            name="search" 
                            class="form-control border-start-0" 
-                           placeholder="Type to search..." 
+                           placeholder="{{ __('translations_manager.filter.search_placeholder') }}" 
                            value="{{ request('search') }}">
                 </div>
             </div>
 
             <div class="col-12 col-md-3">
-                <label for="group" class="form-label fw-semibold text-muted small text-uppercase">Filter by Group</label>
+                <label for="group" class="form-label fw-semibold text-muted small text-uppercase">{{ __('translations_manager.filter.group_label') }}</label>
                 <select id="group" name="group" class="form-select">
-                    <option value="">All Groups</option>
+                    <option value="">{{ __('translations_manager.filter.all_groups') }}</option>
                     @foreach($groups as $g)
                         <option value="{{ $g }}" {{ request('group') === $g ? 'selected' : '' }}>{{ ucfirst($g) }}</option>
                     @endforeach
@@ -87,18 +164,18 @@
                            value="1" 
                            {{ request('missing') ? 'checked' : '' }}>
                     <label class="form-check-label fw-semibold text-muted small text-uppercase" for="missing">
-                        Show Missing Only
+                        {{ __('translations_manager.filter.show_missing') }}
                     </label>
                 </div>
             </div>
 
             <div class="col-12 col-md-2 d-grid gap-2">
                 <button type="submit" class="quran-btn quran-btn-outline-primary">
-                    Apply Filters
+                    {{ __('common.apply_filters') }}
                 </button>
                 @if(request()->anyFilled(['search', 'group', 'missing']))
                     <a href="{{ route('translations-manager.index') }}" class="btn btn-light btn-sm text-center">
-                        Clear Filters
+                        {{ __('common.clear_filters') }}
                     </a>
                 @endif
             </div>
@@ -199,8 +276,8 @@
                             <td colspan="{{ $languages->count() + 2 }}">
                                 <div class="quran-table-empty py-5">
                                     <i class="bi bi-translate text-muted" style="font-size: 3rem;"></i>
-                                    <h6 class="mt-3">No Translation Keys Found</h6>
-                                    <p>Try searching for a different keyword or create a new key above.</p>
+                                    <h6 class="mt-3">{{ __('translations_manager.empty.title') }}</h6>
+                                    <p>{{ __('translations_manager.empty.description') }}</p>
                                 </div>
                             </td>
                         </tr>
@@ -232,7 +309,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">
                         <i class="bi bi-plus-circle-fill text-primary me-2"></i>
-                        Add Translation Key
+                        {{ __('translations_manager.modals.add_key_title') }}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
@@ -293,8 +370,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="quran-btn quran-btn-primary">Create Key</button>
+                    <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
+                    <button type="submit" class="quran-btn quran-btn-primary">{{ __('translations_manager.modals.create_key_btn') }}</button>
                 </div>
             </form>
         </div>
@@ -308,21 +385,21 @@
             <div class="modal-header border-0">
                 <h5 class="modal-title text-danger">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    Confirm Delete
+                    {{ __('translations_manager.modals.confirm_delete_title') }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this translation key? This will permanently delete the key and all its translations across all languages.</p>
+                <p>{{ __('translations_manager.modals.confirm_delete_body') }}</p>
                 <div class="alert alert-danger font-monospace py-2" id="deleteKeyLabel"></div>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
                 <form id="deleteForm" method="POST" class="d-inline">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="quran-btn quran-btn-danger">
-                        <i class="bi bi-trash me-1"></i> Delete Permanent
+                        <i class="bi bi-trash me-1"></i> {{ __('translations_manager.modals.delete_permanent_btn') }}
                     </button>
                 </form>
             </div>
@@ -337,7 +414,7 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="bi bi-download text-primary me-2"></i>
-                    Import &amp; Export Center
+                    {{ __('translations_manager.modals.import_export_title') }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -410,25 +487,25 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <i class="bi bi-clock-history text-primary me-2"></i>
-                    Translation Version History
+                    {{ __('translations_manager.modals.history_title') }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3 p-3 bg-light rounded">
-                    <div><span class="fw-semibold text-muted small text-uppercase">Translation Key:</span> <code id="history-key-name" class="fs-6 text-dark font-monospace text-break"></code></div>
-                    <div class="mt-1"><span class="fw-semibold text-muted small text-uppercase">Language Locale:</span> <span id="history-lang-name" class="fw-bold"></span></div>
+                    <div><span class="fw-semibold text-muted small text-uppercase">{{ __('translations_manager.modals.translation_key_label') }}:</span> <code id="history-key-name" class="fs-6 text-dark font-monospace text-break"></code></div>
+                    <div class="mt-1"><span class="fw-semibold text-muted small text-uppercase">{{ __('translations_manager.modals.language_locale_label') }}:</span> <span id="history-lang-name" class="fw-bold"></span></div>
                 </div>
                 <div id="history-loading" class="text-center py-4">
                     <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                    <span class="ms-2 small text-muted">Loading version history logs...</span>
+                    <span class="ms-2 small text-muted">{{ __('translations_manager.modals.loading_history') }}</span>
                 </div>
                 <div class="timeline" id="history-timeline" style="max-height: 400px; overflow-y: auto; display: none;">
-                    <!-- Timeline items will be loaded here dynamically -->
+                    {{-- Timeline items will be loaded here dynamically --}}
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">{{ __('common.close') }}</button>
             </div>
         </div>
     </div>

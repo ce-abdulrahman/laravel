@@ -240,7 +240,7 @@
         // Global Configuration
         window.quranConfig = {
             locale: '{{ app()->getLocale() }}',
-            direction: '{{ in_array(app()->getLocale(), ["ar", "ku"]) ? "rtl" : "ltr" }}',
+            direction: '{{ \App\Helpers\LanguageHelper::getDirection() }}',
             baseUrl: '{{ url("/") }}',
             apiUrl: '{{ url("/api") }}',
             csrfToken: '{{ csrf_token() }}',
@@ -256,6 +256,42 @@
                 error: '{{ __("common.error_occurred") }}',
                 success: '{{ __("common.success") }}'
             }
+        };
+
+        // JavaScript i18n Bridge — window.__('group.key', {placeholder: value})
+        @php
+            $jsGroups = ['common', 'validation', 'api', 'notifications'];
+            $jsLocale = app()->getLocale();
+            $jsFallback = config('app.fallback_locale', 'en');
+            $jsTranslations = [];
+            foreach ($jsGroups as $jsGroup) {
+                $jsPath = lang_path($jsLocale . '/' . $jsGroup . '.php');
+                $jsFallbackPath = lang_path($jsFallback . '/' . $jsGroup . '.php');
+                if (file_exists($jsPath)) {
+                    $r = include $jsPath;
+                    if (is_array($r)) { $jsTranslations[$jsGroup] = $r; }
+                } elseif (file_exists($jsFallbackPath)) {
+                    $r = include $jsFallbackPath;
+                    if (is_array($r)) { $jsTranslations[$jsGroup] = $r; }
+                }
+            }
+        @endphp
+        window.__jsTranslations = @json($jsTranslations);
+
+        window.__ = function(key, replace) {
+            const parts = key.split('.');
+            let val = window.__jsTranslations;
+            for (const p of parts) {
+                if (val === undefined || val === null) return key;
+                val = val[p];
+            }
+            if (val === undefined || val === null || typeof val !== 'string') return key;
+            if (replace) {
+                Object.keys(replace).forEach(k => {
+                    val = val.replace(new RegExp(':' + k, 'g'), replace[k]);
+                });
+            }
+            return val;
         };
 
         // Axios Configuration

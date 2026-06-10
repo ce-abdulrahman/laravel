@@ -53,7 +53,7 @@ class SearchController extends Controller
                                       'type' => 'ayah',
                                       'id' => $ayah->id,
                                       'surah_id' => $ayah->surah_id,
-                                      'surah_name' => $ayah->surah->name_en ?? $ayah->surah->name_ar,
+                                      'surah_name' => $ayah->surah->getTranslation('name', app()->getLocale()) ?? $ayah->surah->name_ar,
                                       'surah_name_ar' => $ayah->surah->name_ar,
                                       'ayah_number' => $ayah->ayah_number,
                                       'text' => $ayah->text_uthmani,
@@ -91,7 +91,7 @@ class SearchController extends Controller
                         'id' => $translation->id,
                         'ayah_id' => $translation->ayah_id,
                         'surah_id' => $translation->ayah->surah_id,
-                        'surah_name' => $translation->ayah->surah->name_en ?? $translation->ayah->surah->name_ar,
+                        'surah_name' => $translation->ayah->surah->getTranslation('name', app()->getLocale()) ?? $translation->ayah->surah->name_ar,
                         'ayah_number' => $translation->ayah->ayah_number,
                         'language_code' => $translation->language_code,
                         'translator' => $translation->translator_name,
@@ -127,7 +127,7 @@ class SearchController extends Controller
                         'id' => $tafsir->id,
                         'ayah_id' => $tafsir->ayah_id,
                         'surah_id' => $tafsir->ayah->surah_id,
-                        'surah_name' => $tafsir->ayah->surah->name_en ?? $tafsir->ayah->surah->name_ar,
+                        'surah_name' => $tafsir->ayah->surah->getTranslation('name', app()->getLocale()) ?? $tafsir->ayah->surah->name_ar,
                         'ayah_number' => $tafsir->ayah->ayah_number,
                         'tafsir_book' => $tafsir->tafsirBook->name ?? null,
                         'author' => $tafsir->tafsirBook->author ?? null,
@@ -158,8 +158,7 @@ class SearchController extends Controller
                         'id' => $surah->id,
                         'number' => $surah->number,
                         'name_ar' => $surah->name_ar,
-                        'name_en' => $surah->name_en,
-                        'name_ku' => $surah->name_ku,
+                        'name' => $surah->getTranslation('name', app()->getLocale()) ?? $surah->name_ar,
                         'revelation_type' => $surah->revelation_type,
                         'ayah_count' => $surah->ayah_count,
                     ];
@@ -216,7 +215,7 @@ class SearchController extends Controller
                 return [
                     'type' => 'surah',
                     'id' => $surah->id,
-                    'text' => $surah->name_en ?? $surah->name_ar,
+                    'text' => $surah->getTranslation('name', app()->getLocale()) ?? $surah->name_ar,
                     'subtitle' => "Surah {$surah->number} - {$surah->ayah_count} Ayahs",
                 ];
             });
@@ -234,7 +233,7 @@ class SearchController extends Controller
                     'type' => 'ayah',
                     'id' => $ayah->id,
                     'text' => $this->truncateText($ayah->text_simple ?? $ayah->text_uthmani, 50),
-                    'subtitle' => "{$ayah->surah->name_en}:{$ayah->ayah_number}",
+                    'subtitle' => ($ayah->surah->getTranslation('name', app()->getLocale()) ?? $ayah->surah->name_ar) . ':' . $ayah->ayah_number,
                 ];
             });
 
@@ -251,7 +250,7 @@ class SearchController extends Controller
                     'type' => 'translation',
                     'id' => $translation->ayah_id,
                     'text' => $this->truncateText($translation->content, 50),
-                    'subtitle' => "Translation - {$translation->ayah->surah->name_en}:{$translation->ayah->ayah_number}",
+                    'subtitle' => __('api.translation') . ' - ' . ($translation->ayah->surah->getTranslation('name', app()->getLocale()) ?? $translation->ayah->surah->name_ar) . ':' . $translation->ayah->ayah_number,
                 ];
             });
 
@@ -405,12 +404,12 @@ class SearchController extends Controller
                     'juz_number' => $juz->juz_number,
                     'start_surah' => [
                         'id' => $startSurah->id,
-                        'name' => $startSurah->name_en ?? $startSurah->name_ar,
+                        'name' => $startSurah->getTranslation('name', app()->getLocale()) ?? $startSurah->name_ar,
                         'ayah' => $juz->start_ayah,
                     ],
                     'end_surah' => [
                         'id' => $endSurah->id,
-                        'name' => $endSurah->name_en ?? $endSurah->name_ar,
+                        'name' => $endSurah->getTranslation('name', app()->getLocale()) ?? $endSurah->name_ar,
                         'ayah' => $juz->end_ayah,
                     ],
                 ];

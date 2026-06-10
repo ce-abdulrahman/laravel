@@ -41,7 +41,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idhhar Halqi (Clear)',
                 'slug'                     => 'idhhar-halqi',
                 'tajweed_rule_category_id' => $cat('noon-sakinah-tanween'),
-                'color_code'               => '#000000',
+                'color_code'               => '#000000', // Black
                 'description'              => 'Pronouncing the Noon Sakinah or Tanween clearly without extra Ghunnah when followed by throat letters (ء, ه, ع, ح, غ, خ).',
                 'example_text'             => 'مِنْ خَوْفٍ',
                 'priority'                 => 10,
@@ -50,7 +50,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idgham Bighunnah (Merge with Nasal)',
                 'slug'                     => 'idgham-bighunnah',
                 'tajweed_rule_category_id' => $cat('noon-sakinah-tanween'),
-                'color_code'               => '#4CAF50',
+                'color_code'               => '#4CAF50', // Green
                 'description'              => 'Merging the Noon into the following letter with a 2-beat nasal hold. Letters: ي, ن, م, و.',
                 'example_text'             => 'مَن يَعْمَلْ',
                 'priority'                 => 11,
@@ -59,7 +59,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idgham Bighayr Ghunnah (Merge without Nasal)',
                 'slug'                     => 'idgham-bighayr-ghunnah',
                 'tajweed_rule_category_id' => $cat('noon-sakinah-tanween'),
-                'color_code'               => '#9E9E9E',
+                'color_code'               => '#9E9E9E', // Grey
                 'description'              => 'Merging the Noon completely into the following letter without any nasal hold. Letters: ل, ر.',
                 'example_text'             => 'مِن رَّبِّهِمْ',
                 'priority'                 => 12,
@@ -68,7 +68,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Iqlab (Changing)',
                 'slug'                     => 'iqlab',
                 'tajweed_rule_category_id' => $cat('noon-sakinah-tanween'),
-                'color_code'               => '#2196F3',
+                'color_code'               => '#2196F3', // Blue
                 'description'              => 'Changing the Noon sound into a hidden Meem with a 2-beat Ghunnah when followed by Ba (ب).',
                 'example_text'             => 'مِن بَعْدِ',
                 'priority'                 => 13,
@@ -77,10 +77,19 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Ikhfa Haqiqi (Hiding)',
                 'slug'                     => 'ikhfa-haqiqi',
                 'tajweed_rule_category_id' => $cat('noon-sakinah-tanween'),
-                'color_code'               => '#4CAF50',
+                'color_code'               => '#4CAF50', // Green
                 'description'              => 'Hiding the Noon sound in the nasal cavity with a 2-beat hold before the remaining 15 letters.',
                 'example_text'             => 'مِن قَبْلُ',
                 'priority'                 => 14,
+            ],
+            [
+                'name'                     => 'Idhhar Mutlaq (Absolute Clear)',
+                'slug'                     => 'idhhar-mutlaq',
+                'tajweed_rule_category_id' => $cat('noon-sakinah-tanween'),
+                'color_code'               => '#000000', // Black
+                'description'              => 'Exceptional cases where Noon and an Idgham letter meet in one word; the Noon is pronounced clearly without merging.',
+                'example_text'             => 'دُنْيَا، صِنْوَان',
+                'priority'                 => 15,
             ],
 
             // ==========================================
@@ -90,7 +99,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Ikhfa Shafawi',
                 'slug'                     => 'ikhfa-shafawi',
                 'tajweed_rule_category_id' => $cat('meem-sakinah'),
-                'color_code'               => '#4CAF50',
+                'color_code'               => '#4CAF50', // Green
                 'description'              => 'Hiding the Meem lightly with a 2-beat Ghunnah when followed by Ba (ب).',
                 'example_text'             => 'تَرْمِيهِم بِحِجَارَةٍ',
                 'priority'                 => 20,
@@ -99,7 +108,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idgham Shafawi',
                 'slug'                     => 'idgham-shafawi',
                 'tajweed_rule_category_id' => $cat('meem-sakinah'),
-                'color_code'               => '#4CAF50',
+                'color_code'               => '#4CAF50', // Green
                 'description'              => 'Merging the Meem into another Meem with a 2-beat Ghunnah.',
                 'example_text'             => 'لَهُم مَّثَلًا',
                 'priority'                 => 21,
@@ -108,7 +117,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idhhar Shafawi',
                 'slug'                     => 'idhhar-shafawi',
                 'tajweed_rule_category_id' => $cat('meem-sakinah'),
-                'color_code'               => '#000000',
+                'color_code'               => '#000000', // Black
                 'description'              => 'Pronouncing the Meem clearly with closed lips before any letter other than Meem or Ba.',
                 'example_text'             => 'أَلَمْ تَرَ',
                 'priority'                 => 22,
@@ -121,7 +130,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Tabii (Natural Madd)',
                 'slug'                     => 'madd-tabii',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#FF9800',
+                'color_code'               => '#FF9800', // Orange
                 'description'              => 'The natural 2-beat prolongation of Alif, Waw, or Yaa when not followed by a Hamzah or Sukoon.',
                 'example_text'             => 'نُوحِيهَا',
                 'priority'                 => 30,
@@ -130,7 +139,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Muttasil (Attached)',
                 'slug'                     => 'madd-muttasil',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#E53935',
+                'color_code'               => '#E53935', // Red
                 'description'              => 'A mandatory 4 or 5 beat prolongation when a Madd letter is followed by a Hamzah in the same word.',
                 'example_text'             => 'سَمَاء',
                 'priority'                 => 31,
@@ -139,7 +148,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Munfasil (Separated)',
                 'slug'                     => 'madd-munfasil',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#E53935',
+                'color_code'               => '#E53935', // Red
                 'description'              => 'A 4 or 5 beat prolongation when a Madd letter ends a word and Hamzah begins the next. (2 beats is permissible in some readings).',
                 'example_text'             => 'بِمَا أُنزِلَ',
                 'priority'                 => 32,
@@ -148,7 +157,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Badal (Substituted)',
                 'slug'                     => 'madd-badal',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#FF9800',
+                'color_code'               => '#FF9800', // Orange
                 'description'              => 'A 2-beat prolongation occurring when a Hamzah precedes a Madd letter.',
                 'example_text'             => 'ءَامَنُوا',
                 'priority'                 => 33,
@@ -157,7 +166,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Aridh li-Sukun (Temporary Stop)',
                 'slug'                     => 'madd-aridh',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#E53935',
+                'color_code'               => '#E53935', // Red
                 'description'              => 'Prolonging the Madd letter for 2, 4, or 6 beats when stopping on the last letter of a word, creating a temporary Sukoon.',
                 'example_text'             => 'ٱلْعَالَمِينَ',
                 'priority'                 => 34,
@@ -166,7 +175,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Leen (Soft Madd)',
                 'slug'                     => 'madd-leen',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#FF9800',
+                'color_code'               => '#FF9800', // Orange
                 'description'              => 'Prolonging a Waw or Yaa with a Sukoon (preceded by a Fatha) for 2, 4, or 6 beats when stopping on the word.',
                 'example_text'             => 'قُرَيْشٍ',
                 'priority'                 => 35,
@@ -175,7 +184,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Lazim Kalimi Muthaqqal (Compulsory Word Heavy)',
                 'slug'                     => 'madd-lazim-kalimi-muthaqqal',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#B71C1C',
+                'color_code'               => '#B71C1C', // Dark Red
                 'description'              => 'A strict 6-beat prolongation when a Madd letter is followed by a Shaddah in the same word.',
                 'example_text'             => 'ٱلضَّآلِّينَ',
                 'priority'                 => 36,
@@ -184,7 +193,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Lazim Kalimi Mukhaffaf (Compulsory Word Light)',
                 'slug'                     => 'madd-lazim-kalimi-mukhaffaf',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#B71C1C',
+                'color_code'               => '#B71C1C', // Dark Red
                 'description'              => 'A strict 6-beat prolongation when a Madd letter is followed by a non-merged Sukoon in the same word.',
                 'example_text'             => 'ءَآلْـَٔـٰنَ',
                 'priority'                 => 37,
@@ -193,7 +202,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Lazim Harfi Muthaqqal (Compulsory Letter Heavy)',
                 'slug'                     => 'madd-lazim-harfi-muthaqqal',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#B71C1C',
+                'color_code'               => '#B71C1C', // Dark Red
                 'description'              => 'A strict 6-beat prolongation in the disconnected letters (Muqatta\'at) where one letter merges into the next.',
                 'example_text'             => 'طسٓمٓ',
                 'priority'                 => 38,
@@ -202,7 +211,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Lazim Harfi Mukhaffaf (Compulsory Letter Light)',
                 'slug'                     => 'madd-lazim-harfi-mukhaffaf',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#B71C1C',
+                'color_code'               => '#B71C1C', // Dark Red
                 'description'              => 'A strict 6-beat prolongation in the disconnected letters (Muqatta\'at) where the letter does not merge into the next.',
                 'example_text'             => 'صٓ',
                 'priority'                 => 39,
@@ -211,7 +220,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Silah Kubra (Connecting)',
                 'slug'                     => 'madd-silah-kubra',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#FF9800',
+                'color_code'               => '#FF9800', // Orange
                 'description'              => 'Prolonging the pronoun Ha (ـه) followed by a Hamzah, making 4/5 beats (Kubra).',
                 'example_text'             => 'مَالَهُۥٓ أَخْلَدَهُ',
                 'priority'                 => 40,
@@ -220,7 +229,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Silah Sughra (Connecting)',
                 'slug'                     => 'madd-silah-sughra',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#FF9800',
+                'color_code'               => '#FF9800', // Orange
                 'description'              => 'Prolonging the pronoun Ha (ـه) for 2 beats (Sughra) when it is NOT followed by a Hamzah.',
                 'example_text'             => 'إِنَّهُۥ كَانَ',
                 'priority'                 => 41,
@@ -229,19 +238,10 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Madd Iwad (Compensation)',
                 'slug'                     => 'madd-iwad',
                 'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#FF9800',
+                'color_code'               => '#FF9800', // Orange
                 'description'              => 'A 2-beat prolongation that substitutes a Fathatain (double Fatha) when stopping on a word, turning it into a spoken Alif.',
                 'example_text'             => 'عَلِيمًا',
                 'priority'                 => 42,
-            ],
-            [
-                'name'                     => 'Madd Tamkeen (Empowerment)',
-                'slug'                     => 'madd-tamkeen',
-                'tajweed_rule_category_id' => $cat('madd-prolongation'),
-                'color_code'               => '#FF9800',
-                'description'              => 'A 2-beat prolongation occurring when two consecutive Yaa letters appear; the first has a Shaddah and Kasrah, and the second has a Sukoon.',
-                'example_text'             => 'حُيِّيتُم',
-                'priority'                 => 43,
             ],
 
             // ==========================================
@@ -251,7 +251,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Raa Tafkhim (Heavy Raa)',
                 'slug'                     => 'raa-tafkhim',
                 'tajweed_rule_category_id' => $cat('rules-of-raa'),
-                'color_code'               => '#3F51B5',
+                'color_code'               => '#3F51B5', // Indigo
                 'description'              => 'Pronouncing the Raa with a full, heavy mouth. Occurs when Raa has a Fatha/Damma, or a Sukoon preceded by Fatha/Damma.',
                 'example_text'             => 'رَبَّنَا',
                 'priority'                 => 50,
@@ -260,7 +260,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Raa Tarqiq (Light Raa)',
                 'slug'                     => 'raa-tarqiq',
                 'tajweed_rule_category_id' => $cat('rules-of-raa'),
-                'color_code'               => '#03A9F4',
+                'color_code'               => '#03A9F4', // Light Blue
                 'description'              => 'Pronouncing the Raa with an empty, flat mouth. Occurs when Raa has a Kasra, or a Sukoon preceded by a Kasra.',
                 'example_text'             => 'رِجَالٌ',
                 'priority'                 => 51,
@@ -269,7 +269,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Raa Jawaz (Permissible Both Ways)',
                 'slug'                     => 'raa-jawaz',
                 'tajweed_rule_category_id' => $cat('rules-of-raa'),
-                'color_code'               => '#9C27B0',
+                'color_code'               => '#9C27B0', // Purple
                 'description'              => 'Rare scenarios where the Raa can be read as either heavy or light (e.g., when followed by a heavy letter with a Kasra, or stopping on specific words).',
                 'example_text'             => 'فِرْقٍ',
                 'priority'                 => 52,
@@ -282,7 +282,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Qalqalah Kubra (Major Echo)',
                 'slug'                     => 'qalqalah-kubra',
                 'tajweed_rule_category_id' => $cat('qalqalah'),
-                'color_code'               => '#00BCD4',
+                'color_code'               => '#00BCD4', // Cyan
                 'description'              => 'A strong echoing bounce sound made when stopping on one of the Qalqalah letters (ق, ط, ب, ج, د) at the end of a word.',
                 'example_text'             => 'ٱلْفَلَقِ',
                 'priority'                 => 60,
@@ -291,7 +291,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Qalqalah Sughra (Minor Echo)',
                 'slug'                     => 'qalqalah-sughra',
                 'tajweed_rule_category_id' => $cat('qalqalah'),
-                'color_code'               => '#00BCD4',
+                'color_code'               => '#00BCD4', // Cyan
                 'description'              => 'A softer echoing bounce sound made when a Qalqalah letter has a Sukoon in the middle of a word.',
                 'example_text'             => 'يَجْعَلُ',
                 'priority'                 => 61,
@@ -304,7 +304,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Ghunnah Mushaddadah',
                 'slug'                     => 'ghunnah-mushaddadah',
                 'tajweed_rule_category_id' => $cat('ghunnah'),
-                'color_code'               => '#4CAF50',
+                'color_code'               => '#4CAF50', // Green
                 'description'              => 'A mandatory 2-beat strong nasal sound whenever a Noon (ن) or Meem (م) carries a Shaddah.',
                 'example_text'             => 'إِنَّ',
                 'priority'                 => 62,
@@ -317,7 +317,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Laam Tafkhim (Heavy Laam)',
                 'slug'                     => 'laam-tafkhim',
                 'tajweed_rule_category_id' => $cat('laam-of-allah'),
-                'color_code'               => '#3F51B5',
+                'color_code'               => '#3F51B5', // Indigo
                 'description'              => 'Pronouncing the Laam in the word "Allah" with a heavy, full mouth when preceded by a Fatha or Damma.',
                 'example_text'             => 'شَهِدَ اللَّهُ',
                 'priority'                 => 70,
@@ -326,7 +326,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Laam Tarqiq (Light Laam)',
                 'slug'                     => 'laam-tarqiq',
                 'tajweed_rule_category_id' => $cat('laam-of-allah'),
-                'color_code'               => '#03A9F4',
+                'color_code'               => '#03A9F4', // Light Blue
                 'description'              => 'Pronouncing the Laam in the word "Allah" with a light, empty mouth when preceded by a Kasra.',
                 'example_text'             => 'بِسْمِ اللَّهِ',
                 'priority'                 => 71,
@@ -339,7 +339,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idhhar Qamari (Clear Laam)',
                 'slug'                     => 'idhhar-qamari',
                 'tajweed_rule_category_id' => $cat('laam-al-taareef'),
-                'color_code'               => '#000000',
+                'color_code'               => '#000000', // Black
                 'description'              => 'Pronouncing the Laam clearly when followed by any of the 14 lunar letters (e.g., ب، ج، ح).',
                 'example_text'             => 'ٱلْقَمَرِ',
                 'priority'                 => 80,
@@ -348,7 +348,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idgham Shamsi (Merged Laam)',
                 'slug'                     => 'idgham-shamsi',
                 'tajweed_rule_category_id' => $cat('laam-al-taareef'),
-                'color_code'               => '#9E9E9E',
+                'color_code'               => '#9E9E9E', // Grey
                 'description'              => 'Merging the Laam completely into the following letter without pronouncing it, applied to the 14 solar letters (e.g., ش، س، ت).',
                 'example_text'             => 'ٱلشَّمْسِ',
                 'priority'                 => 81,
@@ -361,7 +361,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idgham Mutamathilayn (Identical)',
                 'slug'                     => 'idgham-mutamathilayn',
                 'tajweed_rule_category_id' => $cat('advanced-idgham'),
-                'color_code'               => '#9E9E9E',
+                'color_code'               => '#9E9E9E', // Grey
                 'description'              => 'Merging two identical letters when the first has a Sukoon and the second has a vowel.',
                 'example_text'             => 'ٱضْرِب بِّعَصَاكَ',
                 'priority'                 => 90,
@@ -370,7 +370,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idgham Mutajanisayn (Similar)',
                 'slug'                     => 'idgham-mutajanisayn',
                 'tajweed_rule_category_id' => $cat('advanced-idgham'),
-                'color_code'               => '#9E9E9E',
+                'color_code'               => '#9E9E9E', // Grey
                 'description'              => 'Merging two letters that share the same articulation point but have different characteristics (e.g., Ta and Da).',
                 'example_text'             => 'أُجِيبَت دَّعْوَتُكُمَا',
                 'priority'                 => 91,
@@ -379,7 +379,7 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Idgham Mutaqaribayn (Close)',
                 'slug'                     => 'idgham-mutaqaribayn',
                 'tajweed_rule_category_id' => $cat('advanced-idgham'),
-                'color_code'               => '#9E9E9E',
+                'color_code'               => '#9E9E9E', // Grey
                 'description'              => 'Merging two letters that are very close in articulation point and characteristics (e.g., Qaf and Kaf).',
                 'example_text'             => 'أَلَمْ نَخْلُقكُّم',
                 'priority'                 => 92,
@@ -392,10 +392,19 @@ class TajweedRuleSeeder extends Seeder
                 'name'                     => 'Saktah (Breathless Pause)',
                 'slug'                     => 'saktah',
                 'tajweed_rule_category_id' => $cat('special-rules'),
-                'color_code'               => '#E91E63',
+                'color_code'               => '#E91E63', // Pink/Red Material
                 'description'              => 'A mandatory short pause of about 2 beats without breaking the breath. Marked by a small (س).',
                 'example_text'             => 'عِوَجَا ۜ قَيِّمًا',
                 'priority'                 => 100,
+            ],
+            [
+                'name'                     => 'Silent Letters (Tuktab wa la Tantaq)',
+                'slug'                     => 'silent-letters',
+                'tajweed_rule_category_id' => $cat('special-rules'),
+                'color_code'               => '#B0BEC5', // Light Blue-Grey Material
+                'description'              => 'Letters that are written in the Quranic text but dropped and not pronounced during recitation (e.g., extra Alifs, Hamzat Wasl in the middle of speech).',
+                'example_text'             => 'قَالُوا',
+                'priority'                 => 101,
             ],
         ];
 

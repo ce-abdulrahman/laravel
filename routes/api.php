@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\V1\SettingController as V1SettingController;
 use App\Http\Controllers\Api\V1\SurahController as V1SurahController;
 use App\Http\Controllers\Api\V1\TafsirController;
 use App\Http\Controllers\Api\V1\TajweedRuleController;
+use App\Http\Controllers\Api\V1\TajweedCategoryController;
 use App\Http\Controllers\Api\V1\TranslationController;
 use App\Http\Controllers\Api\V1\UserAyahProgressController;
 use App\Http\Controllers\Api\V1\BannerController as V1BannerController;
@@ -66,6 +67,7 @@ Route::prefix('v1')->group(function () {
     Route::get('reciters', [ReciterController::class, 'index']);
     Route::get('reciters/{id}', [ReciterController::class, 'show']);
     Route::get('tajweed-rules', [TajweedRuleController::class, 'index']);
+    Route::get('tajweed-categories', [TajweedCategoryController::class, 'index']);
     Route::get('qiraats', [QiraatController::class, 'index']);
     Route::get('qiraats/{id}', [QiraatController::class, 'show']);
     Route::get('qiraat-texts', [QiraatController::class, 'qiraatTexts']);

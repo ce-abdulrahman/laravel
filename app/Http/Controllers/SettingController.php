@@ -6,6 +6,7 @@ use App\Models\Setting;
 use App\Models\TafsirBook;
 use App\Models\Reciter;
 use App\Models\Qiraat;
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
@@ -27,16 +28,21 @@ class SettingController extends Controller
         $tafsirBooks = TafsirBook::active()->orderBy('name')->get();
         $reciters = Reciter::active()->orderBy('name')->get();
         $qiraats = Qiraat::active()->orderBy('name')->get();
-        $languages = $this->getAvailableLanguages();
 
-        // Scan available fonts from public/fonts
-        $availableArFonts = array_map('basename', glob(public_path('fonts/ar/*.*')) ?: []);
-        $availableKuFonts = array_map('basename', glob(public_path('fonts/ku/*.*')) ?: []);
-        $availableEnFonts = array_map('basename', glob(public_path('fonts/en/*.*')) ?: []);
+        // Dynamic language list from DB
+        $languages = Language::active()->ordered()->get()
+            ->mapWithKeys(fn($lang) => [$lang->code => "{$lang->native_name} ({$lang->name})"])
+            ->toArray();
+
+        // Scan available fonts dynamically per active language
+        $activeLangCodes = Language::activeCodes();
+        $availableFonts = [];
+        foreach ($activeLangCodes as $code) {
+            $availableFonts[$code] = array_map('basename', glob(public_path("fonts/{$code}/*.*")) ?: []);
+        }
 
         return view('settings.index', compact(
-            'settings', 'tafsirBooks', 'reciters', 'qiraats', 'languages',
-            'availableArFonts', 'availableKuFonts', 'availableEnFonts'
+            'settings', 'tafsirBooks', 'reciters', 'qiraats', 'languages', 'availableFonts'
         ));
     }
 
@@ -60,10 +66,14 @@ class SettingController extends Controller
             'default_qiraah_id' => 'nullable|exists:qiraats,id',
             'about_text' => 'nullable|string',
             'contact_email' => 'nullable|email|max:255',
-            'font_ar' => 'nullable|string|max:255',
-            'font_ku' => 'nullable|string|max:255',
-            'font_en' => 'nullable|string|max:255',
         ]);
+
+        // Dynamic font validation per active language
+        $fontRules = [];
+        foreach (Language::activeCodes() as $code) {
+            $fontRules["font_{$code}"] = 'nullable|string|max:255';
+        }
+        $validated = array_merge($validated, $request->validate($fontRules));
 
         if ($request->hasFile('app_logo')) {
             // سڕینەوەی لۆگۆی پێشوو
@@ -108,22 +118,12 @@ class SettingController extends Controller
     }
 
     /**
-     * Get available languages.
+     * Get available languages dynamically from the database.
      */
     private function getAvailableLanguages(): array
     {
-        return [
-            'ku' => 'کوردی (Kurdish)',
-            'ar' => 'العربية (Arabic)',
-            'en' => 'English',
-            'fa' => 'فارسی (Persian)',
-            'tr' => 'Türkçe (Turkish)',
-            'ur' => 'اردو (Urdu)',
-            'fr' => 'Français (French)',
-            'de' => 'Deutsch (German)',
-            'es' => 'Español (Spanish)',
-            'id' => 'Bahasa Indonesia',
-            'ms' => 'Bahasa Melayu',
-        ];
+        return Language::active()->ordered()->get()
+            ->mapWithKeys(fn($lang) => [$lang->code => "{$lang->native_name} ({$lang->name})"])
+            ->toArray();
     }
 }

@@ -190,53 +190,28 @@
                         </h5>
                     </div>
                     <div class="quran-card-body">
-                        <div class="mb-3">
-                            <label class="quran-form-label" for="font_ar">
-                                {{ __('settings.fields.font_ar') }}
-                            </label>
-                            <select name="font_ar" id="font_ar" class="quran-form-select @error('font_ar') is-invalid @enderror">
-                                @foreach($availableArFonts as $font)
-                                    <option value="{{ $font }}" {{ old('font_ar', $settings->font_ar) == $font ? 'selected' : '' }}>
-                                        {{ $font }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('font_ar')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="quran-form-label" for="font_ku">
-                                {{ __('settings.fields.font_ku') }}
-                            </label>
-                            <select name="font_ku" id="font_ku" class="quran-form-select @error('font_ku') is-invalid @enderror">
-                                @foreach($availableKuFonts as $font)
-                                    <option value="{{ $font }}" {{ old('font_ku', $settings->font_ku) == $font ? 'selected' : '' }}>
-                                        {{ $font }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('font_ku')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="quran-form-label" for="font_en">
-                                {{ __('settings.fields.font_en') }}
-                            </label>
-                            <select name="font_en" id="font_en" class="quran-form-select @error('font_en') is-invalid @enderror">
-                                @foreach($availableEnFonts as $font)
-                                    <option value="{{ $font }}" {{ old('font_en', $settings->font_en) == $font ? 'selected' : '' }}>
-                                        {{ $font }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('font_en')
-                            <div class="quran-invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
+                        @foreach($languages as $code => $name)
+                            @php
+                                $fieldName = "font_{$code}";
+                            @endphp
+                            @if(array_key_exists($fieldName, $settings->getAttributes()))
+                                <div class="mb-3">
+                                    <label class="quran-form-label" for="{{ $fieldName }}">
+                                        {{ Lang::has("settings.fields.{$fieldName}") ? __("settings.fields.{$fieldName}") : "{$name} Font" }}
+                                    </label>
+                                    <select name="{{ $fieldName }}" id="{{ $fieldName }}" class="quran-form-select @error($fieldName) is-invalid @enderror">
+                                        @foreach($availableFonts[$code] ?? [] as $font)
+                                            <option value="{{ $font }}" {{ old($fieldName, $settings->{$fieldName}) == $font ? 'selected' : '' }}>
+                                                {{ $font }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error($fieldName)
+                                    <div class="quran-invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
             </div>

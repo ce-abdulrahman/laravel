@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\SetLocaleMiddleware::class, // Dynamic locale resolution for all API requests
         ],
     ];
 

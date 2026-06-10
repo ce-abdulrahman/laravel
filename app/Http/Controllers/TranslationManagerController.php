@@ -6,8 +6,13 @@ use App\Models\Language;
 use App\Models\TranslationKey;
 use App\Models\UiTranslation;
 use App\Services\TranslationService;
+use App\Services\TranslationRegistryService;
+use App\Services\MissingTranslationReportService;
+use App\Services\TranslationCoverageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 
 class TranslationManagerController extends Controller
 {
@@ -71,7 +76,12 @@ class TranslationManagerController extends Controller
         // Get unique groups for the filter dropdown
         $groups = TranslationKey::select('group')->distinct()->pluck('group')->toArray();
 
-        return view('translations.manager', compact('keys', 'languages', 'groups', 'activeLanguagesCount'));
+        // Calculate diagnostics stats for the premium dashboard widgets
+        $reportService = app(MissingTranslationReportService::class);
+        $reportStats = $reportService->getReportStats();
+        $lastScan = Cache::get('translation_last_scan_at', 'Never');
+
+        return view('translations.manager', compact('keys', 'languages', 'groups', 'activeLanguagesCount', 'reportStats', 'lastScan'));
     }
 
     /**
@@ -451,5 +461,58 @@ class TranslationManagerController extends Controller
             'updated' => $updated,
             'skipped' => $skipped,
         ]);
+    }
+
+    /**
+     * Display a comprehensive translation coverage report.
+     */
+    public function report(TranslationCoverageService $coverageService)
+    {
+        abort_unless(auth()->user()?->role === 'admin', 403);
+        $data = $coverageService->getCoverageData();
+        return view('translations.report', compact('data'));
+    }
+
+    /**
+     * Trigger a scan of the codebase for translation keys.
+     */
+    public function scan(TranslationRegistryService $registryService)
+    {
+        abort_unless(auth()->user()?->role === 'admin', 403);
+        
+        $keys = $registryService->scanCodebase();
+        foreach ($keys as $key) {
+            $registryService->registerKey($key);
+        }
+
+        Cache::put('translation_last_scan_at', now()->format('Y-m-d H:i:s'));
+        $this->translationService->clearCache();
+
+        return redirect()->back()->with('success', 'Codebase scanned successfully. Found and registered ' . count($keys) . ' keys.');
+    }
+
+    /**
+     * Trigger synchronization with files and cache.
+     */
+    public function sync()
+    {
+        abort_unless(auth()->user()?->role === 'admin', 403);
+
+        Artisan::call('localization:sync');
+        Cache::put('translation_last_scan_at', now()->format('Y-m-d H:i:s'));
+
+        return redirect()->back()->with('success', 'Translation system fully synchronized and cache rebuilt.');
+    }
+
+    /**
+     * Manually flush the translation caches.
+     */
+    public function clearCache()
+    {
+        abort_unless(auth()->user()?->role === 'admin', 403);
+
+        $this->translationService->clearCache();
+
+        return redirect()->back()->with('success', 'Translation caches flushed successfully.');
     }
 }

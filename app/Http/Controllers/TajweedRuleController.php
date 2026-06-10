@@ -106,8 +106,9 @@ class TajweedRuleController extends Controller implements HasMiddleware
             'is_active' => __('tajweed_rules.fields.is_active'),
         ];
 
+        $defaultCode = \App\Models\Language::default()?->code;
         foreach (\App\Models\Language::activeList() as $lang) {
-            $isRequired = in_array($lang->code, ['en', 'ku']);
+            $isRequired = $lang->code === $defaultCode;
             $rules["translations.{$lang->code}.name"] = [
                 $isRequired ? 'required' : 'nullable',
                 'string',
@@ -206,8 +207,9 @@ class TajweedRuleController extends Controller implements HasMiddleware
             'is_active' => __('tajweed_rules.fields.is_active'),
         ];
 
+        $defaultCode = \App\Models\Language::default()?->code;
         foreach (\App\Models\Language::activeList() as $lang) {
-            $isRequired = in_array($lang->code, ['en', 'ku']);
+            $isRequired = $lang->code === $defaultCode;
             $rules["translations.{$lang->code}.name"] = [
                 $isRequired ? 'required' : 'nullable',
                 'string',

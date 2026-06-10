@@ -108,5 +108,29 @@ class UiTranslation extends Model
                 ]);
             }
         });
+
+        static::saved(function (UiTranslation $translation) {
+            $language = $translation->language;
+            if ($language) {
+                app(\App\Services\TranslationService::class)->clearCache($language->code);
+            } else {
+                app(\App\Services\TranslationService::class)->clearCache();
+            }
+            \Illuminate\Support\Facades\Cache::forget('translation:coverage');
+            \Illuminate\Support\Facades\Cache::forget('translation:missing_report');
+            \App\Services\TranslationRegistryService::clearStaticCache();
+        });
+
+        static::deleted(function (UiTranslation $translation) {
+            $language = $translation->language;
+            if ($language) {
+                app(\App\Services\TranslationService::class)->clearCache($language->code);
+            } else {
+                app(\App\Services\TranslationService::class)->clearCache();
+            }
+            \Illuminate\Support\Facades\Cache::forget('translation:coverage');
+            \Illuminate\Support\Facades\Cache::forget('translation:missing_report');
+            \App\Services\TranslationRegistryService::clearStaticCache();
+        });
     }
 }

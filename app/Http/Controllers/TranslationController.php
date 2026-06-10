@@ -252,23 +252,13 @@ class TranslationController extends Controller
     }
 
     /**
-     * Get available languages for translations.
+     * Get available languages dynamically from the database.
      */
     private function getAvailableLanguages(): array
     {
-        return [
-            'ku' => 'کوردی (Kurdish)',
-            'ar' => 'العربية (Arabic)',
-            'en' => 'English',
-            'fa' => 'فارسی (Persian)',
-            'tr' => 'Türkçe (Turkish)',
-            'ur' => 'اردو (Urdu)',
-            'fr' => 'Français (French)',
-            'de' => 'Deutsch (German)',
-            'es' => 'Español (Spanish)',
-            'id' => 'Bahasa Indonesia',
-            'ms' => 'Bahasa Melayu',
-        ];
+        return \App\Models\Language::active()->ordered()->get()
+            ->mapWithKeys(fn($lang) => [$lang->code => "{$lang->native_name} ({$lang->name})"])
+            ->toArray();
     }
 
     /**

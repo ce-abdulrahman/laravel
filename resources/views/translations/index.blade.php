@@ -21,11 +21,11 @@
             @if(auth()->user()?->role === 'admin')
             <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importModal">
                 <i class="bi bi-file-earmark-arrow-up me-1"></i>
-                Import JSON
+                {{ __('translations.actions.import_json') }}
             </button>
             <button type="button" class="quran-btn quran-btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="bi bi-code-slash me-1"></i>
-                Example JSON
+                {{ __('translations.actions.example_json') }}
             </button>
             <a href="{{ route('translations.create') }}" class="quran-btn quran-btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>
@@ -286,20 +286,20 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="importModalLabel">Import JSON File</h5>
+                <h5 class="modal-title" id="importModalLabel">{{ __('translations.actions.import_json_title') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('translations.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="json_file" class="form-label">Select .json file to import</label>
+                        <label for="json_file" class="form-label">{{ __('translations.actions.import_json_select') }}</label>
                         <input type="file" class="form-control" id="json_file" name="file" accept=".json" required>
                     </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="quran-btn quran-btn-primary">Import</button>
+                    <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">{{ __('common.cancel') }}</button>
+                    <button type="submit" class="quran-btn quran-btn-primary">{{ __('translations.actions.import') }}</button>
                 </div>
             </form>
         </div>
@@ -311,11 +311,11 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header border-0">
-                <h5 class="modal-title" id="exampleModalLabel">Example JSON Format</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{{ __('translations.actions.example_json_format') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>The JSON file must be an array of objects structured as shown below:</p>
+                <p>{{ __('translations.actions.example_json_description') }}</p>
                 <div class="bg-dark text-light p-3 rounded-3" style="max-height: 400px; overflow-y: auto;">
                     <pre><code class="text-info">[
   {
@@ -331,7 +331,7 @@
                 </div>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-dismiss="modal">{{ __('common.close') }}</button>
             </div>
         </div>
     </div>

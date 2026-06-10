@@ -140,8 +140,8 @@ class TranslationEngineTest extends TestCase
         $this->assertDatabaseHas('ui_translations', [
             'translation_key_id' => $keyRecord->id,
             'language_id' => $this->langEn->id,
-            'value' => null,
-            'is_auto_generated' => true,
+            'value' => 'Auto Generated Key',
+            'is_auto_generated' => false,
         ]);
         $this->assertDatabaseHas('ui_translations', [
             'translation_key_id' => $keyRecord->id,

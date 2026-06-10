@@ -22,7 +22,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Validation failed',
+                'message' => __('api.validation_failed'),
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -30,7 +30,7 @@ class AuthController extends Controller
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Invalid credentials'
+                'message' => __('api.invalid_credentials')
             ], 401);
         }
 
@@ -39,7 +39,7 @@ class AuthController extends Controller
         if (!$user->status) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Account is deactivated'
+                'message' => __('api.account_deactivated')
             ], 403);
         }
 
@@ -47,7 +47,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Login successful',
+            'message' => __('api.login_successful'),
             'data' => [
                 'user' => $user,
                 'token' => $token
@@ -66,7 +66,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Validation failed',
+                'message' => __('api.validation_failed'),
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -83,7 +83,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Registration successful',
+            'message' => __('api.registration_successful'),
             'data' => [
                 'user' => $user,
                 'token' => $token
@@ -97,7 +97,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Logged out successfully'
+            'message' => __('api.logged_out')
         ]);
     }
 
@@ -121,7 +121,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Validation failed',
+                'message' => __('api.validation_failed'),
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -130,7 +130,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Profile updated successfully',
+            'message' => __('api.profile_updated'),
             'data' => [
                 'user' => $request->user()->fresh()
             ]
@@ -147,7 +147,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Validation failed',
+                'message' => __('api.validation_failed'),
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -157,7 +157,7 @@ class AuthController extends Controller
         if (!Hash::check($request->current_password, $user->password)) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Current password is incorrect'
+                'message' => __('api.current_password_incorrect')
             ], 400);
         }
 
@@ -168,7 +168,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Password changed successfully'
+            'message' => __('api.password_changed')
         ]);
     }
 }

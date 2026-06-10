@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Translation Integrity Audit')
-@section('page-title', 'Translation Integrity Audit')
+@section('title', __('translations_manager.audit.title'))
+@section('page-title', __('translations_manager.audit.title'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('translations-manager.index') }}">Translation Manager</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Integrity Scan</li>
+    <li class="breadcrumb-item"><a href="{{ route('translations-manager.index') }}">{{ __('translations_manager.title') }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('translations_manager.audit.breadcrumb') }}</li>
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
     {{-- Header --}}
     <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">Translation Integrity Scan</h1>
-            <div class="text-muted">Analyze localization database coverage, discover missing translations, orphans, and duplicate strings.</div>
+            <h1 class="h4 mb-1">{{ __('translations_manager.audit.heading') }}</h1>
+            <div class="text-muted">{{ __('translations_manager.audit.subtitle') }}</div>
         </div>
         <div>
             <a href="{{ route('translations-manager.index') }}" class="quran-btn quran-btn-outline-primary">
-                <i class="bi bi-arrow-left me-1"></i> Back to Manager
+                <i class="bi bi-arrow-left me-1"></i> {{ __('translations_manager.audit.back_to_manager') }}
             </a>
         </div>
     </div>
@@ -27,22 +27,22 @@
     <ul class="nav nav-pills gap-2 mb-4" id="auditTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active rounded-pill fw-semibold" id="coverage-tab" data-bs-toggle="pill" data-bs-target="#coverage" type="button" role="tab">
-                <i class="bi bi-pie-chart-fill me-1"></i> Coverage &amp; Stats
+                <i class="bi bi-pie-chart-fill me-1"></i> {{ __('translations_manager.audit.tab_coverage') }}
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link rounded-pill fw-semibold" id="missing-tab" data-bs-toggle="pill" data-bs-target="#missing" type="button" role="tab">
-                <i class="bi bi-exclamation-octagon-fill text-danger me-1"></i> Missing / Empty ({{ count($results['missing']) + count($results['empty']) }})
+                <i class="bi bi-exclamation-octagon-fill text-danger me-1"></i> {{ __('translations_manager.audit.tab_missing') }} ({{ count($results['missing']) + count($results['empty']) }})
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link rounded-pill fw-semibold" id="duplicates-tab" data-bs-toggle="pill" data-bs-target="#duplicates" type="button" role="tab">
-                <i class="bi bi-files text-warning me-1"></i> Duplicate Strings ({{ count($results['duplicates']) }})
+                <i class="bi bi-files text-warning me-1"></i> {{ __('translations_manager.audit.tab_duplicates') }} ({{ count($results['duplicates']) }})
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link rounded-pill fw-semibold" id="codebase-tab" data-bs-toggle="pill" data-bs-target="#codebase" type="button" role="tab">
-                <i class="bi bi-code-slash text-info me-1"></i> Codebase Audit
+                <i class="bi bi-code-slash text-info me-1"></i> {{ __('translations_manager.audit.tab_codebase') }}
             </button>
         </li>
     </ul>
@@ -60,7 +60,7 @@
                             
                             <div class="d-flex align-items-baseline gap-2 mb-2">
                                 <span class="display-6 fw-extrabold text-primary">{{ $data['coverage_percentage'] }}%</span>
-                                <span class="text-muted small">coverage</span>
+                                <span class="text-muted small">{{ __('translations_manager.audit.coverage_label') }}</span>
                             </div>
 
                             <div class="progress mb-3" style="height: 8px; border-radius: 4px;">
@@ -68,7 +68,7 @@
                             </div>
 
                             <div class="d-flex justify-content-between text-muted small">
-                                <span>Translated Keys</span>
+                                <span>{{ __('translations_manager.audit.translated_keys_label') }}</span>
                                 <span class="fw-bold text-dark">{{ $data['translated'] }} / {{ $data['total_keys'] }}</span>
                             </div>
                         </div>
@@ -80,11 +80,11 @@
         {{-- Tab 2: Missing / Empty --}}
         <div class="tab-pane fade" id="missing" role="tabpanel">
             <div class="quran-card p-4">
-                <h5 class="fw-bold text-dark mb-3">Missing Translation Values</h5>
+                <h5 class="fw-bold text-dark mb-3">{{ __('translations_manager.audit.missing_values_title') }}</h5>
                 
                 @if(empty($results['missing']) && empty($results['empty']))
                     <div class="alert alert-success border-0 rounded-3 mb-0">
-                        <i class="bi bi-shield-check me-2"></i> Perfect! No missing or empty translations found.
+                        <i class="bi bi-shield-check me-2"></i> {{ __('translations_manager.audit.no_missing_found') }}
                     </div>
                 @else
                     @foreach($languages as $lang)
@@ -99,27 +99,27 @@
                                 <h6 class="fw-bold text-dark d-flex align-items-center mb-2">
                                     <span class="me-2">{{ $lang->flag }}</span>
                                     <span>{{ $lang->name }} ({{ strtoupper($lang->code) }})</span>
-                                    <span class="badge bg-danger rounded-pill ms-2">{{ $totalIssues }} issues</span>
+                                    <span class="badge bg-danger rounded-pill ms-2">{{ $totalIssues }} {{ __('translations_manager.audit.issues_count') }}</span>
                                 </h6>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-bordered">
                                         <thead class="table-light small">
                                             <tr>
-                                                <th>Translation Key</th>
-                                                <th>Issue Status</th>
+                                                <th>{{ __('translations_manager.audit.table_key') }}</th>
+                                                <th>{{ __('translations_manager.audit.table_status') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody class="small font-monospace">
                                             @foreach($missingList as $m)
                                                 <tr>
                                                     <td class="text-danger-emphasis">{{ $m }}</td>
-                                                    <td><span class="badge bg-danger-subtle text-danger">Missing record</span></td>
+                                                    <td><span class="badge bg-danger-subtle text-danger">{{ __('translations_manager.audit.status_missing') }}</span></td>
                                                 </tr>
                                             @endforeach
                                             @foreach($emptyList as $e)
                                                 <tr>
                                                     <td class="text-warning-emphasis">{{ $e }}</td>
-                                                    <td><span class="badge bg-warning-subtle text-warning">Blank / Empty string</span></td>
+                                                    <td><span class="badge bg-warning-subtle text-warning">{{ __('translations_manager.audit.status_empty') }}</span></td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -135,12 +135,12 @@
         {{-- Tab 3: Duplicates --}}
         <div class="tab-pane fade" id="duplicates" role="tabpanel">
             <div class="quran-card p-4">
-                <h5 class="fw-bold text-dark mb-1">Duplicate Translation Values</h5>
-                <p class="text-muted small mb-4">The following strings have identical values shared across different translation keys. (Ignoring short words less than 5 characters)</p>
+                <h5 class="fw-bold text-dark mb-1">{{ __('translations_manager.audit.duplicate_values_title') }}</h5>
+                <p class="text-muted small mb-4">{{ __('translations_manager.audit.duplicate_values_description') }}</p>
 
                 @if(empty($results['duplicates']))
                     <div class="alert alert-success border-0 rounded-3 mb-0">
-                        <i class="bi bi-shield-check me-2"></i> Excellent! No duplicate translation values detected.
+                        <i class="bi bi-shield-check me-2"></i> {{ __('translations_manager.audit.no_duplicates_found') }}
                     </div>
                 @else
                     @foreach($results['duplicates'] as $code => $dups)
@@ -154,8 +154,8 @@
                                 <table class="table table-sm table-bordered">
                                     <thead class="table-light small">
                                         <tr>
-                                            <th>Translation Value</th>
-                                            <th>Shared Translation Keys</th>
+                                            <th>{{ __('translations_manager.audit.table_value') }}</th>
+                                            <th>{{ __('translations_manager.audit.table_shared_keys') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody class="small">
@@ -184,16 +184,16 @@
                 {{-- Orphans --}}
                 <div class="col-12 col-md-6">
                     <div class="quran-card p-4 h-100">
-                        <h5 class="fw-bold text-dark mb-1">Orphan Translation Keys</h5>
-                        <div class="text-muted small mb-3">Keys defined in the database but not referenced in code files.</div>
+                        <h5 class="fw-bold text-dark mb-1">{{ __('translations_manager.audit.orphan_keys_title') }}</h5>
+                        <div class="text-muted small mb-3">{{ __('translations_manager.audit.orphan_keys_description') }}</div>
 
                         @if(empty($results['orphans']))
                             <div class="alert alert-success border-0 rounded-3 mb-0">
-                                <i class="bi bi-shield-check me-2"></i> No orphan keys found in database.
+                                <i class="bi bi-shield-check me-2"></i> {{ __('translations_manager.audit.no_orphans_found') }}
                             </div>
                         @else
                             <div class="alert alert-warning border-0 rounded-3 small mb-3">
-                                <strong>Note:</strong> These keys might be safe to delete if they are not used dynamically (e.g. string concatenation).
+                                <strong>{{ __('translations_manager.audit.note_label') }}</strong> {{ __('translations_manager.audit.orphan_keys_warning') }}
                             </div>
                             <div style="max-height: 350px; overflow-y: auto;">
                                 <ul class="list-group list-group-flush font-monospace small">
@@ -209,16 +209,16 @@
                 {{-- Missing from DB --}}
                 <div class="col-12 col-md-6">
                     <div class="quran-card p-4 h-100">
-                        <h5 class="fw-bold text-dark mb-1">Missing Database Keys</h5>
-                        <div class="text-muted small mb-3">Keys used in PHP/Blade code (e.g. <code>t(...)</code>) but missing in database.</div>
+                        <h5 class="fw-bold text-dark mb-1">{{ __('translations_manager.audit.missing_db_keys_title') }}</h5>
+                        <div class="text-muted small mb-3">{{ __('translations_manager.audit.missing_db_keys_description') }}</div>
 
                         @if(empty($results['missing_from_db']))
                             <div class="alert alert-success border-0 rounded-3 mb-0">
-                                <i class="bi bi-shield-check me-2"></i> No missing database keys found. All code calls exist!
+                                <i class="bi bi-shield-check me-2"></i> {{ __('translations_manager.audit.no_missing_db_found') }}
                             </div>
                         @else
                             <div class="alert alert-danger border-0 rounded-3 small mb-3">
-                                <strong>Warning:</strong> These keys will render as plain text fallback keys if not added to the database.
+                                <strong>{{ __('translations_manager.audit.warning_label') }}</strong> {{ __('translations_manager.audit.missing_db_keys_warning') }}
                             </div>
                             <div style="max-height: 350px; overflow-y: auto;">
                                 <ul class="list-group list-group-flush font-monospace small">

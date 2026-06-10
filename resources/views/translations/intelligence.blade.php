@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Translation Intelligence Dashboard')
-@section('page-title', 'Translation Intelligence Dashboard')
+@section('title', __('translations_manager.intelligence.title'))
+@section('page-title', __('translations_manager.intelligence.title'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('translations-manager.index') }}">Translation Manager</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Intelligence Dashboard</li>
+    <li class="breadcrumb-item"><a href="{{ route('translations-manager.index') }}">{{ __('translations_manager.title') }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('translations_manager.intelligence.breadcrumb') }}</li>
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
     {{-- Header --}}
     <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">🧠 Translation Intelligence Dashboard</h1>
-            <div class="text-muted">Semantic search, naming diagnostics, consistency analysis, and smart AI suggestion helpers.</div>
+            <h1 class="h4 mb-1">🧠 {{ __('translations_manager.intelligence.heading') }}</h1>
+            <div class="text-muted">{{ __('translations_manager.intelligence.subtitle') }}</div>
         </div>
         <div>
             <a href="{{ route('translations-manager.index') }}" class="quran-btn quran-btn-outline-primary">
-                <i class="bi bi-arrow-left me-1"></i> Back to Manager
+                <i class="bi bi-arrow-left me-1"></i> {{ __('translations_manager.intelligence.back_to_manager') }}
             </a>
         </div>
     </div>
@@ -32,7 +32,7 @@
                         <i class="bi bi-key-fill fs-4"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted small mb-1">TOTAL SYSTEM KEYS</h6>
+                        <h6 class="text-muted small mb-1">{{ __('translations_manager.intelligence.total_keys') }}</h6>
                         <h3 class="fw-bold mb-0 text-dark">{{ $totalKeys }}</h3>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                         <i class="bi bi-folder-fill fs-4"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted small mb-1">SYSTEM GROUPS</h6>
+                        <h6 class="text-muted small mb-1">{{ __('translations_manager.intelligence.system_groups') }}</h6>
                         <h3 class="fw-bold mb-0 text-dark">{{ count($groupsSummary) }}</h3>
                     </div>
                 </div>
@@ -58,8 +58,8 @@
                         <i class="bi bi-cpu-fill fs-4"></i>
                     </div>
                     <div>
-                        <h6 class="text-muted small mb-1">CONTEXT ENGINE STATUS</h6>
-                        <h3 class="fw-bold mb-0 text-success">ONLINE</h3>
+                        <h6 class="text-muted small mb-1">{{ __('translations_manager.intelligence.engine_status') }}</h6>
+                        <h3 class="fw-bold mb-0 text-success">{{ __('translations_manager.intelligence.status_online') }}</h3>
                     </div>
                 </div>
             </div>
@@ -70,22 +70,22 @@
     <ul class="nav nav-pills gap-2 mb-4" id="intelligenceTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active rounded-pill fw-semibold" id="search-tab" data-bs-toggle="pill" data-bs-target="#searchPanel" type="button" role="tab">
-                <i class="bi bi-search me-1"></i> Semantic Search
+                <i class="bi bi-search me-1"></i> {{ __('translations_manager.intelligence.tab_semantic') }}
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link rounded-pill fw-semibold" id="suggest-tab" data-bs-toggle="pill" data-bs-target="#suggestPanel" type="button" role="tab">
-                <i class="bi bi-lightbulb me-1"></i> Smart Key Suggestions
+                <i class="bi bi-lightbulb me-1"></i> {{ __('translations_manager.intelligence.tab_suggestions') }}
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link rounded-pill fw-semibold" id="consistency-tab" data-bs-toggle="pill" data-bs-target="#consistencyPanel" type="button" role="tab" onclick="runDiagnostics()">
-                <i class="bi bi-activity text-danger me-1"></i> Consistency Diagnostics
+                <i class="bi bi-activity text-danger me-1"></i> {{ __('translations_manager.intelligence.tab_consistency') }}
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link rounded-pill fw-semibold" id="grouping-tab" data-bs-toggle="pill" data-bs-target="#groupingPanel" type="button" role="tab">
-                <i class="bi bi-diagram-3 me-1"></i> Auto-Grouping &amp; Rebuild
+                <i class="bi bi-diagram-3 me-1"></i> {{ __('translations_manager.intelligence.tab_grouping') }}
             </button>
         </li>
     </ul>
@@ -95,35 +95,35 @@
         {{-- Search Panel --}}
         <div class="tab-pane fade show active" id="searchPanel" role="tabpanel">
             <div class="quran-card p-4">
-                <h5 class="fw-bold text-dark mb-1">Semantic &amp; Context Search</h5>
-                <p class="text-muted small mb-4">Search keys and values by intent and meaning rather than exact text strings. (Matches context structure and segment synonyms)</p>
+                <h5 class="fw-bold text-dark mb-1">{{ __('translations_manager.intelligence.semantic_title') }}</h5>
+                <p class="text-muted small mb-4">{{ __('translations_manager.intelligence.semantic_subtitle') }}</p>
                 
                 <div class="row g-2 mb-4">
                     <div class="col-10">
-                        <input type="text" id="semanticQuery" class="form-control" placeholder="E.g. authentication button, logout settings...">
+                        <input type="text" id="semanticQuery" class="form-control" placeholder="{{ __('translations_manager.intelligence.semantic_placeholder') }}">
                     </div>
                     <div class="col-2 d-grid">
                         <button type="button" class="quran-btn quran-btn-primary" onclick="runSemanticSearch()">
-                            <i class="bi bi-search me-1"></i> Search
+                            <i class="bi bi-search me-1"></i> {{ __('translations_manager.intelligence.search_btn') }}
                         </button>
                     </div>
                 </div>
 
                 <div id="search-loading" class="text-center py-4" style="display: none;">
                     <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                    <span class="ms-2 small text-muted">Running semantic similarity queries...</span>
+                    <span class="ms-2 small text-muted">{{ __('translations_manager.intelligence.semantic_running') }}</span>
                 </div>
 
                 <div id="search-results" style="display: none;">
-                    <h6 class="fw-bold text-dark mb-3">Matching Results (Ranked by confidence score)</h6>
+                    <h6 class="fw-bold text-dark mb-3">{{ __('translations_manager.intelligence.semantic_results') }}</h6>
                     <div class="table-responsive">
                         <table class="table align-middle">
                             <thead class="table-light small">
                                 <tr>
-                                    <th>Translation Key</th>
-                                    <th>Group</th>
-                                    <th>Context Description</th>
-                                    <th class="text-end">Semantic Score</th>
+                                    <th>{{ __('translations_manager.intelligence.table_key') }}</th>
+                                    <th>{{ __('translations_manager.intelligence.table_group') }}</th>
+                                    <th>{{ __('translations_manager.intelligence.table_context') }}</th>
+                                    <th class="text-end">{{ __('translations_manager.intelligence.table_score') }}</th>
                                 </tr>
                             </thead>
                             <tbody id="search-results-body" class="small">
@@ -138,27 +138,27 @@
         {{-- Suggestions Panel --}}
         <div class="tab-pane fade" id="suggestPanel" role="tabpanel">
             <div class="quran-card p-4">
-                <h5 class="fw-bold text-dark mb-1">Smart Key Naming Suggestions</h5>
-                <p class="text-muted small mb-4">Enter a label or description in human phrase and let the engine output suggested dot-notated key naming conventions.</p>
+                <h5 class="fw-bold text-dark mb-1">{{ __('translations_manager.intelligence.suggest_title') }}</h5>
+                <p class="text-muted small mb-4">{{ __('translations_manager.intelligence.suggest_subtitle') }}</p>
 
                 <div class="row g-2 mb-4">
                     <div class="col-10">
-                        <input type="text" id="suggestText" class="form-control" placeholder="E.g. Submit login page, Confirm password update form...">
+                        <input type="text" id="suggestText" class="form-control" placeholder="{{ __('translations_manager.intelligence.suggest_placeholder') }}">
                     </div>
                     <div class="col-2 d-grid">
                         <button type="button" class="quran-btn quran-btn-primary" onclick="runSuggestions()">
-                            <i class="bi bi-lightbulb-fill me-1"></i> Suggest
+                            <i class="bi bi-lightbulb-fill me-1"></i> {{ __('translations_manager.intelligence.suggest_btn') }}
                         </button>
                     </div>
                 </div>
 
                 <div id="suggest-loading" class="text-center py-4" style="display: none;">
                     <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                    <span class="ms-2 small text-muted">Analyzing syntax parameters...</span>
+                    <span class="ms-2 small text-muted">{{ __('translations_manager.intelligence.suggest_running') }}</span>
                 </div>
 
                 <div id="suggest-results" style="display: none;">
-                    <h6 class="fw-bold text-dark mb-3">Naming Suggestions</h6>
+                    <h6 class="fw-bold text-dark mb-3">{{ __('translations_manager.intelligence.suggest_results') }}</h6>
                     <div class="list-group" id="suggest-results-list">
                         <!-- Loaded dynamically -->
                     </div>
@@ -172,8 +172,8 @@
                 {{-- Naming standard issues --}}
                 <div class="col-12 col-md-6">
                     <div class="quran-card p-4 h-100">
-                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-bug-fill text-danger me-1"></i> Bad Casings / Inconsistent Structure</h5>
-                        <p class="text-muted small mb-3">Keys violating alphanumeric and lowercase dot-notation standards (e.g. camelCase).</p>
+                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-bug-fill text-danger me-1"></i> {{ __('translations_manager.intelligence.diag_casing_title') }}</h5>
+                        <p class="text-muted small mb-3">{{ __('translations_manager.intelligence.diag_casing_description') }}</p>
                         
                         <div id="diag-inconsistent" class="overflow-auto" style="max-height: 300px;">
                             <!-- Dynamically loaded -->
@@ -184,8 +184,8 @@
                 {{-- Duplicates values --}}
                 <div class="col-12 col-md-6">
                     <div class="quran-card p-4 h-100">
-                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-files text-warning me-1"></i> Redundant Identical Values</h5>
-                        <p class="text-muted small mb-3">Different keys holding identical translations (candidates to merge/re-use).</p>
+                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-files text-warning me-1"></i> {{ __('translations_manager.intelligence.diag_redundant_title') }}</h5>
+                        <p class="text-muted small mb-3">{{ __('translations_manager.intelligence.diag_redundant_description') }}</p>
                         
                         <div id="diag-duplicates" class="overflow-auto" style="max-height: 300px;">
                             <!-- Dynamically loaded -->
@@ -196,8 +196,8 @@
                 {{-- Unused keys --}}
                 <div class="col-12 col-md-6">
                     <div class="quran-card p-4 h-100">
-                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-trash-fill text-muted me-1"></i> Unused Keys in Code</h5>
-                        <p class="text-muted small mb-3">Keys defined in database but never scanned inside app PHP or Blade files.</p>
+                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-trash-fill text-muted me-1"></i> {{ __('translations_manager.intelligence.diag_unused_title') }}</h5>
+                        <p class="text-muted small mb-3">{{ __('translations_manager.intelligence.diag_unused_description') }}</p>
                         
                         <div id="diag-unused" class="overflow-auto" style="max-height: 300px;">
                             <!-- Dynamically loaded -->
@@ -208,8 +208,8 @@
                 {{-- Missing groups --}}
                 <div class="col-12 col-md-6">
                     <div class="quran-card p-4 h-100">
-                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-question-circle text-info me-1"></i> Missing / General Groups</h5>
-                        <p class="text-muted small mb-3">Keys assigned to default general groups or missing categorizations.</p>
+                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-question-circle text-info me-1"></i> {{ __('translations_manager.intelligence.diag_groups_title') }}</h5>
+                        <p class="text-muted small mb-3">{{ __('translations_manager.intelligence.diag_groups_description') }}</p>
                         
                         <div id="diag-missing-groups" class="overflow-auto" style="max-height: 300px;">
                             <!-- Dynamically loaded -->
@@ -222,34 +222,34 @@
         {{-- Grouping Rebuilder Panel --}}
         <div class="tab-pane fade" id="groupingPanel" role="tabpanel">
             <div class="quran-card p-4">
-                <h5 class="fw-bold text-dark mb-1">Group Restructuring Engine</h5>
-                <p class="text-muted small mb-4">Automatically audits database groups and reorganizes keys into matching namespace prefixes (e.g. `auth.*` keys are grouped into `auth`).</p>
+                <h5 class="fw-bold text-dark mb-1">{{ __('translations_manager.intelligence.rebuild_title') }}</h5>
+                <p class="text-muted small mb-4">{{ __('translations_manager.intelligence.rebuild_subtitle') }}</p>
 
                 <div class="alert alert-warning border-0 rounded-3 mb-4">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                    <strong>Caution:</strong> Running the rebuild engine will update the database group classifications. Restructuring changes are logged and will refresh all active translation caches.
+                    <strong>{{ __('translations_manager.intelligence.caution_label') }}</strong> {{ __('translations_manager.intelligence.rebuild_caution') }}
                 </div>
 
                 <div class="d-grid mb-4">
                     <button type="button" class="quran-btn quran-btn-primary" onclick="rebuildGroups()">
-                        <i class="bi bi-arrow-repeat me-1"></i> Start Bulk Group Restructuring
+                        <i class="bi bi-arrow-repeat me-1"></i> {{ __('translations_manager.intelligence.rebuild_btn') }}
                     </button>
                 </div>
 
                 <div id="rebuild-loading" class="text-center py-4" style="display: none;">
                     <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                    <span class="ms-2 small text-muted">Analyzing namespace structures and updating database tables...</span>
+                    <span class="ms-2 small text-muted">{{ __('translations_manager.intelligence.rebuild_running') }}</span>
                 </div>
 
                 <div id="rebuild-results" style="display: none;">
-                    <h6 class="fw-bold text-success mb-3"><i class="bi bi-check-circle-fill me-1"></i> Rebuild Completed Successfully!</h6>
+                    <h6 class="fw-bold text-success mb-3"><i class="bi bi-check-circle-fill me-1"></i> {{ __('translations_manager.intelligence.rebuild_success') }}</h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
                             <thead class="table-light small">
                                 <tr>
-                                    <th>Translation Key</th>
-                                    <th>Old Group</th>
-                                    <th>New Restructured Group</th>
+                                    <th>{{ __('translations_manager.intelligence.table_key') }}</th>
+                                    <th>{{ __('translations_manager.intelligence.table_old_group') }}</th>
+                                    <th>{{ __('translations_manager.intelligence.table_new_group') }}</th>
                                 </tr>
                             </thead>
                             <tbody id="rebuild-results-body" class="small font-monospace">
@@ -285,7 +285,8 @@
 
                 const data = response.data.results;
                 if (data.length === 0) {
-                    body.innerHTML = '<tr><td colspan="4" class="text-center py-4 text-muted">No semantic matches found. Try other terms.</td></tr>';
+                    const noMatchesMsg = window.__('translations_manager.intelligence.no_semantic_matches') || 'No semantic matches found. Try other terms.';
+                    body.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">${noMatchesMsg}</td></tr>`;
                     return;
                 }
 
@@ -307,7 +308,8 @@
             })
             .catch(error => {
                 loading.style.display = 'none';
-                alert('Semantic Search failed.');
+                const failMsg = window.__('translations_manager.intelligence.semantic_failed') || 'Semantic Search failed.';
+                alert(failMsg);
                 console.error(error);
             });
     }
@@ -331,14 +333,17 @@
 
                 const suggestions = response.data.suggestions;
                 if (suggestions.length === 0) {
-                    list.innerHTML = '<div class="text-muted py-2">Could not identify naming keywords. Try typing more action words.</div>';
+                    const noKwMsg = window.__('translations_manager.intelligence.no_keywords_found') || 'Could not identify naming keywords. Try typing more action words.';
+                    list.innerHTML = `<div class="text-muted py-2">${noKwMsg}</div>`;
                     return;
                 }
 
                 suggestions.forEach(item => {
+                    const existsLabel = window.__('translations_manager.intelligence.already_exists') || 'Already Exists in DB';
+                    const availLabel = window.__('translations_manager.intelligence.available_recommended') || 'Available / Recommended';
                     const badge = item.exists 
-                        ? '<span class="badge bg-danger">Already Exists in DB</span>' 
-                        : '<span class="badge bg-success">Available / Recommended</span>';
+                        ? `<span class="badge bg-danger">${existsLabel}</span>` 
+                        : `<span class="badge bg-success">${availLabel}</span>`;
 
                     list.innerHTML += `
                         <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -350,7 +355,8 @@
             })
             .catch(error => {
                 loading.style.display = 'none';
-                alert('Suggestions lookup failed.');
+                const failMsg = window.__('translations_manager.intelligence.suggestions_failed') || 'Suggestions lookup failed.';
+                alert(failMsg);
                 console.error(error);
             });
     }
@@ -361,7 +367,8 @@
         const divUnused = document.getElementById('diag-unused');
         const divMissingG = document.getElementById('diag-missing-groups');
 
-        divInc.innerHTML = '<div class="text-center py-4 small text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div>Running checks...</div>';
+        const loadingMsg = window.__('translations_manager.intelligence.running_checks') || 'Running checks...';
+        divInc.innerHTML = `<div class="text-center py-4 small text-muted"><div class="spinner-border spinner-border-sm text-primary me-2"></div>${loadingMsg}</div>`;
         divDups.innerHTML = divInc.innerHTML;
         divUnused.innerHTML = divInc.innerHTML;
         divMissingG.innerHTML = divInc.innerHTML;
@@ -373,7 +380,8 @@
                 // 1. Inconsistent keys
                 divInc.innerHTML = '';
                 if (diag.inconsistent_keys.length === 0) {
-                    divInc.innerHTML = '<div class="alert alert-success border-0 rounded-3 small">All keys match casing guidelines!</div>';
+                    const okMsg = window.__('translations_manager.intelligence.all_keys_match_casing') || 'All keys match casing guidelines!';
+                    divInc.innerHTML = `<div class="alert alert-success border-0 rounded-3 small">${okMsg}</div>`;
                 } else {
                     diag.inconsistent_keys.forEach(k => {
                         divInc.innerHTML += `
@@ -389,7 +397,8 @@
                 divDups.innerHTML = '';
                 const locales = Object.keys(diag.duplicates);
                 if (locales.length === 0) {
-                    divDups.innerHTML = '<div class="alert alert-success border-0 rounded-3 small">No duplicates detected in any language.</div>';
+                    const okMsg = window.__('translations_manager.intelligence.no_duplicates_detected') || 'No duplicates detected in any language.';
+                    divDups.innerHTML = `<div class="alert alert-success border-0 rounded-3 small">${okMsg}</div>`;
                 } else {
                     locales.forEach(loc => {
                         diag.duplicates[loc].forEach(item => {
@@ -407,7 +416,8 @@
                 // 3. Unused keys
                 divUnused.innerHTML = '';
                 if (diag.unused_keys.length === 0) {
-                    divUnused.innerHTML = '<div class="alert alert-success border-0 rounded-3 small">No unused keys found. All keys are referenced in code!</div>';
+                    const okMsg = window.__('translations_manager.intelligence.no_unused_keys') || 'No unused keys found. All keys are referenced in code!';
+                    divUnused.innerHTML = `<div class="alert alert-success border-0 rounded-3 small">${okMsg}</div>`;
                 } else {
                     diag.unused_keys.forEach(key => {
                         divUnused.innerHTML += `<div class="py-1"><code class="text-muted">${key}</code></div>`;
@@ -417,7 +427,8 @@
                 // 4. Missing groups
                 divMissingG.innerHTML = '';
                 if (diag.missing_groups.length === 0) {
-                    divMissingG.innerHTML = '<div class="alert alert-success border-0 rounded-3 small">All keys are categorized outside the general group!</div>';
+                    const okMsg = window.__('translations_manager.intelligence.all_keys_categorized') || 'All keys are categorized outside the general group!';
+                    divMissingG.innerHTML = `<div class="alert alert-success border-0 rounded-3 small">${okMsg}</div>`;
                 } else {
                     diag.missing_groups.forEach(key => {
                         divMissingG.innerHTML += `<div class="py-1"><code class="text-info-emphasis">${key}</code></div>`;
@@ -425,7 +436,8 @@
                 }
             })
             .catch(error => {
-                const errMsg = '<div class="text-danger small py-3 text-center">Scanner failed to load diagnostics.</div>';
+                const failMsg = window.__('translations_manager.intelligence.scanner_failed') || 'Scanner failed to load diagnostics.';
+                const errMsg = `<div class="text-danger small py-3 text-center">${failMsg}</div>`;
                 divInc.innerHTML = errMsg;
                 divDups.innerHTML = errMsg;
                 divUnused.innerHTML = errMsg;
@@ -435,7 +447,8 @@
     }
 
     function rebuildGroups() {
-        if (!confirm('Are you sure you want to trigger bulk grouping restructuring? This will update the "group" field of keys matching naming namespace conventions.')) {
+        const confirmMsg = window.__('translations_manager.intelligence.confirm_rebuild') || 'Are you sure you want to trigger bulk grouping restructuring? This will update the "group" field of keys matching naming namespace conventions.';
+        if (!confirm(confirmMsg)) {
             return;
         }
 
@@ -454,7 +467,8 @@
 
                 const logs = response.data.rebuild_logs;
                 if (logs.length === 0) {
-                    body.innerHTML = '<tr><td colspan="3" class="text-center py-4 text-muted">All database key classifications are already perfectly aligned. No keys modified.</td></tr>';
+                    const noKeysMsg = window.__('translations_manager.intelligence.no_keys_modified') || 'All database key classifications are already perfectly aligned. No keys modified.';
+                    body.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-muted">${noKeysMsg}</td></tr>`;
                     return;
                 }
 
@@ -470,7 +484,8 @@
             })
             .catch(error => {
                 loading.style.display = 'none';
-                alert('Restructuring rebuild failed.');
+                const failMsg = window.__('translations_manager.intelligence.rebuild_failed') || 'Restructuring rebuild failed.';
+                alert(failMsg);
                 console.error(error);
             });
     }

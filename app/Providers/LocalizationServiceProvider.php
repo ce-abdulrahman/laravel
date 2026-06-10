@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\TranslationRegistryService;
 use App\Services\TranslationService;
 use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Support\ServiceProvider;
@@ -26,11 +27,60 @@ class LocalizationServiceProvider extends ServiceProvider
         $this->app->extend('translation.loader', function (FileLoader $original, $app) {
             return new DatabaseLoader($original, $app);
         });
+
+        // Rebind the translator to our CustomTranslator wrapper.
+        $this->app->extend('translator', function (Translator $original, $app) {
+            $translator = new CustomTranslator($original->getLoader(), $original->getLocale());
+            $translator->setFallback($original->getFallback());
+            return $translator;
+        });
     }
 
     public function boot(): void
     {
         //
+    }
+}
+
+/**
+ * CustomTranslator intercepts key lookups.
+ *
+ * If a translation key does not exist anywhere, Laravel returns the key itself.
+ * We intercept that case to register the missing key and generate defaults at runtime.
+ */
+class CustomTranslator extends Translator
+{
+    public function get($key, array $replace = [], $locale = null, $fallback = true)
+    {
+        // 1. Get translation from parent Translator
+        $result = parent::get($key, $replace, $locale, $fallback);
+
+        // 2. If missing, Laravel returns the key itself (as a string)
+        if ($result === $key && is_string($key)) {
+            try {
+                // Prevent duplicate registrations in the same request thread
+                $registry = app(TranslationRegistryService::class);
+                if (!$registry->isKeyRegistered($key)) {
+                    $registry->registerKey($key);
+
+                    // Clear both memory and persistent cache
+                    app(TranslationService::class)->clearCache();
+
+                    // Log the runtime auto-discovery
+                    \Illuminate\Support\Facades\Log::info("Discovered and auto-registered missing translation key: {$key}");
+                }
+
+                // 3. Re-evaluate with the newly registered database key
+                $result = parent::get($key, $replace, $locale, $fallback);
+            } catch (\Throwable $e) {
+                if (app()->runningUnitTests()) {
+                    throw $e;
+                }
+                // Ignore registry/DB failures at runtime to keep page load alive
+            }
+        }
+
+        return $result;
     }
 }
 

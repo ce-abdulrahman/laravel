@@ -174,20 +174,13 @@ class TafsirBookController extends Controller
     }
 
     /**
-     * Get available languages.
+     * Get available languages dynamically from the database.
      */
     private function getAvailableLanguages(): array
     {
-        return [
-            'ar' => 'العربية (Arabic)',
-            'ku' => 'کوردی (Kurdish)',
-            'en' => 'English',
-            'fa' => 'فارسی (Persian)',
-            'tr' => 'Türkçe (Turkish)',
-            'ur' => 'اردو (Urdu)',
-            'id' => 'Bahasa Indonesia',
-            'ms' => 'Bahasa Melayu',
-        ];
+        return \App\Models\Language::active()->ordered()->get()
+            ->mapWithKeys(fn($lang) => [$lang->code => "{$lang->native_name} ({$lang->name})"])
+            ->toArray();
     }
 
     /**

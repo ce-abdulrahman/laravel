@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Bulk Translation Editor')
-@section('page-title', 'Bulk Translation Editor')
+@section('title', __('translations_manager.bulk.title'))
+@section('page-title', __('translations_manager.bulk.title'))
 
 @section('breadcrumb')
-    <li class="breadcrumb-item"><a href="{{ route('translations-manager.index') }}">Translation Manager</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Bulk Editor</li>
+    <li class="breadcrumb-item"><a href="{{ route('translations-manager.index') }}">{{ __('translations_manager.title') }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ __('translations_manager.bulk.breadcrumb') }}</li>
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
     {{-- Header --}}
     <div class="d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between mb-4">
         <div>
-            <h1 class="h4 mb-1">Bulk Translation Editor</h1>
-            <div class="text-muted">Perform mass updates, delete multiple keys, or dispatch bulk AI translations in the background.</div>
+            <h1 class="h4 mb-1">{{ __('translations_manager.bulk.heading') }}</h1>
+            <div class="text-muted">{{ __('translations_manager.bulk.subtitle') }}</div>
         </div>
         <div class="d-flex gap-2">
             <a href="{{ route('translations-manager.index') }}" class="quran-btn quran-btn-outline-primary">
-                <i class="bi bi-arrow-left me-1"></i> Back to Manager
+                <i class="bi bi-arrow-left me-1"></i> {{ __('translations_manager.bulk.back_to_manager') }}
             </a>
         </div>
     </div>
@@ -35,30 +35,30 @@
 
     {{-- Bulk Operations Card --}}
     <div class="quran-card p-4 mb-4 bg-light border-start border-primary border-4">
-        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> Bulk Actions for Selected Keys</h6>
+        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> {{ __('translations_manager.bulk.actions_title') }}</h6>
         <div class="d-flex flex-wrap gap-3 align-items-center">
             <div class="d-flex align-items-center">
                 <input class="form-check-input me-2" type="checkbox" id="selectAllKeys" style="width: 18px; height: 18px;">
-                <label class="form-check-label small fw-semibold text-muted text-uppercase" for="selectAllKeys">Select All</label>
+                <label class="form-check-label small fw-semibold text-muted text-uppercase" for="selectAllKeys">{{ __('translations_manager.bulk.select_all') }}</label>
             </div>
             
             <div class="vr text-muted d-none d-md-block" style="height: 25px;"></div>
             
             <button type="button" class="quran-btn quran-btn-danger btn-sm" onclick="bulkDelete()">
-                <i class="bi bi-trash-fill me-1"></i> Delete Selected
+                <i class="bi bi-trash-fill me-1"></i> {{ __('translations_manager.bulk.delete_selected') }}
             </button>
             
             <div class="vr text-muted d-none d-md-block" style="height: 25px;"></div>
             
             <div class="d-flex align-items-center gap-2">
                 <select id="aiLocale" class="form-select form-select-sm" style="width: 180px;">
-                    <option value="">AI Target Language...</option>
+                    <option value="">{{ __('translations_manager.bulk.ai_target_lang') }}</option>
                     @foreach($languages as $lang)
                         <option value="{{ $lang->code }}">{{ $lang->name }} ({{ strtoupper($lang->code) }})</option>
                     @endforeach
                 </select>
                 <button type="button" class="quran-btn quran-btn-primary btn-sm" onclick="bulkGenerateAI()">
-                    <i class="bi bi-cpu-fill me-1"></i> Translate with AI
+                    <i class="bi bi-cpu-fill me-1"></i> {{ __('translations_manager.bulk.translate_ai') }}
                 </button>
             </div>
         </div>
@@ -68,19 +68,19 @@
     <div class="quran-card p-4 mb-4">
         <form method="GET" action="{{ route('translations-manager.bulk') }}" class="row g-3 align-items-end">
             <div class="col-12 col-md-5">
-                <label for="search" class="form-label fw-semibold text-muted small text-uppercase">Search Keys</label>
+                <label for="search" class="form-label fw-semibold text-muted small text-uppercase">{{ __('translations_manager.bulk.search_keys_label') }}</label>
                 <div class="input-group">
                     <span class="input-group-text bg-transparent border-end-0 text-muted">
                         <i class="bi bi-search"></i>
                     </span>
-                    <input type="text" id="search" name="search" class="form-control border-start-0" placeholder="Search translation keys..." value="{{ request('search') }}">
+                    <input type="text" id="search" name="search" class="form-control border-start-0" placeholder="{{ __('translations_manager.bulk.search_placeholder') }}" value="{{ request('search') }}">
                 </div>
             </div>
 
             <div class="col-12 col-md-4">
-                <label for="group" class="form-label fw-semibold text-muted small text-uppercase">Filter by Group</label>
+                <label for="group" class="form-label fw-semibold text-muted small text-uppercase">{{ __('translations_manager.bulk.filter_group_label') }}</label>
                 <select id="group" name="group" class="form-select">
-                    <option value="">All Groups</option>
+                    <option value="">{{ __('translations_manager.bulk.all_groups') }}</option>
                     @foreach($groups as $g)
                         <option value="{{ $g }}" {{ request('group') === $g ? 'selected' : '' }}>{{ ucfirst($g) }}</option>
                     @endforeach
@@ -89,11 +89,11 @@
 
             <div class="col-12 col-md-3 d-grid gap-2">
                 <button type="submit" class="quran-btn quran-btn-outline-primary">
-                    Apply Filters
+                    {{ __('translations_manager.bulk.apply_filters') }}
                 </button>
                 @if(request()->anyFilled(['search', 'group']))
                     <a href="{{ route('translations-manager.bulk') }}" class="btn btn-light btn-sm text-center">
-                        Clear Filters
+                        {{ __('translations_manager.bulk.clear_filters') }}
                     </a>
                 @endif
             </div>
@@ -108,8 +108,8 @@
                 <table class="quran-table align-middle">
                     <thead>
                         <tr>
-                            <th style="width: 40px;">Select</th>
-                            <th style="min-width: 200px;">Key</th>
+                            <th style="width: 40px;">{{ __('translations_manager.bulk.table_select') }}</th>
+                            <th style="min-width: 200px;">{{ __('translations_manager.bulk.table_key') }}</th>
                             @foreach($languages as $lang)
                                 <th style="min-width: 250px;">
                                     {{ $lang->flag }} {{ $lang->name }} ({{ strtoupper($lang->code) }})
@@ -139,7 +139,7 @@
                                                name="translations[{{ $k->id }}][{{ $lang->id }}]" 
                                                class="form-control form-control-sm" 
                                                value="{{ $value }}"
-                                               placeholder="Translation value...">
+                                               placeholder="{{ __('translations_manager.bulk.table_value_placeholder') }}">
                                     </td>
                                 @endforeach
                             </tr>
@@ -147,8 +147,8 @@
                             <tr>
                                 <td colspan="{{ $languages->count() + 2 }}" class="text-center py-5 text-muted">
                                     <i class="bi bi-grid-3x3-gap text-muted" style="font-size: 3rem;"></i>
-                                    <h6 class="mt-3">No Keys Found</h6>
-                                    <p>Try clearing your filters or select a different group.</p>
+                                    <h6 class="mt-3">{{ __('translations_manager.bulk.no_keys_found') }}</h6>
+                                    <p>{{ __('translations_manager.bulk.no_keys_description') }}</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -159,12 +159,16 @@
             <div class="quran-table-footer d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                 <div>
                     @if($keys->hasPages())
-                        Showing <strong>{{ $keys->firstItem() }}</strong> to <strong>{{ $keys->lastItem() }}</strong> of <strong>{{ $keys->total() }}</strong> keys
+                        {!! __('translations_manager.bulk.showing_keys', [
+                            'from' => $keys->firstItem(),
+                            'to' => $keys->lastItem(),
+                            'total' => $keys->total()
+                        ]) !!}
                     @endif
                 </div>
                 <div class="d-flex gap-2">
                     <button type="submit" class="quran-btn quran-btn-primary">
-                        <i class="bi bi-save me-1"></i> Save All Changes on Page
+                        <i class="bi bi-save me-1"></i> {{ __('translations_manager.bulk.save_changes') }}
                     </button>
                 </div>
             </div>
@@ -198,11 +202,12 @@
     function bulkDelete() {
         const keys = getSelectedKeys();
         if (keys.length === 0) {
-            alert('Please select at least one key to delete.');
+            alert(window.__('translations_manager.bulk.select_key_delete') || 'Please select at least one key to delete.');
             return;
         }
 
-        if (!confirm('Are you sure you want to permanently delete the ' + keys.length + ' selected keys and all their translations? This cannot be undone.')) {
+        const confirmMsg = window.__('translations_manager.bulk.confirm_delete', {count: keys.length}) || 'Are you sure you want to permanently delete the ' + keys.length + ' selected keys and all their translations? This cannot be undone.';
+        if (!confirm(confirmMsg)) {
             return;
         }
 
@@ -216,7 +221,8 @@
                 setTimeout(() => window.location.reload(), 1000);
             })
             .catch(error => {
-                alert('Deletion failed: ' + (error.response?.data?.message || error.message));
+                const failMsg = window.__('translations_manager.bulk.delete_failed') || 'Deletion failed: ';
+                alert(failMsg + (error.response?.data?.message || error.message));
             });
     }
 
@@ -225,12 +231,12 @@
         const locale = document.getElementById('aiLocale').value;
 
         if (keys.length === 0) {
-            alert('Please select at least one key for AI translation.');
+            alert(window.__('translations_manager.bulk.select_key_ai') || 'Please select at least one key for AI translation.');
             return;
         }
 
         if (!locale) {
-            alert('Please select a target language locale.');
+            alert(window.__('translations_manager.bulk.select_target_lang') || 'Please select a target language locale.');
             return;
         }
 
@@ -244,7 +250,8 @@
                 // Don't reload immediately since it runs in queue
             })
             .catch(error => {
-                alert('AI Batch request failed: ' + (error.response?.data?.message || error.message));
+                const failMsg = window.__('translations_manager.bulk.ai_failed') || 'AI Batch request failed: ';
+                alert(failMsg + (error.response?.data?.message || error.message));
             });
     }
 </script>
