@@ -1,88 +1,108 @@
 @if ($paginator->hasPages())
-    <nav class="d-flex justify-items-center justify-content-between">
-        <div class="d-flex justify-content-between flex-fill d-sm-none">
-            <ul class="pagination">
-                {{-- Previous Page Link --}}
-                @if ($paginator->onFirstPage())
-                    <li class="page-item disabled" aria-disabled="true">
-                        <span class="page-link">{{ __('common.previous') }}</span>
-                    </li>
-                @else
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev">{{ __('common.previous') }}</a>
+<nav class="quran-pagination-nav d-flex flex-wrap align-items-center justify-content-between gap-2 px-1" aria-label="Pagination">
+
+    {{-- Mobile: Simple prev/next --}}
+    <div class="d-flex d-sm-none gap-2 w-100 justify-content-between">
+        @if ($paginator->onFirstPage())
+            <span class="quran-page-btn disabled">
+                <i class="bi bi-chevron-right"></i>
+                {{ __('common.previous') }}
+            </span>
+        @else
+            <a href="{{ $paginator->previousPageUrl() }}" rel="prev" class="quran-page-btn">
+                <i class="bi bi-chevron-right"></i>
+                {{ __('common.previous') }}
+            </a>
+        @endif
+
+        <span class="small text-muted align-self-center">
+            {{ $paginator->currentPage() }} / {{ $paginator->lastPage() }}
+        </span>
+
+        @if ($paginator->hasMorePages())
+            <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="quran-page-btn">
+                {{ __('common.next') }}
+                <i class="bi bi-chevron-left"></i>
+            </a>
+        @else
+            <span class="quran-page-btn disabled">
+                {{ __('common.next') }}
+                <i class="bi bi-chevron-left"></i>
+            </span>
+        @endif
+    </div>
+
+    {{-- Desktop: Full pagination --}}
+    <div class="d-none d-sm-flex align-items-center gap-3 w-100 justify-content-between">
+
+        {{-- Info text --}}
+        <p class="small text-muted mb-0">
+            {{ __('common.showing') }}
+            <span class="fw-semibold text-body">{{ $paginator->firstItem() }}</span>
+            {{ __('common.to') }}
+            <span class="fw-semibold text-body">{{ $paginator->lastItem() }}</span>
+            {{ __('common.of') }}
+            <span class="fw-semibold text-body">{{ $paginator->total() }}</span>
+            {{ __('common.results') }}
+        </p>
+
+        {{-- Page buttons --}}
+        <ul class="quran-pagination mb-0">
+
+            {{-- Prev --}}
+            @if ($paginator->onFirstPage())
+                <li class="quran-page-item disabled">
+                    <span class="quran-page-link" aria-label="{{ __('common.previous') }}">
+                        <i class="bi bi-chevron-right"></i>
+                    </span>
+                </li>
+            @else
+                <li class="quran-page-item">
+                    <a class="quran-page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="{{ __('common.previous') }}">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            @endif
+
+            {{-- Page Numbers --}}
+            @foreach ($elements as $element)
+                @if (is_string($element))
+                    <li class="quran-page-item disabled">
+                        <span class="quran-page-link quran-page-dots">{{ $element }}</span>
                     </li>
                 @endif
-
-                {{-- Next Page Link --}}
-                @if ($paginator->hasMorePages())
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next">{{ __('common.next') }}</a>
-                    </li>
-                @else
-                    <li class="page-item disabled" aria-disabled="true">
-                        <span class="page-link">{{ __('common.next') }}</span>
-                    </li>
-                @endif
-            </ul>
-        </div>
-
-        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
-            <div>
-                <p class="small text-muted">
-                    {{ __('common.showing') }}
-                    <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
-                    {{ __('common.to') }}
-                    <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
-                    {{ __('common.of') }}
-                    <span class="fw-semibold">{{ $paginator->total() }}</span>
-                    {{ __('common.results') }}
-                </p>
-            </div>
-
-            <div>
-                <ul class="pagination">
-                    {{-- Previous Page Link --}}
-                    @if ($paginator->onFirstPage())
-                        <li class="page-item disabled" aria-disabled="true" aria-label="{{ __('common.previous') }}">
-                            <span class="page-link" aria-hidden="true">&lsaquo;</span>
-                        </li>
-                    @else
-                        <li class="page-item">
-                            <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="{{ __('common.previous') }}">&lsaquo;</a>
-                        </li>
-                    @endif
-
-                    {{-- Pagination Elements --}}
-                    @foreach ($elements as $element)
-                        {{-- "Three Dots" Separator --}}
-                        @if (is_string($element))
-                            <li class="page-item disabled" aria-disabled="true"><span class="page-link">{{ $element }}</span></li>
-                        @endif
-
-                        {{-- Array Of Links --}}
-                        @if (is_array($element))
-                            @foreach ($element as $page => $url)
-                                @if ($page == $paginator->currentPage())
-                                    <li class="page-item active" aria-current="page"><span class="page-link">{{ $page }}</span></li>
-                                @else
-                                    <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
-                                @endif
-                            @endforeach
+                @if (is_array($element))
+                    @foreach ($element as $page => $url)
+                        @if ($page == $paginator->currentPage())
+                            <li class="quran-page-item active" aria-current="page">
+                                <span class="quran-page-link">{{ $page }}</span>
+                            </li>
+                        @else
+                            <li class="quran-page-item">
+                                <a class="quran-page-link" href="{{ $url }}">{{ $page }}</a>
+                            </li>
                         @endif
                     @endforeach
+                @endif
+            @endforeach
 
-                    {{-- Next Page Link --}}
-                    @if ($paginator->hasMorePages())
-                        <li class="page-item">
-                            <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="{{ __('common.next') }}">&rsaquo;</a>
-                        </li>
-                    @else
-                        <li class="page-item disabled" aria-disabled="true" aria-label="{{ __('common.next') }}">
-                            <span class="page-link" aria-hidden="true">&rsaquo;</span>
-                        </li>
-                    @endif
-                </ul>
-            </div>
-        </div>
-    </nav>
+            {{-- Next --}}
+            @if ($paginator->hasMorePages())
+                <li class="quran-page-item">
+                    <a class="quran-page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="{{ __('common.next') }}">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+            @else
+                <li class="quran-page-item disabled">
+                    <span class="quran-page-link" aria-label="{{ __('common.next') }}">
+                        <i class="bi bi-chevron-left"></i>
+                    </span>
+                </li>
+            @endif
+
+        </ul>
+    </div>
+
+</nav>
 @endif

@@ -1,0 +1,65 @@
+<?php
+
+return [
+    'title' => 'Global Leaderboard',
+    'subtitle' => 'Community leaderboard and ranking statistics',
+    'tabs' => [
+        'overview' => 'Overview',
+        'standings' => 'Standings',
+        'config' => 'Configuration',
+        'analytics' => 'Analytics',
+    ],
+    'widgets' => [
+        'total_users' => 'Total Ranked Users',
+        'active_participants' => 'Active Today',
+        'average_score' => 'Average Score',
+        'top_today' => 'Top User Today',
+        'top_week' => 'Top User This Week',
+        'top_month' => 'Top User This Month',
+    ],
+    'fields' => [
+        'rank' => 'Rank',
+        'user' => 'User',
+        'score' => 'Score',
+        'movement' => 'Movement',
+        'privacy' => 'Privacy Status',
+        'actions' => 'Actions',
+        'type' => 'Leaderboard Type',
+        'weight' => 'Score Weight',
+    ],
+    'config' => [
+        'weights' => 'Scoring Weights Configuration',
+        'types' => 'Leaderboard Types Enablement',
+        'save' => 'Save Configuration',
+        'dhikr' => 'Dhikr Increment Point',
+        'daily_goal' => 'Daily Goal Completed Points',
+        'achievement' => 'Achievement Earned Points',
+        'streak' => 'Streak Day Points',
+        'status' => 'Status',
+        'enabled' => 'Enabled',
+        'disabled' => 'Disabled',
+    ],
+    'analytics' => [
+        'density' => 'Competitive Density (Top 10% Bracket)',
+        'participation' => 'Leaderboard Participation Rate',
+        'growth' => 'Dhikr Growth Trend (Last 15 Days)',
+        'movements' => 'Rank Movement Distribution',
+        'up' => 'Moved Up',
+        'down' => 'Moved Down',
+        'none' => 'Stable (No Change)',
+        'new' => 'New Entries',
+    ],
+    'placeholders' => [
+        'search' => 'Search user by name or email...',
+    ],
+    'actions' => [
+        'filter' => 'Filter rankings',
+        'export' => 'Export CSV',
+        'view_profile' => 'View Profile',
+    ],
+    'status' => [
+        'public' => 'Public Profile',
+        'anonymous' => 'Anonymous',
+        'hidden' => 'Hidden',
+    ],
+];

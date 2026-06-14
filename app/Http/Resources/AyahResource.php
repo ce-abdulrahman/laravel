@@ -36,9 +36,11 @@ class AyahResource extends JsonResource
         $data['tajweed_segments'] = $this->relationLoaded('tajweedSegments')
             ? $this->tajweedSegments->map(function ($segment) use ($activeCodes) {
                 return [
-                    'text_segment' => $segment->text_segment,
+                    'matched_text' => $segment->matched_text,
+                    'text_segment' => $segment->matched_text, // deprecated alias
                     'start_index' => $segment->start_index !== null ? (int) $segment->start_index : null,
                     'end_index' => $segment->end_index !== null ? (int) $segment->end_index : null,
+                    'metadata' => $segment->metadata,
                     'note' => $segment->note,
                     'rule' => $segment->tajweedRule ? array_merge([
                         'slug' => $segment->tajweedRule->slug,

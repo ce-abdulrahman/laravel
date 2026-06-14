@@ -78,7 +78,7 @@
                         <div class="arabic-text text-3xl md:text-4xl text-zinc-900 dark:text-white leading-[2.5] tracking-wide select-none" dir="rtl">
                             {{ $ayah->text_uthmani }}
                             <span class="arabic-text text-2xl md:text-3xl text-emerald-600 dark:text-emerald-400 mx-2 select-none">
-                                ﴿{{ App\Helpers\QuranHelper::getArabicNumber($ayah->ayah_number) }}﴾
+                                ﴿{{ App\Helpers\QuranHelper::toArabicNumbers($ayah->ayah_number) }}﴾
                             </span>
                         </div>
                     </div>

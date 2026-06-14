@@ -28,6 +28,8 @@ use App\Http\Controllers\AdhkarController;
 use App\Http\Controllers\TasbihController;
 use App\Http\Controllers\HadithCategoryController;
 use App\Http\Controllers\HadithController;
+use App\Http\Controllers\ReminderTemplateController;
+use App\Http\Controllers\AdminReminderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -186,13 +188,112 @@ Route::middleware('auth')->group(function () {
     // Admin-only write and utility endpoints
     Route::middleware(['admin'])->group(function () {
         Route::post('surahs/import', [SurahController::class, 'import'])->name('surahs.import');
+        
+        // ── User Management ──────────────────────────────────────────────────────
+        Route::get('admin/users/dashboard', [App\Http\Controllers\AdminUserController::class, 'dashboard'])->name('admin.users.dashboard');
+        Route::get('admin/users', [App\Http\Controllers\AdminUserController::class, 'index'])->name('admin.users.index');
+        Route::get('admin/users/{id}', [App\Http\Controllers\AdminUserController::class, 'show'])->name('admin.users.show')->whereNumber('id');
+        Route::post('admin/users/{id}/suspend', [App\Http\Controllers\AdminUserController::class, 'suspend'])->name('admin.users.suspend')->whereNumber('id');
+        Route::post('admin/users/{id}/unsuspend', [App\Http\Controllers\AdminUserController::class, 'unsuspend'])->name('admin.users.unsuspend')->whereNumber('id');
+        Route::post('admin/users/{id}/force-logout', [App\Http\Controllers\AdminUserController::class, 'forceLogout'])->name('admin.users.force-logout')->whereNumber('id');
+        Route::post('admin/users/{id}/reset-password', [App\Http\Controllers\AdminUserController::class, 'resetPassword'])->name('admin.users.reset-password')->whereNumber('id');
         Route::post('ayahs/import', [AyahController::class, 'import'])->name('ayahs.import');
         Route::post('tajweed-rules/import', [TajweedRuleController::class, 'import'])->name('tajweed-rules.import');
+        Route::post('tajweed-segments/import', [AyahTajweedSegmentController::class, 'import'])->name('tajweed-segments.import');
+        Route::get('tajweed-segments/export', [AyahTajweedSegmentController::class, 'export'])->name('tajweed-segments.export');
+        Route::post('tajweed-segments/rebuild', [AyahTajweedSegmentController::class, 'rebuild'])->name('tajweed-segments.rebuild');
         Route::resource('tajweed-segments', AyahTajweedSegmentController::class);
         Route::post('audio-files/upload', [AudioFileController::class, 'upload'])->name('audio-files.upload');
         Route::post('tafsirs/import', [TafsirController::class, 'import'])->name('tafsirs.import');
         Route::post('translations/import', [TranslationController::class, 'import'])->name('translations.import');
+        
+        // Tasbih Streak management routes
+        Route::get('user-streaks', [App\Http\Controllers\UserStreakController::class, 'index'])->name('user-streaks.index');
+        Route::post('user-streaks/{id}/reset', [App\Http\Controllers\UserStreakController::class, 'reset'])->name('user-streaks.reset');
+        Route::post('user-streaks/{id}/edit', [App\Http\Controllers\UserStreakController::class, 'update'])->name('user-streaks.update');
+        Route::get('user-streaks/export', [App\Http\Controllers\UserStreakController::class, 'exportCsv'])->name('user-streaks.export');
+
+        // Daily Goals management routes
+        Route::get('user-goals', [App\Http\Controllers\UserGoalController::class, 'index'])->name('user-goals.index');
+        Route::post('user-goals/{id}/reset', [App\Http\Controllers\UserGoalController::class, 'reset'])->name('user-goals.reset');
+        Route::post('user-goals/{id}/edit', [App\Http\Controllers\UserGoalController::class, 'update'])->name('user-goals.update');
+        Route::get('user-goals/export', [App\Http\Controllers\UserGoalController::class, 'exportCsv'])->name('user-goals.export');
+
+        // Default Goal Templates CRUD routes
+        Route::resource('daily-goal-templates', App\Http\Controllers\DailyGoalTemplateController::class)->except(['show']);
+
+        // Goal Progress management routes
+        Route::get('user-goal-progress', [App\Http\Controllers\AdminUserGoalProgressController::class, 'index'])->name('user-goal-progress.index');
+        Route::post('user-goal-progress/{id}/reset', [App\Http\Controllers\AdminUserGoalProgressController::class, 'reset'])->name('user-goal-progress.reset');
+        Route::post('user-goal-progress/{id}/edit', [App\Http\Controllers\AdminUserGoalProgressController::class, 'update'])->name('user-goal-progress.update');
+        Route::post('user-goal-progress/{id}/force-complete', [App\Http\Controllers\AdminUserGoalProgressController::class, 'forceComplete'])->name('user-goal-progress.force-complete');
+        Route::get('user-goal-progress/export', [App\Http\Controllers\AdminUserGoalProgressController::class, 'exportCsv'])->name('user-goal-progress.export');
+
+        // ── Achievement System ────────────────────────────────────────────────────
+        Route::resource('achievements', App\Http\Controllers\AchievementController::class);
+        Route::resource('achievement-categories', App\Http\Controllers\AchievementCategoryController::class);
+
+        // User Achievements: view, grant, revoke, reset
+        Route::get('user-achievements', [App\Http\Controllers\AdminUserAchievementController::class, 'index'])->name('user-achievements.index');
+        Route::get('user-achievements/analytics', [App\Http\Controllers\AdminUserAchievementController::class, 'analytics'])->name('user-achievements.analytics');
+        Route::post('user-achievements/users/{user}/grant', [App\Http\Controllers\AdminUserAchievementController::class, 'grant'])->name('user-achievements.grant');
+        Route::delete('user-achievements/{userAchievement}/revoke', [App\Http\Controllers\AdminUserAchievementController::class, 'revoke'])->name('user-achievements.revoke');
+        Route::post('user-achievements/{userAchievement}/reset', [App\Http\Controllers\AdminUserAchievementController::class, 'reset'])->name('user-achievements.reset');
+
+        // ── Leaderboard System ──────────────────────────────────────────────────
+        Route::get('admin/leaderboard/overview', [App\Http\Controllers\LeaderboardAdminController::class, 'overview'])->name('admin.leaderboard.overview');
+        Route::get('admin/leaderboard', [App\Http\Controllers\LeaderboardAdminController::class, 'index'])->name('admin.leaderboard.index');
+        Route::get('admin/leaderboard/config', [App\Http\Controllers\LeaderboardAdminController::class, 'config'])->name('admin.leaderboard.config');
+        Route::post('admin/leaderboard/config/save', [App\Http\Controllers\LeaderboardAdminController::class, 'saveConfig'])->name('admin.leaderboard.config.save');
+        Route::get('admin/leaderboard/analytics', [App\Http\Controllers\LeaderboardAdminController::class, 'analytics'])->name('admin.leaderboard.analytics');
+
+        // ── Tasbih Sessions System ──────────────────────────────────────────────
+        Route::get('admin/sessions/overview', [App\Http\Controllers\TasbihSessionAdminController::class, 'overview'])->name('admin.sessions.overview');
+        Route::get('admin/sessions/analytics', [App\Http\Controllers\TasbihSessionAdminController::class, 'analytics'])->name('admin.sessions.analytics');
+        Route::get('admin/sessions', [App\Http\Controllers\TasbihSessionAdminController::class, 'index'])->name('admin.sessions.index');
+        Route::get('admin/sessions/{id}', [App\Http\Controllers\TasbihSessionAdminController::class, 'show'])->name('admin.sessions.show')->whereNumber('id');
+        Route::post('admin/sessions/{id}/force-close', [App\Http\Controllers\TasbihSessionAdminController::class, 'forceClose'])->name('admin.sessions.force-close')->whereNumber('id');
+        Route::delete('admin/sessions/{id}', [App\Http\Controllers\TasbihSessionAdminController::class, 'destroy'])->name('admin.sessions.destroy')->whereNumber('id');
+
+        // ── Tasbih Themes System ────────────────────────────────────────────────
+        Route::get('admin/themes/dashboard', [App\Http\Controllers\AdminThemeController::class, 'dashboard'])->name('admin.themes.dashboard');
+        Route::get('admin/themes/analytics', [App\Http\Controllers\AdminThemeController::class, 'analytics'])->name('admin.themes.analytics');
+        Route::get('admin/themes/categories', [App\Http\Controllers\AdminThemeController::class, 'categories'])->name('admin.themes.categories');
+        Route::post('admin/themes/categories', [App\Http\Controllers\AdminThemeController::class, 'categories']);
+        Route::post('admin/themes/categories/{id}', [App\Http\Controllers\AdminThemeController::class, 'updateCategory'])->name('admin.themes.categories.update')->whereNumber('id');
+        Route::delete('admin/themes/categories/{id}', [App\Http\Controllers\AdminThemeController::class, 'destroyCategory'])->name('admin.themes.categories.destroy')->whereNumber('id');
+        Route::resource('admin/themes', App\Http\Controllers\AdminThemeController::class)->names([
+            'index' => 'admin.themes.index',
+            'create' => 'admin.themes.create',
+            'store' => 'admin.themes.store',
+            'edit' => 'admin.themes.edit',
+            'update' => 'admin.themes.update',
+            'destroy' => 'admin.themes.destroy',
+        ])->except(['show']);
+
+        // ── Backup & Restore System ─────────────────────────────────────────────
+        Route::get('admin/backups/overview', [App\Http\Controllers\BackupAdminController::class, 'overview'])->name('admin.backups.overview');
+        Route::get('admin/backups', [App\Http\Controllers\BackupAdminController::class, 'index'])->name('admin.backups.index');
+        Route::get('admin/backups/logs', [App\Http\Controllers\BackupAdminController::class, 'logs'])->name('admin.backups.logs');
+        Route::get('admin/backups/settings', [App\Http\Controllers\BackupAdminController::class, 'settings'])->name('admin.backups.settings');
+        Route::post('admin/backups/settings', [App\Http\Controllers\BackupAdminController::class, 'updateSettings'])->name('admin.backups.settings.save');
+        Route::get('admin/backups/{id}/download', [App\Http\Controllers\BackupAdminController::class, 'download'])->name('admin.backups.download')->whereNumber('id');
+        Route::delete('admin/backups/{id}', [App\Http\Controllers\BackupAdminController::class, 'destroy'])->name('admin.backups.destroy')->whereNumber('id');
+
+        // ── Fingerprint System ──────────────────────────────────────────────────
+        Route::get('admin/fingerprint/dashboard', [App\Http\Controllers\FingerprintAdminController::class, 'dashboard'])->name('admin.fingerprint.dashboard');
+        Route::get('admin/fingerprint/users', [App\Http\Controllers\FingerprintAdminController::class, 'users'])->name('admin.fingerprint.users');
+        Route::get('admin/fingerprint/settings', [App\Http\Controllers\FingerprintAdminController::class, 'settings'])->name('admin.fingerprint.settings');
+        Route::post('admin/fingerprint/settings', [App\Http\Controllers\FingerprintAdminController::class, 'updateSettings'])->name('admin.fingerprint.settings.save');
+
+        // ── Statistics & Analytics System ────────────────────────────────────────
+        Route::get('admin/statistics', [App\Http\Controllers\StatisticsAdminController::class, 'index'])->name('admin.statistics.index');
+        Route::get('admin/statistics/users', [App\Http\Controllers\StatisticsAdminController::class, 'users'])->name('admin.statistics.users');
+        Route::get('admin/statistics/insights', [App\Http\Controllers\StatisticsAdminController::class, 'insights'])->name('admin.statistics.insights');
+        Route::get('admin/statistics/settings', [App\Http\Controllers\StatisticsAdminController::class, 'settings'])->name('admin.statistics.settings');
+        Route::post('admin/statistics/settings', [App\Http\Controllers\StatisticsAdminController::class, 'saveSettings'])->name('admin.statistics.settings.save');
     });
+
 
     Route::get('audio-files/{audioFile}/stream', [AudioFileController::class, 'stream'])->name('audio-files.stream');
 
@@ -236,7 +337,11 @@ Route::middleware('auth')->group(function () {
     Route::post('translations-manager/analytics/flush', [App\Http\Controllers\TranslationAnalyticsController::class, 'flushAnalytics'])->name('translations-manager.analytics.flush');
     Route::post('translations-manager/analytics/ai-fix', [App\Http\Controllers\TranslationAnalyticsController::class, 'generateAiFix'])->name('translations-manager.analytics.ai-fix');
 
+    Route::post('bookmarks/toggle/{ayah}', [BookmarkController::class, 'toggle'])->name('bookmarks.toggle');
+    Route::get('bookmarks/export', [BookmarkController::class, 'export'])->name('bookmarks.export');
     Route::resource('bookmarks', BookmarkController::class);
+    Route::post('favorites/toggle/{ayah?}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::post('favorites/bulk-delete', [FavoriteController::class, 'bulkDelete'])->name('favorites.bulk-delete');
     Route::resource('favorites', FavoriteController::class);
     Route::resource('memorization-plans', MemorizationPlanController::class);
     Route::get('memorization-reviews/stats', [MemorizationReviewController::class, 'stats'])->name('memorization-reviews.stats-page');
@@ -264,6 +369,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
     Route::post('users/{user}/reset-points', [LeaderboardController::class, 'resetUserPoints'])->name('leaderboard.reset');
+
+    // ─── Smart Reminders ────────────────────────────────────────────────────────
+    Route::get('reminders', [ReminderTemplateController::class, 'index'])->name('reminders.index');
+    Route::get('reminders/create', [ReminderTemplateController::class, 'create'])->name('reminders.create');
+    Route::post('reminders', [ReminderTemplateController::class, 'store'])->name('reminders.store');
+    Route::get('reminders/{reminder}/edit', [ReminderTemplateController::class, 'edit'])->name('reminders.edit');
+    Route::put('reminders/{reminder}', [ReminderTemplateController::class, 'update'])->name('reminders.update');
+    Route::delete('reminders/{reminder}', [ReminderTemplateController::class, 'destroy'])->name('reminders.destroy');
+    Route::post('reminders/{reminder}/duplicate', [ReminderTemplateController::class, 'duplicate'])->name('reminders.duplicate');
+    Route::post('reminders/{reminder}/test', [AdminReminderController::class, 'test'])->name('reminders.test');
+
+    // Reminder monitoring & analytics
+    Route::get('reminders/users', [AdminReminderController::class, 'users'])->name('reminders.users');
+    Route::get('reminders/analytics', [AdminReminderController::class, 'analytics'])->name('reminders.analytics');
 });
 
 // Translation Sync API Endpoints

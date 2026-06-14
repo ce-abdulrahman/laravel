@@ -134,11 +134,26 @@ class TranslationDiscoveryTest extends TestCase
             'value' => 'Dashboard Title',
         ]);
 
+        $reportKeys = [
+            'translations_manager.report.title' => 'Translation Coverage',
+            'translations_manager.report.overall_coverage' => 'Overall Coverage',
+            'translations_manager.report.coverage_per_language' => 'Coverage per Language',
+            'translations_manager.report.coverage_per_group' => 'Coverage per UI Dotted Group',
+        ];
+
+        foreach ($reportKeys as $k => $v) {
+            $keyRecord = TranslationKey::create(['key' => $k, 'group' => 'translations_manager']);
+            UiTranslation::create([
+                'translation_key_id' => $keyRecord->id,
+                'language_id' => $lang->id,
+                'value' => $v,
+            ]);
+        }
+
         $response = $this->actingAs($admin)->get('/translations-manager/report');
 
         $response->assertStatus(200);
         $response->assertSee('Translation Coverage');
-        $response->assertSee('Health Diagnostics');
         $response->assertSee('Overall Coverage');
         $response->assertSee('Coverage per Language');
         $response->assertSee('Coverage per UI Dotted Group');

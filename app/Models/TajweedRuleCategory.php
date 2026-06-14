@@ -51,6 +51,14 @@ class TajweedRuleCategory extends Model
     }
 
     /**
+     * Scope: order categories by order.
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('order');
+    }
+
+    /**
      * Get localized name based on current app locale.
      */
     public function getLocalizedNameAttribute(): string

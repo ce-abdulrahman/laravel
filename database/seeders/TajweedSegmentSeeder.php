@@ -30,7 +30,19 @@ class TajweedSegmentSeeder extends Seeder
             AyahTajweedSegment::truncate();
 
             foreach (array_chunk($segments, 500) as $chunk) {
-                AyahTajweedSegment::insert($chunk);
+                $mappedChunk = array_map(function ($item) {
+                    if (isset($item['text_segment'])) {
+                        $item['matched_text'] = $item['text_segment'];
+                        unset($item['text_segment']);
+                    }
+                    if (!isset($item['metadata'])) {
+                        $item['metadata'] = json_encode([]);
+                    }
+                    $item['created_at'] = now();
+                    $item['updated_at'] = now();
+                    return $item;
+                }, $chunk);
+                AyahTajweedSegment::insert($mappedChunk);
             }
         });
 

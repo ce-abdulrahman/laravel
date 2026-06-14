@@ -97,9 +97,14 @@ class TranslationAuditTest extends TestCase
 
         $this->assertEquals(0, $exitCode);
         
+        // Get expected dynamic counts
+        $expectedSurahsMissing = \App\Models\Surah::count() - 1;
+        $expectedCategoriesMissing = \App\Models\TajweedRuleCategory::count();
+        $expectedRulesMissing = \App\Models\TajweedRule::count();
+
         // Assert output contains warning messages for missing and empty items
-        $this->assertStringContainsString('Locale "es" has 113 missing and 1 empty translations', $output);
-        $this->assertStringContainsString('Locale "es" has 10 missing and 0 empty translations', $output);
-        $this->assertStringContainsString('Locale "es" has 36 missing and 0 empty translations', $output);
+        $this->assertStringContainsString("Locale \"es\" has {$expectedSurahsMissing} missing and 1 empty translations", $output);
+        $this->assertStringContainsString("Locale \"es\" has {$expectedCategoriesMissing} missing and 0 empty translations", $output);
+        $this->assertStringContainsString("Locale \"es\" has {$expectedRulesMissing} missing and 0 empty translations", $output);
     }
 }

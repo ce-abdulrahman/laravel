@@ -29,19 +29,24 @@ return [
 
     'filter_by_rule' => 'Filter by Rule',
     'filter_by_surah' => 'Filter by Surah',
+    'filter_by_category' => 'Filter by Category',
+    'filter_by_ayah' => 'Filter by Ayah Number',
     'all_rules' => 'All Rules',
     'all_surahs' => 'All Surahs',
+    'all_categories' => 'All Categories',
     'search' => 'Search',
-    'search_placeholder' => 'Search by segment text...',
+    'search_placeholder' => 'Search by matched text...',
 
     'fields' => [
         'tajweed_rule' => 'Tajweed Rule',
         'ayah' => 'Ayah',
         'surah_ayah' => 'Surah & Ayah',
         'rule' => 'Rule',
-        'text_segment' => 'Text Segment',
+        'matched_text' => 'Matched Text',
+        'text_segment' => 'Matched Text', // Deprecated alias
         'start_index' => 'Start Index',
         'end_index' => 'End Index',
+        'metadata' => 'Metadata (JSON)',
         'note' => 'Note',
     ],
 
@@ -51,7 +56,9 @@ return [
     ],
 
     'placeholders' => [
-        'text_segment' => 'Segment text in Arabic...',
+        'text_segment' => 'Matched text in Arabic...',
+        'matched_text' => 'Matched text in Arabic...',
+        'metadata' => '{"duration": "2_harakat"}',
         'note' => 'Additional note...',
     ],
 
@@ -64,6 +71,7 @@ return [
     'rule_info' => 'Rule Information',
     'view_full_rule' => 'View Full Rule',
     'other_segments' => 'Other Segments',
+    'metadata' => 'Metadata',
 
     'no_segments_found' => 'No segments found',
 
@@ -75,5 +83,8 @@ return [
         'delete_title' => 'Delete Segment',
         'delete_warning' => 'Deleting a segment is permanent and cannot be undone.',
         'confirm_delete' => 'Are you sure you want to delete this segment?',
+        'rebuild_title' => 'Rebuild Segments',
+        'rebuild_warning' => 'Rebuilding segments will clear ALL existing records first and import new ones. This cannot be undone.',
+        'confirm_rebuild' => 'Are you sure you want to delete all segments and rebuild from the uploaded file?',
     ],
 ];

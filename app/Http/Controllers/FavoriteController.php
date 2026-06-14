@@ -85,16 +85,21 @@ class FavoriteController extends Controller
     /**
      * Toggle favorite (add if not exists, remove if exists).
      */
-    public function toggle(Request $request)
+    public function toggle(Request $request, ?Ayah $ayah = null)
     {
         $user = Auth::user();
 
-        $validated = $request->validate([
-            'ayah_id' => 'required|exists:ayahs,id',
-        ]);
+        $ayahId = $ayah?->id ?? $request->input('ayah_id');
+
+        if (!$ayahId) {
+            $validated = $request->validate([
+                'ayah_id' => 'required|exists:ayahs,id',
+            ]);
+            $ayahId = $validated['ayah_id'];
+        }
 
         $favorite = Favorite::where('user_id', $user->id)
-            ->where('ayah_id', $validated['ayah_id'])
+            ->where('ayah_id', $ayahId)
             ->first();
 
         if ($favorite) {
@@ -107,7 +112,7 @@ class FavoriteController extends Controller
         } else {
             Favorite::create([
                 'user_id' => $user->id,
-                'ayah_id' => $validated['ayah_id'],
+                'ayah_id' => $ayahId,
             ]);
             return response()->json([
                 'success' => true,

@@ -361,20 +361,77 @@
                 </span>
                 <span class="quran-nav-label{{ request()->routeIs('banners.*') ? ' active' : '' }}">{{ __('sidebar.banners') }}</span>
             </a>
+
+            <!-- User Management Dropdown -->
+            <div class="quran-nav-group">
+                <a href="#usersAdminSubmenu"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                   aria-expanded="{{ request()->routeIs('admin.users.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <span class="quran-nav-label">User Management</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('admin.users.*') ? 'show' : '' }}" id="usersAdminSubmenu">
+                    <a href="{{ route('admin.users.dashboard') }}" class="quran-submenu-item {{ request()->routeIs('admin.users.dashboard') ? 'active' : '' }}">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a href="{{ route('admin.users.index') }}" class="quran-submenu-item {{ request()->routeIs('admin.users.index') || request()->routeIs('admin.users.show') ? 'active' : '' }}">
+                        <i class="bi bi-circle-fill me-2" style="font-size: 6px;"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Backups Dropdown -->
+            <div class="quran-nav-group">
+                <a href="#backupsAdminSubmenu"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                   aria-expanded="{{ request()->routeIs('admin.backups.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-hdd-network"></i>
+                    </div>
+                    <span class="quran-nav-label">{{ __('sidebar.backups') }}</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('admin.backups.*') ? 'show' : '' }}" id="backupsAdminSubmenu">
+                    <a href="{{ route('admin.backups.overview') }}" class="quran-submenu-item {{ request()->routeIs('admin.backups.overview') ? 'active' : '' }}">
+                        <i class="bi bi-grid-fill me-2" style="font-size: 6px;"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a href="{{ route('admin.backups.index') }}" class="quran-submenu-item {{ request()->routeIs('admin.backups.index') ? 'active' : '' }}">
+                        <i class="bi bi-list-ol me-2" style="font-size: 6px;"></i>
+                        <span>Manage Backups</span>
+                    </a>
+                    <a href="{{ route('admin.backups.logs') }}" class="quran-submenu-item {{ request()->routeIs('admin.backups.logs') ? 'active' : '' }}">
+                        <i class="bi bi-clock-history me-2" style="font-size: 6px;"></i>
+                        <span>Restore Logs</span>
+                    </a>
+                    <a href="{{ route('admin.backups.settings') }}" class="quran-submenu-item {{ request()->routeIs('admin.backups.settings') ? 'active' : '' }}">
+                        <i class="bi bi-gear-fill me-2" style="font-size: 6px;"></i>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </div>
+
             
             <!-- Adhkar & Tasbih Dropdown -->
             <div class="quran-nav-group">
                 <a href="#adhkarAdminSubmenu"
-                   class="quran-nav-item has-submenu {{ request()->routeIs('adhkar-categories.*') || request()->routeIs('adhkars.*') || request()->routeIs('tasbihs.*') ? 'active' : '' }}"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('adhkar-categories.*') || request()->routeIs('adhkars.*') ? 'active' : '' }}"
                    data-bs-toggle="collapse"
-                   aria-expanded="{{ request()->routeIs('adhkar-categories.*') || request()->routeIs('adhkars.*') || request()->routeIs('tasbihs.*') ? 'true' : 'false' }}">
+                   aria-expanded="{{ request()->routeIs('adhkar-categories.*') || request()->routeIs('adhkars.*') ? 'true' : 'false' }}">
                     <div class="quran-nav-icon">
                         <i class="bi bi-stars"></i>
                     </div>
-                    <span class="quran-nav-label">{{ __('sidebar.adhkars') }} &amp; {{ __('sidebar.tasbihs') }}</span>
+                    <span class="quran-nav-label">{{ __('sidebar.adhkars') }}</span>
                     <i class="bi bi-chevron-down quran-submenu-icon"></i>
                 </a>
-                <div class="quran-submenu collapse {{ request()->routeIs('adhkar-categories.*') || request()->routeIs('adhkars.*') || request()->routeIs('tasbihs.*') ? 'show' : '' }}" id="adhkarAdminSubmenu">
+                <div class="quran-submenu collapse {{ request()->routeIs('adhkar-categories.*') || request()->routeIs('adhkars.*') ? 'show' : '' }}" id="adhkarAdminSubmenu">
                     <a href="{{ route('adhkar-categories.index') }}" class="quran-submenu-item {{ request()->routeIs('adhkar-categories.*') ? 'active' : '' }}">
                         <i class="bi bi-tags me-2"></i>
                         <span>{{ __('sidebar.adhkar_categories') }}</span>
@@ -383,9 +440,174 @@
                         <i class="bi bi-chat-square-text me-2"></i>
                         <span>{{ __('sidebar.adhkars') }}</span>
                     </a>
+                </div>
+            </div>
+
+            <!-- Tasbih Dropdown -->
+            <div class="quran-nav-group">
+                <a href="#tasbihAdminSubmenu"
+                    class="quran-nav-item has-submenu {{ request()->routeIs('tasbihs.*') || request()->routeIs('user-streaks.*') || request()->routeIs('user-goals.*') || request()->routeIs('daily-goal-templates.*') || request()->routeIs('user-goal-progress.*') || request()->routeIs('admin.sessions.*') || request()->routeIs('admin.themes.*') || request()->routeIs('admin.fingerprint.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                    aria-expanded="{{ request()->routeIs('tasbihs.*') || request()->routeIs('user-streaks.*') || request()->routeIs('user-goals.*') || request()->routeIs('daily-goal-templates.*') || request()->routeIs('user-goal-progress.*') || request()->routeIs('admin.sessions.*') || request()->routeIs('admin.themes.*') || request()->routeIs('admin.fingerprint.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-stars"></i>
+                    </div>
+                    <span class="quran-nav-label">{{ __('sidebar.tasbihs') }}</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('tasbihs.*') || request()->routeIs('user-streaks.*') || request()->routeIs('user-goals.*') || request()->routeIs('daily-goal-templates.*') || request()->routeIs('user-goal-progress.*') || request()->routeIs('admin.sessions.*') || request()->routeIs('admin.themes.*') || request()->routeIs('admin.fingerprint.*') ? 'show' : '' }}" id="tasbihAdminSubmenu">
                     <a href="{{ route('tasbihs.index') }}" class="quran-submenu-item {{ request()->routeIs('tasbihs.*') ? 'active' : '' }}">
                         <i class="bi bi-heptagon me-2"></i>
                         <span>{{ __('sidebar.tasbihs') }}</span>
+                    </a>
+                    <a href="{{ route('admin.themes.dashboard') }}" class="quran-submenu-item {{ request()->routeIs('admin.themes.*') ? 'active' : '' }}">
+                        <i class="bi bi-palette me-2"></i>
+                        <span>{{ __('sidebar.tasbih_themes') }}</span>
+                    </a>
+                    <a href="{{ route('admin.sessions.overview') }}" class="quran-submenu-item {{ request()->routeIs('admin.sessions.*') ? 'active' : '' }}">
+                        <i class="bi bi-hourglass-split me-2"></i>
+                        <span>{{ __('sidebar.tasbih_sessions') }}</span>
+                    </a>
+                    <a href="{{ route('admin.fingerprint.dashboard') }}" class="quran-submenu-item {{ request()->routeIs('admin.fingerprint.*') ? 'active' : '' }}">
+                        <i class="bi bi-fingerprint me-2"></i>
+                        <span>{{ __('sidebar.fingerprint_mode') }}</span>
+                    </a>
+                    <a href="{{ route('user-streaks.index') }}" class="quran-submenu-item {{ request()->routeIs('user-streaks.*') ? 'active' : '' }}">
+                        <i class="bi bi-fire me-2"></i>
+                        <span>{{ __('sidebar.tasbih_streaks') }}</span>
+                    </a>
+                    <a href="{{ route('user-goals.index') }}" class="quran-submenu-item {{ request()->routeIs('user-goals.*') ? 'active' : '' }}">
+                        <i class="bi bi-bullseye me-2"></i>
+                        <span>{{ __('sidebar.daily_goals') }}</span>
+                    </a>
+                    <a href="{{ route('daily-goal-templates.index') }}" class="quran-submenu-item {{ request()->routeIs('daily-goal-templates.*') ? 'active' : '' }}">
+                        <i class="bi bi-sliders me-2"></i>
+                        <span>{{ __('sidebar.goal_templates') }}</span>
+                    </a>
+                    <a href="{{ route('user-goal-progress.index') }}" class="quran-submenu-item {{ request()->routeIs('user-goal-progress.*') ? 'active' : '' }}">
+                        <i class="bi bi-bar-chart-line me-2"></i>
+                        <span>{{ __('sidebar.goal_progress') }}</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Achievements Dropdown -->
+            <div class="quran-nav-group">
+                <a href="#achievementsAdminSubmenu"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('achievements.*') || request()->routeIs('achievement-categories.*') || request()->routeIs('user-achievements.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                   aria-expanded="{{ request()->routeIs('achievements.*') || request()->routeIs('achievement-categories.*') || request()->routeIs('user-achievements.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+                    <span class="quran-nav-label">{{ __('sidebar.achievements') }}</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('achievements.*') || request()->routeIs('achievement-categories.*') || request()->routeIs('user-achievements.*') ? 'show' : '' }}" id="achievementsAdminSubmenu">
+                    <a href="{{ route('achievements.index') }}" class="quran-submenu-item {{ request()->routeIs('achievements.*') ? 'active' : '' }}">
+                        <i class="bi bi-award me-2"></i>
+                        <span>{{ __('sidebar.achievements') }}</span>
+                    </a>
+                    <a href="{{ route('achievement-categories.index') }}" class="quran-submenu-item {{ request()->routeIs('achievement-categories.*') ? 'active' : '' }}">
+                        <i class="bi bi-folder2 me-2"></i>
+                        <span>{{ __('sidebar.achievement_categories') }}</span>
+                    </a>
+                    <a href="{{ route('user-achievements.index') }}" class="quran-submenu-item {{ request()->routeIs('user-achievements.*') ? 'active' : '' }}">
+                        <i class="bi bi-people me-2"></i>
+                        <span>{{ __('sidebar.user_achievements') }}</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Reminders Dropdown -->
+            <div class="quran-nav-group">
+                <a href="#remindersAdminSubmenu"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('reminders.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                   aria-expanded="{{ request()->routeIs('reminders.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-bell"></i>
+                    </div>
+                    <span class="quran-nav-label">{{ __('sidebar.reminders') }}</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('reminders.*') ? 'show' : '' }}" id="remindersAdminSubmenu">
+                    <a href="{{ route('reminders.index') }}" class="quran-submenu-item {{ request()->routeIs('reminders.index') || request()->routeIs('reminders.create') || request()->routeIs('reminders.edit') ? 'active' : '' }}">
+                        <i class="bi bi-card-list me-2"></i>
+                        <span>{{ __('sidebar.reminder_templates') }}</span>
+                    </a>
+                    <a href="{{ route('reminders.users') }}" class="quran-submenu-item {{ request()->routeIs('reminders.users') ? 'active' : '' }}">
+                        <i class="bi bi-people me-2"></i>
+                        <span>{{ __('sidebar.user_reminders') }}</span>
+                    </a>
+                    <a href="{{ route('reminders.analytics') }}" class="quran-submenu-item {{ request()->routeIs('reminders.analytics') ? 'active' : '' }}">
+                        <i class="bi bi-graph-up me-2"></i>
+                        <span>{{ __('sidebar.reminder_analytics') }}</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Statistics & Analytics Dropdown -->
+            <div class="quran-nav-group">
+                <a href="#statisticsAdminSubmenu"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('admin.statistics.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                   aria-expanded="{{ request()->routeIs('admin.statistics.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-bar-chart-line-fill"></i>
+                    </div>
+                    <span class="quran-nav-label">{{ __('sidebar.statistics') }}</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('admin.statistics.*') ? 'show' : '' }}" id="statisticsAdminSubmenu">
+                    <a href="{{ route('admin.statistics.index') }}" class="quran-submenu-item {{ request()->routeIs('admin.statistics.index') ? 'active' : '' }}">
+                        <i class="bi bi-speedometer2 me-2"></i>
+                        <span>{{ __('sidebar.statistics_dashboard') }}</span>
+                    </a>
+                    <a href="{{ route('admin.statistics.users') }}" class="quran-submenu-item {{ request()->routeIs('admin.statistics.users') ? 'active' : '' }}">
+                        <i class="bi bi-people me-2"></i>
+                        <span>{{ __('sidebar.user_analytics') }}</span>
+                    </a>
+                    <a href="{{ route('admin.statistics.insights') }}" class="quran-submenu-item {{ request()->routeIs('admin.statistics.insights') ? 'active' : '' }}">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        <span>{{ __('sidebar.insights') }}</span>
+                    </a>
+                    <a href="{{ route('admin.statistics.settings') }}" class="quran-submenu-item {{ request()->routeIs('admin.statistics.settings') ? 'active' : '' }}">
+                        <i class="bi bi-sliders me-2"></i>
+                        <span>{{ __('sidebar.statistics_settings') }}</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Leaderboard Dropdown -->
+
+            <div class="quran-nav-group">
+                <a href="#leaderboardAdminSubmenu"
+                   class="quran-nav-item has-submenu {{ request()->routeIs('admin.leaderboard.*') ? 'active' : '' }}"
+                   data-bs-toggle="collapse"
+                   aria-expanded="{{ request()->routeIs('admin.leaderboard.*') ? 'true' : 'false' }}">
+                    <div class="quran-nav-icon">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+                    <span class="quran-nav-label">{{ __('sidebar.leaderboard') }}</span>
+                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
+                </a>
+                <div class="quran-submenu collapse {{ request()->routeIs('admin.leaderboard.*') ? 'show' : '' }}" id="leaderboardAdminSubmenu">
+                    <a href="{{ route('admin.leaderboard.overview') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.overview') ? 'active' : '' }}">
+                        <i class="bi bi-grid-fill me-2"></i>
+                        <span>{{ __('leaderboard.tabs.overview') }}</span>
+                    </a>
+                    <a href="{{ route('admin.leaderboard.index') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.index') ? 'active' : '' }}">
+                        <i class="bi bi-list-ol me-2"></i>
+                        <span>{{ __('leaderboard.tabs.standings') }}</span>
+                    </a>
+                    <a href="{{ route('admin.leaderboard.config') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.config') ? 'active' : '' }}">
+                        <i class="bi bi-gear-fill me-2"></i>
+                        <span>{{ __('leaderboard.tabs.config') }}</span>
+                    </a>
+                    <a href="{{ route('admin.leaderboard.analytics') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.analytics') ? 'active' : '' }}">
+                        <i class="bi bi-graph-up-arrow me-2"></i>
+                        <span>{{ __('leaderboard.tabs.analytics') }}</span>
                     </a>
                 </div>
             </div>

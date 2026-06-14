@@ -285,6 +285,45 @@ class TranslatableModulesCrudTest extends TestCase
     }
 
     /** @test */
+    public function tajweed_rule_controller_pages_render_successfully()
+    {
+        $this->actingAs($this->adminUser);
+
+        // Create a category and rule
+        $category = TajweedRuleCategory::create([
+            'slug' => 'test-madd-cat-unique',
+            'order' => 1,
+            'is_active' => true,
+        ]);
+        $category->saveTranslationsFromArray([
+            'en' => ['name' => 'Madd'],
+        ]);
+
+        $rule = TajweedRule::create([
+            'tajweed_rule_category_id' => $category->id,
+            'slug' => 'test-madd-muttasil-rule-unique',
+            'color_code' => '#FF0000',
+            'is_active' => true,
+        ]);
+        $rule->saveTranslationsFromArray([
+            'en' => ['name' => 'Madd Muttasil', 'description' => 'Madd Muttasil Rule'],
+        ]);
+
+        // 1. Index
+        $response = $this->get(route('tajweed-rules.index'));
+        $response->assertStatus(200);
+        $response->assertSee('Madd');
+
+        // 2. Create
+        $response = $this->get(route('tajweed-rules.create'));
+        $response->assertStatus(200);
+
+        // 3. Edit
+        $response = $this->get(route('tajweed-rules.edit', $rule));
+        $response->assertStatus(200);
+    }
+
+    /** @test */
     public function validates_translation_payloads_correctly()
     {
         $this->actingAs($this->adminUser);
@@ -346,4 +385,166 @@ class TranslatableModulesCrudTest extends TestCase
             'name' => 'Language 5 Translation Name',
         ]);
     }
+
+    /** @test */
+    public function bookmark_toggle_route_works_correctly()
+    {
+        $surah = Surah::firstOrCreate(['number' => 1], [
+            'revelation_type' => 'meccan',
+            'ayah_count' => 7,
+            'is_active' => true,
+        ]);
+        $ayah = \App\Models\Ayah::firstOrCreate([
+            'surah_id' => $surah->id,
+            'ayah_number' => 1,
+        ], [
+            'text_uthmani' => 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($this->regularUser);
+
+        // Toggle bookmark on
+        $response = $this->post(route('bookmarks.toggle', $ayah));
+        $response->assertStatus(200);
+        $response->assertJson(['bookmarked' => true]);
+        $this->assertDatabaseHas('bookmarks', [
+            'user_id' => $this->regularUser->id,
+            'ayah_id' => $ayah->id,
+        ]);
+
+        // Toggle bookmark off
+        $response = $this->post(route('bookmarks.toggle', $ayah));
+        $response->assertStatus(200);
+        $response->assertJson(['bookmarked' => false]);
+        $this->assertDatabaseMissing('bookmarks', [
+            'user_id' => $this->regularUser->id,
+            'ayah_id' => $ayah->id,
+        ]);
+    }
+
+    /** @test */
+    public function bookmark_export_route_works_correctly()
+    {
+        $surah = Surah::firstOrCreate(['number' => 1], [
+            'revelation_type' => 'meccan',
+            'ayah_count' => 7,
+            'is_active' => true,
+        ]);
+        $ayah = \App\Models\Ayah::firstOrCreate([
+            'surah_id' => $surah->id,
+            'ayah_number' => 1,
+        ], [
+            'text_uthmani' => 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($this->regularUser);
+
+        // Toggle bookmark on
+        $this->post(route('bookmarks.toggle', $ayah));
+
+        // Export bookmarks
+        $response = $this->get(route('bookmarks.export'));
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Disposition', 'attachment; filename="bookmarks_' . date('Y-m-d') . '.json"');
+        $response->assertJsonFragment([
+            'ayah_number' => 1,
+            'ayah_text' => $ayah->text_uthmani,
+        ]);
+    }
+
+    /** @test */
+    public function favorite_toggle_route_works_correctly()
+    {
+        $surah = Surah::firstOrCreate(['number' => 1], [
+            'revelation_type' => 'meccan',
+            'ayah_count' => 7,
+            'is_active' => true,
+        ]);
+        $ayah = \App\Models\Ayah::firstOrCreate([
+            'surah_id' => $surah->id,
+            'ayah_number' => 1,
+        ], [
+            'text_uthmani' => 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($this->regularUser);
+
+        // Toggle favorite on via route parameter
+        $response = $this->post(route('favorites.toggle', $ayah));
+        $response->assertStatus(200);
+        $response->assertJson(['favorited' => true]);
+        $this->assertDatabaseHas('favorites', [
+            'user_id' => $this->regularUser->id,
+            'ayah_id' => $ayah->id,
+        ]);
+
+        // Toggle favorite off via route parameter
+        $response = $this->post(route('favorites.toggle', $ayah));
+        $response->assertStatus(200);
+        $response->assertJson(['favorited' => false]);
+        $this->assertDatabaseMissing('favorites', [
+            'user_id' => $this->regularUser->id,
+            'ayah_id' => $ayah->id,
+        ]);
+
+        // Toggle favorite on via request input (POST body)
+        $response = $this->post(route('favorites.toggle'), ['ayah_id' => $ayah->id]);
+        $response->assertStatus(200);
+        $response->assertJson(['favorited' => true]);
+        $this->assertDatabaseHas('favorites', [
+            'user_id' => $this->regularUser->id,
+            'ayah_id' => $ayah->id,
+        ]);
+    }
+
+    public function test_favorites_bulk_delete_route_works_correctly()
+    {
+        $surah = Surah::firstOrCreate(['number' => 1], [
+            'revelation_type' => 'meccan',
+            'ayah_count' => 7,
+            'is_active' => true,
+        ]);
+        $ayah1 = \App\Models\Ayah::firstOrCreate([
+            'surah_id' => $surah->id,
+            'ayah_number' => 1,
+        ], [
+            'text_uthmani' => 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+            'is_active' => true,
+        ]);
+        $ayah2 = \App\Models\Ayah::firstOrCreate([
+            'surah_id' => $surah->id,
+            'ayah_number' => 2,
+        ], [
+            'text_uthmani' => 'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+            'is_active' => true,
+        ]);
+
+        $this->actingAs($this->regularUser);
+
+        $fav1 = \App\Models\Favorite::create([
+            'user_id' => $this->regularUser->id,
+            'ayah_id' => $ayah1->id,
+        ]);
+        $fav2 = \App\Models\Favorite::create([
+            'user_id' => $this->regularUser->id,
+            'ayah_id' => $ayah2->id,
+        ]);
+
+        $response = $this->post(route('favorites.bulk-delete'), [
+            'ids' => [$fav1->id, $fav2->id]
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJson(['success' => true]);
+        $this->assertDatabaseMissing('favorites', [
+            'id' => $fav1->id,
+        ]);
+        $this->assertDatabaseMissing('favorites', [
+            'id' => $fav2->id,
+        ]);
+    }
 }
+

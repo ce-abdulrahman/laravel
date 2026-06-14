@@ -149,7 +149,7 @@
                         <thead>
                             <tr>
                                 <th>{{ __('tajweed_segments.fields.surah_ayah') }}</th>
-                                <th>{{ __('tajweed_segments.fields.text_segment') }}</th>
+                                <th>{{ __('tajweed_segments.fields.matched_text') }}</th>
                                 <th class="text-end">{{ __('common.actions') }}</th>
                             </tr>
                         </thead>
@@ -171,7 +171,7 @@
                                     <div class="arabic-text" style="font-size: 18px;">
                                         <span style="background-color: {{ $tajweedRule->color_code }}20; 
                                                      padding: 2px 8px; border-radius: 6px;">
-                                            {{ $segment->text_segment }}
+                                            {{ $segment->matched_text }}
                                         </span>
                                     </div>
                                 </td>

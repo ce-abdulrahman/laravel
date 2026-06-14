@@ -1,16 +1,30 @@
 <?php
-// app/Http/Controllers/AyahTajweedSegmentController.php
 
 namespace App\Http\Controllers;
 
-use App\Models\AyahTajweedSegment;
-use App\Models\TajweedRule;
+use App\Http\Requests\StoreTajweedSegmentRequest;
+use App\Http\Requests\UpdateTajweedSegmentRequest;
 use App\Models\Ayah;
+use App\Models\AyahTajweedSegment;
 use App\Models\Surah;
+use App\Models\TajweedRule;
+use App\Models\TajweedRuleCategory;
+use App\Services\TajweedSegmentService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AyahTajweedSegmentController extends Controller
 {
+    protected TajweedSegmentService $segmentService;
+
+    /**
+     * Inject the TajweedSegmentService.
+     */
+    public function __construct(TajweedSegmentService $segmentService)
+    {
+        $this->segmentService = $segmentService;
+    }
+
     /**
      * Display a listing of the tajweed segments.
      */
@@ -18,30 +32,44 @@ class AyahTajweedSegmentController extends Controller
     {
         $query = AyahTajweedSegment::with(['ayah.surah', 'tajweedRule']);
 
-        // فلتەر بەپێی یاسای تەجوید
+        // Filter by Tajweed Rule
         if ($request->filled('tajweed_rule_id')) {
             $query->where('tajweed_rule_id', $request->tajweed_rule_id);
         }
 
-        // فلتەر بەپێی سورەت
+        // Filter by Surah
         if ($request->filled('surah_id')) {
+            $query->where('surah_id', $request->surah_id);
+        }
+
+        // Filter by Ayah number
+        if ($request->filled('ayah_number')) {
             $query->whereHas('ayah', function ($q) use ($request) {
-                $q->where('surah_id', $request->surah_id);
+                $q->where('ayah_number', $request->ayah_number);
             });
         }
 
-        // گەڕان بەپێی دەق
-        if ($request->filled('search')) {
-            $query->where('text_segment', 'like', '%' . $request->search . '%');
+        // Filter by Rule Category
+        if ($request->filled('category_id')) {
+            $query->whereHas('tajweedRule', function ($q) use ($request) {
+                $q->where('tajweed_rule_category_id', $request->category_id);
+            });
         }
 
-        $segments = $query->orderBy('ayah_id')
+        // Search by matched text
+        if ($request->filled('search')) {
+            $query->where('matched_text', 'like', '%' . $request->search . '%');
+        }
+
+        $segments = $query->orderBy('surah_id')
+            ->orderBy('ayah_id')
             ->orderBy('start_index')
             ->paginate($request->per_page ?? 20)
             ->withQueryString();
 
-        $tajweedRules = TajweedRule::active()->orderBy('category')->orderBy('name')->get();
-        $surahs = Surah::orderBy('id')->get();
+        $tajweedRules = TajweedRule::active()->orderBy('name')->get();
+        $categories = TajweedRuleCategory::active()->orderBy('order')->get();
+        $surahs = Surah::orderBy('number')->get();
 
         $stats = [
             'total_segments' => AyahTajweedSegment::count(),
@@ -50,7 +78,7 @@ class AyahTajweedSegmentController extends Controller
         ];
 
         return view('tajweed-segments.index', compact(
-            'segments', 'tajweedRules', 'surahs', 'stats'
+            'segments', 'tajweedRules', 'categories', 'surahs', 'stats'
         ));
     }
 
@@ -61,7 +89,7 @@ class AyahTajweedSegmentController extends Controller
     {
         $this->authorizeAdmin();
 
-        $tajweedRules = TajweedRule::active()->orderBy('category')->orderBy('name')->get();
+        $tajweedRules = TajweedRule::active()->orderBy('name')->get();
         $ayahs = Ayah::with('surah')
             ->orderBy('surah_id')
             ->orderBy('ayah_number')
@@ -86,58 +114,23 @@ class AyahTajweedSegmentController extends Controller
     /**
      * Store a newly created tajweed segment in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTajweedSegmentRequest $request)
     {
-        $this->authorizeAdmin();
+        $validated = $request->validated();
 
-        $validated = $request->validate([
-            'ayah_id' => 'required|exists:ayahs,id',
-            'tajweed_rule_id' => 'required|exists:tajweed_rules,id',
-            'text_segment' => 'required|string',
-            'start_index' => 'nullable|integer|min:0',
-            'end_index' => 'nullable|integer|min:0|gte:start_index',
-            'note' => 'nullable|string',
-        ]);
+        if (isset($validated['metadata']) && is_string($validated['metadata'])) {
+            $validated['metadata'] = json_decode($validated['metadata'], true);
+        }
+
+        // Auto-resolve surah_id
+        $ayah = Ayah::findOrFail($validated['ayah_id']);
+        $validated['surah_id'] = $ayah->surah_id;
 
         $segment = AyahTajweedSegment::create($validated);
 
         return redirect()
             ->route('tajweed-segments.show', $segment)
             ->with('success', __('tajweed_segments.messages.created'));
-    }
-
-    /**
-     * Store multiple tajweed segments at once.
-     */
-    public function storeBatch(Request $request)
-    {
-        $this->authorizeAdmin();
-
-        $validated = $request->validate([
-            'ayah_id' => 'required|exists:ayahs,id',
-            'segments' => 'required|array|min:1',
-            'segments.*.tajweed_rule_id' => 'required|exists:tajweed_rules,id',
-            'segments.*.text_segment' => 'required|string',
-            'segments.*.start_index' => 'nullable|integer|min:0',
-            'segments.*.end_index' => 'nullable|integer|min:0',
-            'segments.*.note' => 'nullable|string',
-        ]);
-
-        foreach ($validated['segments'] as $segmentData) {
-            AyahTajweedSegment::create([
-                'ayah_id' => $validated['ayah_id'],
-                'tajweed_rule_id' => $segmentData['tajweed_rule_id'],
-                'text_segment' => $segmentData['text_segment'],
-                'start_index' => $segmentData['start_index'] ?? null,
-                'end_index' => $segmentData['end_index'] ?? null,
-                'note' => $segmentData['note'] ?? null,
-            ]);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => __('tajweed_segments.messages.created_batch'),
-        ]);
     }
 
     /**
@@ -162,7 +155,7 @@ class AyahTajweedSegmentController extends Controller
     {
         $this->authorizeAdmin();
 
-        $tajweedRules = TajweedRule::orderBy('category')->orderBy('name')->get();
+        $tajweedRules = TajweedRule::orderBy('name')->get();
         $ayahs = Ayah::with('surah')
             ->orderBy('surah_id')
             ->orderBy('ayah_number')
@@ -174,18 +167,17 @@ class AyahTajweedSegmentController extends Controller
     /**
      * Update the specified tajweed segment in storage.
      */
-    public function update(Request $request, AyahTajweedSegment $tajweedSegment)
+    public function update(UpdateTajweedSegmentRequest $request, AyahTajweedSegment $tajweedSegment)
     {
-        $this->authorizeAdmin();
+        $validated = $request->validated();
 
-        $validated = $request->validate([
-            'ayah_id' => 'required|exists:ayahs,id',
-            'tajweed_rule_id' => 'required|exists:tajweed_rules,id',
-            'text_segment' => 'required|string',
-            'start_index' => 'nullable|integer|min:0',
-            'end_index' => 'nullable|integer|min:0|gte:start_index',
-            'note' => 'nullable|string',
-        ]);
+        if (isset($validated['metadata']) && is_string($validated['metadata'])) {
+            $validated['metadata'] = json_decode($validated['metadata'], true);
+        }
+
+        // Auto-resolve surah_id
+        $ayah = Ayah::findOrFail($validated['ayah_id']);
+        $validated['surah_id'] = $ayah->surah_id;
 
         $tajweedSegment->update($validated);
 
@@ -209,6 +201,97 @@ class AyahTajweedSegmentController extends Controller
     }
 
     /**
+     * Import segments from uploaded JSON or CSV.
+     */
+    public function import(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $request->validate([
+            'file' => 'required|file|mimes:json,csv,txt',
+        ]);
+
+        $file = $request->file('file');
+        $content = file_get_contents($file->getRealPath());
+        $extension = $file->getClientOriginalExtension();
+
+        if ($extension === 'txt') {
+            // Fallback check based on mime type or content analysis
+            $extension = str_contains($content, '{') && str_contains($content, '}') ? 'json' : 'csv';
+        }
+
+        $result = $this->segmentService->import($content, $extension);
+
+        if (!empty($result['errors'])) {
+            $errorMsg = "Import finished with errors. " . count($result['errors']) . " rows failed. First error: " . $result['errors'][0];
+            return redirect()
+                ->route('tajweed-segments.index')
+                ->with('warning', "Import summary - Success: {$result['imported']}, Skipped (Duplicates): {$result['skipped']}. Errors: ")
+                ->withErrors($result['errors']);
+        }
+
+        return redirect()
+            ->route('tajweed-segments.index')
+            ->with('success', "Imported {$result['imported']} segments successfully. Skipped {$result['skipped']} duplicates.");
+    }
+
+    /**
+     * Export segments in JSON or CSV.
+     */
+    public function export(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $format = $request->input('format', 'json');
+        if (!in_array($format, ['json', 'csv'])) {
+            $format = 'json';
+        }
+
+        $filters = $request->only(['surah_id', 'tajweed_rule_id', 'category_id', 'search', 'ayah_number']);
+        $exportData = $this->segmentService->export($filters, $format);
+
+        $filename = 'tajweed_segments_' . date('Ymd_His') . '.' . $format;
+        $contentType = $format === 'csv' ? 'text/csv' : 'application/json';
+
+        return response($exportData)
+            ->header('Content-Type', $contentType)
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    /**
+     * Rebuild segments in transaction safety.
+     */
+    public function rebuild(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $request->validate([
+            'file' => 'required|file|mimes:json,csv,txt',
+        ]);
+
+        $file = $request->file('file');
+        $content = file_get_contents($file->getRealPath());
+        $extension = $file->getClientOriginalExtension();
+
+        if ($extension === 'txt') {
+            $extension = str_contains($content, '{') && str_contains($content, '}') ? 'json' : 'csv';
+        }
+
+        $result = $this->segmentService->rebuild($content, $extension);
+
+        if (!empty($result['errors'])) {
+            return redirect()
+                ->route('tajweed-segments.index')
+                ->with('warning', "Rebuild executed. Clear complete. New imports - Success: {$result['imported']}, Skipped: {$result['skipped']}.")
+                ->withErrors($result['errors']);
+        }
+
+        return redirect()
+            ->route('tajweed-segments.index')
+            ->with('success', "Rebuilt segments successfully. Clear complete. {$result['imported']} fresh segments imported.");
+    }
+
+    /**
      * Get segments for a specific ayah.
      */
     public function byAyah($ayahId)
@@ -227,7 +310,20 @@ class AyahTajweedSegmentController extends Controller
                 'surah' => $ayah->surah->name_ar,
                 'ayah_number' => $ayah->ayah_number,
             ],
-            'segments' => $segments,
+            'segments' => $segments->map(function ($s) {
+                return [
+                    'id' => $s->id,
+                    'surah_id' => $s->surah_id,
+                    'ayah_id' => $s->ayah_id,
+                    'tajweed_rule_id' => $s->tajweed_rule_id,
+                    'matched_text' => $s->matched_text,
+                    'text_segment' => $s->matched_text, // Compatibility
+                    'start_index' => $s->start_index,
+                    'end_index' => $s->end_index,
+                    'metadata' => $s->metadata,
+                    'note' => $s->note,
+                ];
+            }),
         ]);
     }
 
@@ -237,7 +333,7 @@ class AyahTajweedSegmentController extends Controller
     private function authorizeAdmin(): void
     {
         if (auth()->user()->role !== 'admin') {
-            abort(403, __('common.unauthorized'));
+            abort(Response::HTTP_FORBIDDEN, __('common.unauthorized'));
         }
     }
 }

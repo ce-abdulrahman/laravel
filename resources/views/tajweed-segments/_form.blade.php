@@ -28,7 +28,7 @@
                             <option value="{{ $rule->id }}" 
                                 {{ old('tajweed_rule_id', $tajweedSegment->tajweed_rule_id) == $rule->id ? 'selected' : '' }}
                                 data-color="{{ $rule->color_code }}">
-                                {{ $rule->name }} ({{ $rule->category }})
+                                {{ $rule->name }} ({{ $rule->category?->name ?? 'No Category' }})
                             </option>
                             @endforeach
                         </select>
@@ -78,16 +78,16 @@
 
                 <div class="row g-3">
                     <div class="col-12">
-                        <label class="quran-form-label" for="text_segment">
-                            {{ __('tajweed_segments.fields.text_segment') }}
+                        <label class="quran-form-label" for="matched_text">
+                            {{ __('tajweed_segments.fields.matched_text') }}
                             <span class="text-danger">*</span>
                         </label>
-                        <textarea name="text_segment" id="text_segment" rows="2"
-                                  class="quran-form-control arabic-text @error('text_segment') is-invalid @enderror"
+                        <textarea name="matched_text" id="matched_text" rows="2"
+                                  class="quran-form-control arabic-text @error('matched_text') is-invalid @enderror"
                                   dir="rtl"
-                                  placeholder="{{ __('tajweed_segments.placeholders.text_segment') }}"
-                                  required>{{ old('text_segment', $tajweedSegment->text_segment) }}</textarea>
-                        @error('text_segment')
+                                  placeholder="{{ __('tajweed_segments.placeholders.matched_text') }}"
+                                  required>{{ old('matched_text', $tajweedSegment->matched_text) }}</textarea>
+                        @error('matched_text')
                         <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -112,6 +112,19 @@
                                class="quran-form-control @error('end_index') is-invalid @enderror"
                                value="{{ old('end_index', $tajweedSegment->end_index) }}" min="0">
                         @error('end_index')
+                        <div class="quran-invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-12">
+                        <label class="quran-form-label" for="metadata">
+                            {{ __('tajweed_segments.fields.metadata') }}
+                        </label>
+                        <textarea name="metadata" id="metadata" rows="3"
+                                  class="quran-form-control font-monospace @error('metadata') is-invalid @enderror"
+                                  placeholder="{{ __('tajweed_segments.placeholders.metadata') }}">{{ old('metadata', $tajweedSegment->metadata ? json_encode($tajweedSegment->metadata, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '') }}</textarea>
+                        <small class="text-muted d-block mt-1">Must be valid JSON formatting, e.g. <code>{"duration": "2_harakat", "confidence": 100}</code></small>
+                        @error('metadata')
                         <div class="quran-invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

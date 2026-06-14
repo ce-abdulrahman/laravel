@@ -29,19 +29,24 @@ return [
 
     'filter_by_rule' => 'تصفية حسب الحكم',
     'filter_by_surah' => 'تصفية حسب السورة',
+    'filter_by_category' => 'تصفية حسب القسم',
+    'filter_by_ayah' => 'تصفية حسب رقم الآية',
     'all_rules' => 'جميع الأحكام',
     'all_surahs' => 'جميع السور',
+    'all_categories' => 'جميع الأقسام',
     'search' => 'بحث',
-    'search_placeholder' => 'بحث حسب نص الجزء...',
+    'search_placeholder' => 'بحث حسب نص التجويد...',
 
     'fields' => [
         'tajweed_rule' => 'حكم التجويد',
         'ayah' => 'الآية',
         'surah_ayah' => 'السورة والآية',
         'rule' => 'الحكم',
-        'text_segment' => 'نص الجزء',
+        'matched_text' => 'النص المقارن',
+        'text_segment' => 'النص المقارن', // Deprecated alias
         'start_index' => 'مؤشر البداية',
         'end_index' => 'مؤشر النهاية',
+        'metadata' => 'البيانات الوصفية (JSON)',
         'note' => 'ملاحظة',
     ],
 
@@ -52,6 +57,8 @@ return [
 
     'placeholders' => [
         'text_segment' => 'نص الجزء بالعربية...',
+        'matched_text' => 'نص الجزء بالعربية...',
+        'metadata' => '{"duration": "2_harakat"}',
         'note' => 'ملاحظة إضافية...',
     ],
 
@@ -64,6 +71,7 @@ return [
     'rule_info' => 'معلومات الحكم',
     'view_full_rule' => 'عرض الحكم الكامل',
     'other_segments' => 'أجزاء أخرى',
+    'metadata' => 'البيانات الوصفية',
 
     'no_segments_found' => 'لم يتم العثور على أجزاء',
 
@@ -75,5 +83,8 @@ return [
         'delete_title' => 'حذف الجزء',
         'delete_warning' => 'حذف الجزء إجراء نهائي ولا يمكن التراجع عنه.',
         'confirm_delete' => 'هل أنت متأكد أنك تريد حذف هذا الجزء؟',
+        'rebuild_title' => 'إعادة بناء الأجزاء',
+        'rebuild_warning' => 'إعادة بناء الأجزاء سيقوم بحذف كافة السجلات الحالية أولاً واستيراد سجلات جديدة. هذا الإجراء لا يمكن التراجع عنه.',
+        'confirm_rebuild' => 'هل أنت متأكد أنك تريد حذف جميع الأجزاء وإعادة البناء من الملف المرفوع؟',
     ],
 ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bookmark;
 use App\Models\Ayah;
 use App\Models\Surah;
+use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,16 +93,21 @@ class BookmarkController extends Controller
     /**
      * Toggle bookmark (add if not exists, remove if exists).
      */
-    public function toggle(Request $request)
+    public function toggle(Request $request, ?Ayah $ayah = null)
     {
         $user = Auth::user();
 
-        $validated = $request->validate([
-            'ayah_id' => 'required|exists:ayahs,id',
-        ]);
+        $ayahId = $ayah?->id;
+
+        if (!$ayahId) {
+            $validated = $request->validate([
+                'ayah_id' => 'required|exists:ayahs,id',
+            ]);
+            $ayahId = $validated['ayah_id'];
+        }
 
         $bookmark = Bookmark::where('user_id', $user->id)
-            ->where('ayah_id', $validated['ayah_id'])
+            ->where('ayah_id', $ayahId)
             ->first();
 
         if ($bookmark) {
@@ -114,7 +120,7 @@ class BookmarkController extends Controller
         } else {
             Bookmark::create([
                 'user_id' => $user->id,
-                'ayah_id' => $validated['ayah_id'],
+                'ayah_id' => $ayahId,
             ]);
             return response()->json([
                 'success' => true,

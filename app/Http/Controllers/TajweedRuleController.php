@@ -57,6 +57,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
 
         $categories = \App\Models\TajweedRuleCategory::active()
             ->orderBy('order')
+            ->get()
             ->pluck('name', 'id');
 
         $stats = [
@@ -76,7 +77,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
     {
         $this->authorizeAdmin();
 
-        $categories = \App\Models\TajweedRuleCategory::active()->orderBy('order')->pluck('name', 'id');
+        $categories = \App\Models\TajweedRuleCategory::active()->orderBy('order')->get()->pluck('name', 'id');
         $colorPalette = $this->getColorPalette();
 
         return view('tajweed-rules.create', compact('categories', 'colorPalette'));
@@ -177,7 +178,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
     {
         $this->authorizeAdmin();
 
-        $categories = \App\Models\TajweedRuleCategory::active()->orderBy('order')->pluck('name', 'id');
+        $categories = \App\Models\TajweedRuleCategory::active()->orderBy('order')->get()->pluck('name', 'id');
         $colorPalette = $this->getColorPalette();
 
         return view('tajweed-rules.edit', compact('tajweedRule', 'categories', 'colorPalette'));

@@ -6,17 +6,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\MemorizationReview;
 use Carbon\Carbon;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'avatar',
+        'gender',
+        'birth_year',
+        'country_id',
+        'province_id',
         'role',
         'status',
         'preferred_locale',
@@ -24,6 +31,7 @@ class User extends Authenticatable
         'streak_days',
         'longest_streak',
         'last_read_date',
+        'last_login_at',
     ];
 
     protected $hidden = [
@@ -38,6 +46,7 @@ class User extends Authenticatable
             'password'          => 'hashed',
             'status'            => 'boolean',
             'last_read_date'    => 'date',
+            'last_login_at'     => 'datetime',
         ];
     }
 
@@ -73,7 +82,16 @@ class User extends Authenticatable
         return $this->hasMany(UserAyahProgress::class);
     }
 
-    // ── Role helpers ───────────────────────────────────────────────────
+    public function reminders()
+    {
+        return $this->hasMany(UserReminder::class);
+    }
+
+    public function reminderLogs()
+    {
+        return $this->hasMany(ReminderLog::class);
+    }
+
 
     public function isAdmin(): bool
     {
@@ -135,4 +153,175 @@ class User extends Authenticatable
     {
         return User::where('points_total', '>', $this->points_total)->count() + 1;
     }
+
+    /**
+     * Get the tasbih streak associated with the user.
+     */
+    public function tasbihStreak()
+    {
+        return $this->hasOne(UserTasbihStreak::class);
+    }
+
+    /**
+     * Get the tasbih daily goals associated with the user.
+     */
+    public function dailyGoals()
+    {
+        return $this->hasMany(UserDailyGoal::class);
+    }
+
+    /**
+     * Get today's daily goal for the user.
+     */
+    public function todayGoal()
+    {
+        return $this->hasOne(UserDailyGoal::class)
+            ->whereDate('goal_date', Carbon::now('Asia/Baghdad')->toDateString());
+    }
+
+    public function goalProgress()
+    {
+        return $this->hasMany(UserGoalProgress::class);
+    }
+
+    public function goalProgressEvents()
+    {
+        return $this->hasMany(UserGoalProgressEvent::class);
+    }
+
+    public function badges()
+    {
+        return $this->hasMany(UserBadge::class);
+    }
+
+    // ── Achievement System ─────────────────────────────────────────────
+
+    public function userAchievements()
+    {
+        return $this->hasMany(UserAchievement::class);
+    }
+
+    public function achievementEvents()
+    {
+        return $this->hasMany(AchievementEvent::class);
+    }
+
+    // ── Leaderboard System ─────────────────────────────────────────────
+
+    public function leaderboardSettings()
+    {
+        return $this->hasOne(UserLeaderboardSetting::class, 'user_id');
+    }
+
+    public function leaderboardEntries()
+    {
+        return $this->hasMany(LeaderboardEntry::class, 'user_id');
+    }
+
+    public function leaderboardScores()
+    {
+        return $this->hasMany(LeaderboardScore::class, 'user_id');
+    }
+
+    public function tasbihSessions()
+    {
+        return $this->hasMany(TasbihSession::class, 'user_id');
+    }
+
+    public function tasbihSessionAggregates()
+    {
+        return $this->hasMany(TasbihSessionAggregate::class, 'user_id');
+    }
+
+    public function fingerprintSetting()
+    {
+        return $this->hasOne(FingerprintSetting::class);
+    }
+
+    public function fingerprintStatistic()
+    {
+        return $this->hasOne(FingerprintStatistic::class);
+    }
+
+    public function backups()
+    {
+        return $this->hasMany(UserBackup::class, 'user_id');
+    }
+
+    public function restoreLogs()
+    {
+        return $this->hasMany(BackupRestoreLog::class, 'user_id');
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class);
+    }
+
+    public function devices()
+    {
+        return $this->hasMany(UserDevice::class);
+    }
+
+    public function loginLogs()
+    {
+        return $this->hasMany(UserLoginLog::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function userThemes()
+    {
+        return $this->hasMany(UserTheme::class);
+    }
+
+    public function themePreferences()
+    {
+        return $this->hasMany(UserThemePreference::class);
+    }
+
+    public function themeDownloads()
+    {
+        return $this->hasMany(ThemeDownload::class);
+    }
+
+    public function themeUsageLogs()
+    {
+        return $this->hasMany(ThemeUsageLog::class);
+    }
+
+    public function getAgeAttribute()
+    {
+        return $this->birth_year ? (now()->year - $this->birth_year) : null;
+    }
+
+    public function getProfileCompletionPercentage(): int
+    {
+        $fields = [
+            'name' => 20,
+            'username' => 20,
+            'avatar' => 15,
+            'gender' => 15,
+            'birth_year' => 10,
+            'country_id' => 10,
+            'province_id' => 10,
+        ];
+        
+        $percentage = 0;
+        foreach ($fields as $field => $weight) {
+            if ($this->{$field} !== null && $this->{$field} !== '') {
+                $percentage += $weight;
+            }
+        }
+        return $percentage;
+    }
 }
+

@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('achievements.index')" :active="request()->routeIs('achievements.*') || request()->routeIs('achievement-categories.*') || request()->routeIs('user-achievements.*')">
+                        🏆 {{ __('Achievements') }}
+                    </x-nav-link>
                 </div>
             </div>
 

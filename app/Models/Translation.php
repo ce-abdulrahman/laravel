@@ -30,5 +30,10 @@ class Translation extends Model
     {
         return $this->belongsTo(Ayah::class);
     }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class, 'language_code', 'code');
+    }
     
 }

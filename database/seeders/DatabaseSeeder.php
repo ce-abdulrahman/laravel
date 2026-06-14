@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Admin User',
+                'username' => 'admin',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
                 'status' => true,
@@ -42,6 +43,9 @@ class DatabaseSeeder extends Seeder
             AdhkarSeeder::class,
             TasbihSeeder::class,
             HadithSeeder::class,
+            DailyGoalTemplateSeeder::class,
+            AchievementSeeder::class,
+            FingerprintSeeder::class,
         ]);
     }
 }

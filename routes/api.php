@@ -29,6 +29,9 @@ use App\Http\Controllers\Api\V1\BannerController as V1BannerController;
 use App\Http\Controllers\Api\V1\AdhkarController as V1AdhkarController;
 use App\Http\Controllers\Api\V1\TasbihController as V1TasbihController;
 use App\Http\Controllers\Api\V1\HadithController as V1HadithController;
+use App\Http\Controllers\Api\V1\DailyGoalController;
+use App\Http\Controllers\Api\V1\AchievementController;
+use App\Http\Controllers\Api\V1\ReminderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,12 +47,26 @@ Route::get('tafsir-books', [PublicTafsirController::class, 'books']);
 Route::get('tafsirs/ayah/{ayah}', [PublicTafsirController::class, 'byAyah'])->whereNumber('ayah');
 Route::get('tafsirs/surah/{surah}', [PublicTafsirController::class, 'bySurah'])->whereNumber('surah');
 
+// Streak update root shortcut
+Route::post('streak/update', [App\Http\Controllers\Api\V1\StreakController::class, 'update']);
+
+// Daily Goal root shortcuts
+Route::get('daily-goal/today', [DailyGoalController::class, 'getToday']);
+Route::post('daily-goal/update', [DailyGoalController::class, 'updateProgress']);
+Route::post('daily-goal/set', [DailyGoalController::class, 'setGoal']);
+
+// Goal progress routes
+Route::post('goals/progress/update', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'update']);
+Route::get('goals/progress/{goal_id}', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'show'])->whereNumber('goal_id');
+Route::post('goals/progress/reset', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'reset']);
 
 Route::prefix('v1')->group(function () {
 
     // Public Routes - Authentication
     Route::post('auth/login', [AuthController::class, 'login']);
     Route::post('auth/register', [AuthController::class, 'register']);
+    Route::get('auth/countries', [AuthController::class, 'countries']);
+    Route::get('auth/provinces/{countryId}', [AuthController::class, 'provinces']);
 
     // Public Routes - Quran Data
     Route::get('surahs', [V1SurahController::class, 'index']);
@@ -73,10 +90,27 @@ Route::prefix('v1')->group(function () {
     Route::get('qiraat-texts', [QiraatController::class, 'qiraatTexts']);
     Route::get('settings', [V1SettingController::class, 'index']);
     Route::get('leaderboard', [LeaderboardController::class, 'index']);
+    Route::get('leaderboard/top', [LeaderboardController::class, 'top']);
     Route::get('banners', [V1BannerController::class, 'index']);
     Route::get('adhkars', [V1AdhkarController::class, 'index']);
     Route::get('tasbihs', [V1TasbihController::class, 'index']);
     Route::get('hadiths', [V1HadithController::class, 'index']);
+    Route::get('themes', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'index']);
+    Route::get('themes/{id}', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'show'])->whereNumber('id');
+    Route::post('streak/update', [App\Http\Controllers\Api\V1\StreakController::class, 'update']);
+    Route::get('daily-goal/today', [DailyGoalController::class, 'getToday']);
+    Route::post('daily-goal/update', [DailyGoalController::class, 'updateProgress']);
+    Route::post('daily-goal/set', [DailyGoalController::class, 'setGoal']);
+
+    Route::post('goals/progress/update', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'update']);
+    Route::get('goals/progress/{goal_id}', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'show'])->whereNumber('goal_id');
+    Route::post('goals/progress/reset', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'reset']);
+
+    // Achievement routes (public listing + optional user progress)
+    Route::get('achievements', [AchievementController::class, 'index']);
+    Route::get('achievements/unlocked', [AchievementController::class, 'unlocked']);
+    Route::get('achievements/{id}', [AchievementController::class, 'show'])->whereNumber('id');
+    Route::post('achievements/sync', [AchievementController::class, 'sync']);
 
     // Public Audio (Reader v2.1)
     Route::get('audio-files', [AudioFileController::class, 'index']);
@@ -97,9 +131,12 @@ Route::prefix('v1')->group(function () {
 
         // Auth
         Route::post('auth/logout', [AuthController::class, 'logout']);
+        Route::post('auth/logout-all', [AuthController::class, 'logoutAllDevices']);
         Route::get('auth/profile', [AuthController::class, 'profile']);
         Route::put('auth/profile/update', [AuthController::class, 'updateProfile']);
         Route::post('auth/change-password', [AuthController::class, 'changePassword']);
+        Route::post('auth/guest-convert', [AuthController::class, 'guestConvert']);
+        Route::delete('auth/account/delete', [AuthController::class, 'deleteAccount']);
 
         // Advanced Search (requires auth)
         Route::post('search/advanced', [SearchController::class, 'advanced']);
@@ -113,6 +150,8 @@ Route::prefix('v1')->group(function () {
         Route::get('reading-progress/overall', [LastReadController::class, 'getOverallProgress']);
         Route::get('reading-streaks', [LastReadController::class, 'getReadingStreaks']);
         Route::get('me/stats', [LeaderboardController::class, 'myStats']);
+        Route::get('leaderboard/me', [LeaderboardController::class, 'me']);
+        Route::post('leaderboard/privacy', [LeaderboardController::class, 'updatePrivacy']);
         Route::delete('reading-history', [LastReadController::class, 'clearHistory']);
         Route::delete('reading-history/{id}', [LastReadController::class, 'deleteEntry']);
 
@@ -166,5 +205,73 @@ Route::prefix('v1')->group(function () {
         Route::get('favorites', [FavoriteController::class, 'index']);
         Route::post('favorites/toggle', [FavoriteController::class, 'toggle']);
         Route::delete('favorites/{id}', [FavoriteController::class, 'destroy']);
+
+        // ─── Smart Reminders ────────────────────────────────────────────────────
+        Route::prefix('reminders')->group(function () {
+            Route::get('/',        [ReminderController::class, 'index']);
+            Route::post('save',    [ReminderController::class, 'save']);
+            Route::post('enable',  [ReminderController::class, 'enable']);
+            Route::post('disable', [ReminderController::class, 'disable']);
+            Route::post('sync',    [ReminderController::class, 'sync']);
+            Route::post('opened',  [ReminderController::class, 'opened']);
+        });
+
+        // ─── Tasbih Sessions ────────────────────────────────────────────────────
+        Route::prefix('sessions')->group(function () {
+            Route::post('start', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'start']);
+            Route::post('increment', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'increment'])->middleware('throttle:120,1');
+            Route::post('pause', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'pause']);
+            Route::post('resume', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'resume']);
+            Route::post('end', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'end']);
+            Route::get('active', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'active']);
+            Route::get('history', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'history']);
+            Route::get('analytics', [App\Http\Controllers\Api\V1\TasbihSessionController::class, 'analytics']);
+        });
+
+        // ─── Backup & Restore ────────────────────────────────────────────────────
+        Route::prefix('backups')->group(function () {
+            Route::post('create', [App\Http\Controllers\Api\V1\BackupController::class, 'create']);
+            Route::get('/', [App\Http\Controllers\Api\V1\BackupController::class, 'index']);
+            Route::get('download/{id}', [App\Http\Controllers\Api\V1\BackupController::class, 'download']);
+            Route::post('upload', [App\Http\Controllers\Api\V1\BackupController::class, 'upload']);
+            Route::post('restore/preview', [App\Http\Controllers\Api\V1\BackupController::class, 'preview']);
+            Route::post('restore', [App\Http\Controllers\Api\V1\BackupController::class, 'restore']);
+            Route::delete('{id}', [App\Http\Controllers\Api\V1\BackupController::class, 'destroy']);
+        });
+
+        // Themes
+        Route::prefix('themes')->group(function () {
+            Route::post('apply', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'apply']);
+            Route::post('favorite', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'favorite']);
+            Route::post('download', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'download']);
+            Route::post('sync', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'sync']);
+            Route::post('preferences', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'savePreferences']);
+        });
+
+        // Fingerprint
+        Route::prefix('fingerprint')->group(function () {
+            Route::get('settings', [App\Http\Controllers\Api\V1\FingerprintApiController::class, 'getSettings']);
+            Route::post('settings', [App\Http\Controllers\Api\V1\FingerprintApiController::class, 'saveSettings']);
+            Route::post('session', [App\Http\Controllers\Api\V1\FingerprintApiController::class, 'syncSession']);
+            Route::get('statistics', [App\Http\Controllers\Api\V1\FingerprintApiController::class, 'getStatistics']);
+        });
+
+        // ─── Statistics & Analytics ──────────────────────────────────────────────
+        Route::prefix('statistics')->group(function () {
+            Route::get('dashboard',    [App\Http\Controllers\Api\V1\StatisticsController::class, 'dashboard']);
+            Route::get('dhikr',        [App\Http\Controllers\Api\V1\StatisticsController::class, 'dhikr']);
+            Route::get('sessions',     [App\Http\Controllers\Api\V1\StatisticsController::class, 'sessions']);
+            Route::get('goals',        [App\Http\Controllers\Api\V1\StatisticsController::class, 'goals']);
+            Route::get('achievements', [App\Http\Controllers\Api\V1\StatisticsController::class, 'achievements']);
+            Route::get('streaks',      [App\Http\Controllers\Api\V1\StatisticsController::class, 'streaks']);
+            Route::get('leaderboard',  [App\Http\Controllers\Api\V1\StatisticsController::class, 'leaderboard']);
+            Route::get('fingerprint',  [App\Http\Controllers\Api\V1\StatisticsController::class, 'fingerprint']);
+            Route::get('reminders',    [App\Http\Controllers\Api\V1\StatisticsController::class, 'reminders']);
+            Route::get('insights',     [App\Http\Controllers\Api\V1\StatisticsController::class, 'insights']);
+            Route::get('milestones',   [App\Http\Controllers\Api\V1\StatisticsController::class, 'milestones']);
+            Route::post('export',      [App\Http\Controllers\Api\V1\StatisticsController::class, 'export']);
+            Route::post('refresh',     [App\Http\Controllers\Api\V1\StatisticsController::class, 'refresh']);
+        });
     });
 });
+

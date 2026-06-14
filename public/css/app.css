@@ -276,6 +276,111 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
 }
 
+/* New custom pagination nav wrapper */
+.quran-pagination-nav {
+    padding: 16px 20px;
+    border-top: 1px solid var(--quran-border-light);
+    background: var(--quran-bg-card);
+}
+
+/* quran-page-* = aliases for page-* so blade uses consistent naming */
+.quran-pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    margin: 0;
+    gap: 6px;
+}
+
+.quran-page-item { margin: 0; }
+
+.quran-page-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--quran-text-secondary);
+    text-decoration: none;
+    background: var(--quran-bg-card);
+    border: 1px solid var(--quran-border-light);
+    border-radius: 10px;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.quran-page-link:hover {
+    color: var(--quran-primary);
+    background: var(--quran-bg-pattern);
+    border-color: var(--quran-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.quran-page-item.active .quran-page-link {
+    background: linear-gradient(135deg, var(--quran-primary), var(--quran-primary-light));
+    color: white;
+    border-color: var(--quran-primary);
+    box-shadow: 0 4px 12px rgba(27, 115, 64, 0.3);
+    transform: translateY(-1px);
+}
+
+.quran-page-item.disabled .quran-page-link {
+    color: var(--quran-text-muted);
+    pointer-events: none;
+    background: var(--quran-bg-pattern);
+    border-color: var(--quran-border-light);
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.quran-page-dots {
+    background: transparent !important;
+    border-color: transparent !important;
+    letter-spacing: 2px;
+}
+
+/* Mobile simple prev/next button */
+.quran-page-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--quran-text-secondary);
+    text-decoration: none;
+    background: var(--quran-bg-card);
+    border: 1px solid var(--quran-border-light);
+    border-radius: 10px;
+    transition: all var(--transition-fast);
+}
+
+.quran-page-btn:hover {
+    color: var(--quran-primary);
+    background: var(--quran-bg-pattern);
+    border-color: var(--quran-primary);
+}
+
+.quran-page-btn.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* RTL arrow flip */
+[dir="rtl"] .quran-pagination-nav .bi-chevron-right,
+[dir="rtl"] .quran-pagination-nav .bi-chevron-left {
+    display: inline-block;
+    transform: scaleX(-1);
+}
+
+
+
 /* Laravel Pagination Customization */
 .pagination {
     display: flex;

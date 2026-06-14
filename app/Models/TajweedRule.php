@@ -51,6 +51,14 @@ class TajweedRule extends Model
     }
 
     /**
+     * Scope: order rules by priority.
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('priority', 'desc');
+    }
+
+    /**
      * Order rules by parent category's resolved translation name.
      */
     public function scopeOrderByCategoryTranslation($query, string $direction = 'asc')

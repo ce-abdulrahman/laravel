@@ -38,6 +38,11 @@ class Surah extends Model
         return $this->hasMany(Ayah::class);
     }
 
+    public function tajweedSegments()
+    {
+        return $this->hasMany(AyahTajweedSegment::class);
+    }
+
     public function audioFiles()
     {
         return $this->hasMany(AudioFile::class);
