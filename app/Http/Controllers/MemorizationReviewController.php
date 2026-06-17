@@ -438,4 +438,81 @@ class MemorizationReviewController extends Controller
             'forgot' => __('memorization_reviews.results.forgot'),
         ];
     }
+
+    public function exportReviews($format)
+    {
+        $user = Auth::user();
+        $reviews = MemorizationReview::where('user_id', $user->id)->get();
+
+        if ($format === 'json') {
+            $data = $reviews->map(function ($row) {
+                return [
+                    'ayah_id' => $row->ayah_id,
+                    'review_date' => $row->review_date?->toDateString(),
+                    'review_level' => $row->review_level,
+                    'result' => $row->result,
+                    'notes' => $row->notes,
+                ];
+            })->toArray();
+
+            $jsonData = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            return response($jsonData)
+                ->header('Content-Type', 'application/json')
+                ->header('Content-Disposition', 'attachment; filename="memorization_reviews_' . now()->format('Ymd') . '.json"');
+        } elseif ($format === 'csv') {
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="memorization_reviews_' . now()->format('Ymd') . '.csv"',
+            ];
+            $callback = function() use ($reviews) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, ['ayah_id', 'review_date', 'review_level', 'result', 'notes']);
+                foreach ($reviews as $row) {
+                    fputcsv($file, [
+                        $row->ayah_id,
+                        $row->review_date?->toDateString(),
+                        $row->review_level,
+                        $row->result,
+                        $row->notes
+                    ]);
+                }
+                fclose($file);
+            };
+            return response()->stream($callback, 200, $headers);
+        }
+
+        return redirect()->back()->with('error', 'Unsupported format');
+    }
+
+    public function importReviews(Request $request)
+    {
+        $validated = $request->validate([
+            'reviews' => 'required|array',
+            'reviews.*.ayah_id' => 'required|exists:ayahs,id',
+            'reviews.*.review_date' => 'required|date',
+            'reviews.*.review_level' => 'nullable|in:new,learning,reviewing,mastered',
+            'reviews.*.result' => 'nullable|in:perfect,good,fair,needs_work,forgot',
+            'reviews.*.notes' => 'nullable|string',
+        ]);
+
+        $userId = Auth::id();
+
+        \Illuminate\Support\Facades\DB::transaction(function () use ($userId, $validated) {
+            foreach ($validated['reviews'] as $item) {
+                MemorizationReview::create([
+                    'user_id' => $userId,
+                    'ayah_id' => $item['ayah_id'],
+                    'review_date' => $item['review_date'],
+                    'review_level' => $item['review_level'] ?? null,
+                    'result' => $item['result'] ?? null,
+                    'notes' => $item['notes'] ?? null,
+                ]);
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reviews imported successfully!'
+        ]);
+    }
 }

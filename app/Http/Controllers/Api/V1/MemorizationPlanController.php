@@ -103,6 +103,8 @@ class MemorizationPlanController extends Controller
             ]);
         }
 
+        app(\App\Services\SpacedRepetitionService::class)->invalidateCache($request->user()->id);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Memorization plan created successfully',
@@ -145,6 +147,8 @@ class MemorizationPlanController extends Controller
 
         $plan->update($request->all());
 
+        app(\App\Services\SpacedRepetitionService::class)->invalidateCache($request->user()->id);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Plan updated successfully',
@@ -156,6 +160,8 @@ class MemorizationPlanController extends Controller
     {
         $plan = MemorizationPlan::where('user_id', $request->user()->id)->findOrFail($id);
         $plan->delete();
+
+        app(\App\Services\SpacedRepetitionService::class)->invalidateCache($request->user()->id);
 
         return response()->json([
             'status' => 'success',
@@ -184,6 +190,8 @@ class MemorizationPlanController extends Controller
                                    ->firstOrFail();
 
         $item->update(['status' => $request->status]);
+
+        app(\App\Services\SpacedRepetitionService::class)->invalidateCache($request->user()->id);
 
         return response()->json([
             'status' => 'success',

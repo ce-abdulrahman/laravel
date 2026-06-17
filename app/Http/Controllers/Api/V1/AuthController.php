@@ -85,6 +85,13 @@ class AuthController extends Controller
 
         $token = $user->createToken('mobile-app')->plainTextToken;
 
+        // Warm memorization dashboard and statistics cache
+        try {
+            app(\App\Http\Controllers\Api\V1\UserAyahProgressController::class)->warmCache($user->id);
+        } catch (\Exception $e) {
+            \Log::error("Failed to warm cache for user {$user->id} on login: " . $e->getMessage());
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => __('api.login_successful'),

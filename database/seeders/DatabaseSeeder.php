@@ -46,6 +46,9 @@ class DatabaseSeeder extends Seeder
             DailyGoalTemplateSeeder::class,
             AchievementSeeder::class,
             FingerprintSeeder::class,
+            CitySeeder::class,
+            PrayerMethodSeeder::class,
+            WidgetTranslationSeeder::class,
         ]);
     }
 }

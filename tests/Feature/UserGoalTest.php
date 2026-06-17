@@ -26,7 +26,7 @@ class UserGoalTest extends TestCase
         $this->assertEquals(100, $goal->goal_value);
         $this->assertEquals(0, $goal->today_progress);
         $this->assertFalse($goal->is_completed);
-        $this->assertEquals(Carbon::now('UTC')->toDateString(), $goal->goal_date->toDateString());
+        $this->assertEquals(Carbon::now('Asia/Baghdad')->toDateString(), $goal->goal_date->toDateString());
     }
 
     /**
@@ -38,7 +38,7 @@ class UserGoalTest extends TestCase
         $service = new DailyGoalService();
 
         // Mock a goal from 2 days ago with value 500
-        $twoDaysAgo = Carbon::now('UTC')->subDays(2)->toDateString();
+        $twoDaysAgo = Carbon::now('Asia/Baghdad')->subDays(2)->toDateString();
         $user->dailyGoals()->create([
             'goal_value' => 500,
             'today_progress' => 10,

@@ -17,6 +17,11 @@ class UserAyahProgress extends Model
         'memorize_status',
         'last_memorized_at',
         'last_reviewed_at',
+        'next_review_date',
+        'review_count',
+        'current_interval_days',
+        'mastery_level',
+        'last_review_result',
         'strength_score',
         'mistakes_count',
         'notes',
@@ -27,6 +32,8 @@ class UserAyahProgress extends Model
         return [
             'last_memorized_at' => 'datetime',
             'last_reviewed_at' => 'datetime',
+            'next_review_date' => 'date',
+            'mastery_level' => \App\Enums\MasteryLevel::class,
         ];
     }
 

@@ -292,6 +292,24 @@ Route::middleware('auth')->group(function () {
         Route::get('admin/statistics/insights', [App\Http\Controllers\StatisticsAdminController::class, 'insights'])->name('admin.statistics.insights');
         Route::get('admin/statistics/settings', [App\Http\Controllers\StatisticsAdminController::class, 'settings'])->name('admin.statistics.settings');
         Route::post('admin/statistics/settings', [App\Http\Controllers\StatisticsAdminController::class, 'saveSettings'])->name('admin.statistics.settings.save');
+
+        // ── Prayer Settings System ──────────────────────────────────────────────
+        Route::get('admin/prayer-settings', [App\Http\Controllers\PrayerSettingsController::class, 'index'])->name('admin.prayer-settings.index');
+        Route::post('admin/prayer-settings', [App\Http\Controllers\PrayerSettingsController::class, 'update'])->name('admin.prayer-settings.update');
+        Route::post('admin/prayer-settings/cities', [App\Http\Controllers\PrayerSettingsController::class, 'storeCity'])->name('admin.prayer-settings.store-city');
+        Route::put('admin/prayer-settings/cities/{city}', [App\Http\Controllers\PrayerSettingsController::class, 'updateCity'])->name('admin.prayer-settings.update-city');
+        Route::delete('admin/prayer-settings/cities/{city}', [App\Http\Controllers\PrayerSettingsController::class, 'destroyCity'])->name('admin.prayer-settings.destroy-city');
+        Route::post('admin/prayer-settings/clear-cache', [App\Http\Controllers\PrayerSettingsController::class, 'clearCache'])->name('admin.prayer-settings.clear-cache');
+
+        // ── Prayer Methods System ──────────────────────────────────────────────
+        Route::get('admin/prayer-methods', [App\Http\Controllers\PrayerMethodsController::class, 'index'])->name('admin.prayer-methods.index');
+        Route::put('admin/prayer-methods/{id}', [App\Http\Controllers\PrayerMethodsController::class, 'update'])->name('admin.prayer-methods.update');
+        Route::post('admin/prayer-methods/{id}/toggle-active', [App\Http\Controllers\PrayerMethodsController::class, 'toggleActive'])->name('admin.prayer-methods.toggle-active');
+        Route::post('admin/prayer-methods/{id}/set-default', [App\Http\Controllers\PrayerMethodsController::class, 'setDefault'])->name('admin.prayer-methods.set-default');
+
+        // ── Prayer Widget Settings System ──────────────────────────────────────────────
+        Route::get('admin/prayer-widget-settings', [App\Http\Controllers\PrayerWidgetSettingsController::class, 'index'])->name('admin.prayer-widget-settings.index');
+        Route::post('admin/prayer-widget-settings', [App\Http\Controllers\PrayerWidgetSettingsController::class, 'update'])->name('admin.prayer-widget-settings.update');
     });
 
 
@@ -343,8 +361,16 @@ Route::middleware('auth')->group(function () {
     Route::post('favorites/toggle/{ayah?}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::post('favorites/bulk-delete', [FavoriteController::class, 'bulkDelete'])->name('favorites.bulk-delete');
     Route::resource('favorites', FavoriteController::class);
+    Route::get('memorization-plans/export/{format}', [MemorizationPlanController::class, 'exportPlans'])
+        ->name('memorization-plans.export');
+    Route::post('memorization-plans/import', [MemorizationPlanController::class, 'importPlans'])
+        ->name('memorization-plans.import');
     Route::resource('memorization-plans', MemorizationPlanController::class);
     Route::get('memorization-reviews/stats', [MemorizationReviewController::class, 'stats'])->name('memorization-reviews.stats-page');
+    Route::get('memorization-reviews/export/{format}', [MemorizationReviewController::class, 'exportReviews'])
+        ->name('memorization-reviews.export');
+    Route::post('memorization-reviews/import', [MemorizationReviewController::class, 'importReviews'])
+        ->name('memorization-reviews.import');
     Route::resource('memorization-reviews', MemorizationReviewController::class);
     Route::get('user-ayah-progress/dashboard', [UserAyahProgressController::class, 'dashboard'])
         ->name('user-ayah-progress.dashboard');

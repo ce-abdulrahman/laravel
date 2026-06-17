@@ -419,4 +419,5 @@ class UserAyahProgressController extends Controller
 
         return response()->json($ayahs);
     }
+    }
 }

@@ -313,6 +313,30 @@
                 </span>
                 <span class="quran-nav-label">{{ __('sidebar.settings') }}</span>
             </a>
+
+            <!-- Prayer Settings -->
+            <a href="{{ route('admin.prayer-settings.index') }}" class="quran-nav-item {{ request()->routeIs('admin.prayer-settings.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-clock"></i>
+                </span>
+                <span class="quran-nav-label">Prayer Settings</span>
+            </a>
+
+            <!-- Prayer Methods -->
+            <a href="{{ route('admin.prayer-methods.index') }}" class="quran-nav-item {{ request()->routeIs('admin.prayer-methods.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-gear-wide-connected"></i>
+                </span>
+                <span class="quran-nav-label">Prayer Methods</span>
+            </a>
+
+            <!-- Prayer Widget Settings -->
+            <a href="{{ route('admin.prayer-widget-settings.index') }}" class="quran-nav-item {{ request()->routeIs('admin.prayer-widget-settings.*') ? 'active' : '' }}">
+                <span class="quran-nav-icon">
+                    <i class="bi bi-card-text"></i>
+                </span>
+                <span class="quran-nav-label">Prayer Widget</span>
+            </a>
             
             <!-- Languages -->
             <a href="{{ route('languages.index') }}" class="quran-nav-item {{ request()->routeIs('languages.*') ? 'active' : '' }}">

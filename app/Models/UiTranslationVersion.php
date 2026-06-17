@@ -17,6 +17,10 @@ class UiTranslationVersion extends Model
         'new_value',
         'changed_by',
         'change_source',
+        'key',
+        'module',
+        'version',
+        'is_auto_generated',
     ];
 
     /**

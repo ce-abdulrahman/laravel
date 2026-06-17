@@ -13,6 +13,13 @@ class UserStreakTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function tearDown(): void
+    {
+        Carbon::setTestNow();
+        parent::tearDown();
+    }
+
+
     /**
      * Test first ever activity starts a streak at 1.
      */
@@ -25,7 +32,7 @@ class UserStreakTest extends TestCase
 
         $this->assertEquals(1, $streak->current_streak);
         $this->assertEquals(1, $streak->longest_streak);
-        $this->assertEquals(Carbon::now('UTC')->toDateString(), $streak->last_activity_date->toDateString());
+        $this->assertEquals(Carbon::now('Asia/Baghdad')->toDateString(), $streak->last_activity_date->toDateString());
     }
 
     /**
@@ -55,11 +62,11 @@ class UserStreakTest extends TestCase
         $service = app(StreakService::class);
 
         // Mock yesterday's activity
-        Carbon::setTestNow(Carbon::now('UTC')->subDay());
+        Carbon::setTestNow(Carbon::now('Asia/Baghdad')->subDay());
         $service->updateStreak($user);
 
         // Perform today's activity
-        Carbon::setTestNow(Carbon::now('UTC')->addDay()); // Back to today
+        Carbon::setTestNow(Carbon::now('Asia/Baghdad')->addDay()); // Back to today
         $streak = $service->updateStreak($user);
 
         $this->assertEquals(2, $streak->current_streak);
@@ -77,7 +84,7 @@ class UserStreakTest extends TestCase
         $service = app(StreakService::class);
 
         // Mock activity 3 days ago
-        Carbon::setTestNow(Carbon::now('UTC')->subDays(3));
+        Carbon::setTestNow(Carbon::now('Asia/Baghdad')->subDays(3));
         $service->updateStreak($user);
 
         // Perform today's activity
@@ -97,7 +104,7 @@ class UserStreakTest extends TestCase
         $user = User::factory()->create();
         $service = app(StreakService::class);
 
-        $today = Carbon::now('UTC')->toDateString();
+        $today = Carbon::now('Asia/Baghdad')->toDateString();
 
         // User performed a 5-day streak offline, syncing now
         $streak = $service->updateStreak($user, 5, 7, $today);
@@ -124,7 +131,7 @@ class UserStreakTest extends TestCase
                 'data' => [
                     'current_streak' => 1,
                     'longest_streak' => 1,
-                    'last_activity_date' => Carbon::now('UTC')->toDateString(),
+                    'last_activity_date' => Carbon::now('Asia/Baghdad')->toDateString(),
                 ]
             ]);
     }
@@ -160,7 +167,7 @@ class UserStreakTest extends TestCase
      */
     public function test_guest_streak_update_returns_echoed_stats(): void
     {
-        $today = Carbon::now('UTC')->toDateString();
+        $today = Carbon::now('Asia/Baghdad')->toDateString();
 
         $response = $this->postJson('/api/v1/streak/update', [
             'current_streak' => 3,

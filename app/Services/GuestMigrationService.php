@@ -35,7 +35,7 @@ class GuestMigrationService
                             'session_date' => $session['session_date'] ?? now()->toDateString(),
                             'status' => 'completed',
                         ]);
-                    } catch (\Illuminate\Database\IntegrityConstraintViolationException $e) {
+                    } catch (\Exception $e) {
                         // If constraint violation occurs, ignore and continue
                         continue;
                     }
@@ -82,7 +82,7 @@ class GuestMigrationService
                     try {
                         // Try to find and update existing goal
                         $existing = UserDailyGoal::where('user_id', $user->id)
-                            ->where('goal_date', $goalDate)
+                            ->whereDate('goal_date', $goalDate)
                             ->first();
 
                         if ($existing) {
@@ -102,7 +102,7 @@ class GuestMigrationService
                                 'is_completed' => $goal['is_completed'] ?? false,
                             ]);
                         }
-                    } catch (\Illuminate\Database\IntegrityConstraintViolationException $e) {
+                    } catch (\Exception $e) {
                         // If constraint violation occurs (race condition), ignore and continue
                         // The record was likely created by another process
                         continue;
@@ -120,7 +120,7 @@ class GuestMigrationService
                         ], [
                             'unlocked_at' => $ach['unlocked_at'] ?? now(),
                         ]);
-                    } catch (\Illuminate\Database\IntegrityConstraintViolationException $e) {
+                    } catch (\Exception $e) {
                         // If constraint violation occurs, ignore and continue
                         continue;
                     }

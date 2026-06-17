@@ -19,7 +19,7 @@ class MemorizationPlanController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('auth'),
-            new Middleware('admin', except: ['index', 'show', 'updateItemStatus']),
+            new Middleware('admin', except: ['index', 'show', 'updateItemStatus', 'exportPlans', 'importPlans']),
         ];
     }
 
@@ -433,5 +433,152 @@ class MemorizationPlanController extends Controller implements HasMiddleware
             ->get();
 
         return response()->json($ayahs);
+    }
+
+    public function exportPlans($format)
+    {
+        $user = Auth::user();
+        $plans = MemorizationPlan::where('user_id', $user->id)
+            ->with(['items'])
+            ->get();
+
+        if ($format === 'json') {
+            $data = $plans->map(function ($plan) {
+                return [
+                    'title' => $plan->title,
+                    'plan_type' => $plan->plan_type,
+                    'start_date' => $plan->start_date?->toDateString(),
+                    'target_end_date' => $plan->target_end_date?->toDateString(),
+                    'daily_target_type' => $plan->daily_target_type,
+                    'daily_target_value' => $plan->daily_target_value,
+                    'status' => $plan->status,
+                    'notes' => $plan->notes,
+                    'items' => $plan->items->map(function ($item) {
+                        return [
+                            'surah_id' => $item->surah_id,
+                            'from_ayah_id' => $item->from_ayah_id,
+                            'to_ayah_id' => $item->to_ayah_id,
+                            'day_number' => $item->day_number,
+                            'target_date' => $item->target_date?->toDateString(),
+                            'status' => $item->status,
+                        ];
+                    })->toArray(),
+                ];
+            })->toArray();
+
+            $jsonData = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            return response($jsonData)
+                ->header('Content-Type', 'application/json')
+                ->header('Content-Disposition', 'attachment; filename="memorization_plans_' . now()->format('Ymd') . '.json"');
+        } elseif ($format === 'csv') {
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="memorization_plans_' . now()->format('Ymd') . '.csv"',
+            ];
+            $callback = function() use ($plans) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, [
+                    'title', 'plan_type', 'start_date', 'target_end_date', 'daily_target_type', 'daily_target_value', 'plan_status', 'notes',
+                    'surah_id', 'from_ayah_id', 'to_ayah_id', 'day_number', 'item_target_date', 'item_status'
+                ]);
+                foreach ($plans as $plan) {
+                    if ($plan->items->isEmpty()) {
+                        fputcsv($file, [
+                            $plan->title,
+                            $plan->plan_type,
+                            $plan->start_date?->toDateString(),
+                            $plan->target_end_date?->toDateString(),
+                            $plan->daily_target_type,
+                            $plan->daily_target_value,
+                            $plan->status,
+                            $plan->notes,
+                            '', '', '', '', '', ''
+                        ]);
+                    } else {
+                        foreach ($plan->items as $item) {
+                            fputcsv($file, [
+                                $plan->title,
+                                $plan->plan_type,
+                                $plan->start_date?->toDateString(),
+                                $plan->target_end_date?->toDateString(),
+                                $plan->daily_target_type,
+                                $plan->daily_target_value,
+                                $plan->status,
+                                $plan->notes,
+                                $item->surah_id,
+                                $item->from_ayah_id,
+                                $item->to_ayah_id,
+                                $item->day_number,
+                                $item->target_date?->toDateString(),
+                                $item->status
+                            ]);
+                        }
+                    }
+                }
+                fclose($file);
+            };
+            return response()->stream($callback, 200, $headers);
+        }
+
+        return redirect()->back()->with('error', 'Unsupported format');
+    }
+
+    public function importPlans(Request $request)
+    {
+        $validated = $request->validate([
+            'plans' => 'required|array',
+            'plans.*.title' => 'required|string|max:255',
+            'plans.*.plan_type' => 'required|in:juz,surah,custom',
+            'plans.*.start_date' => 'required|date',
+            'plans.*.target_end_date' => 'nullable|date',
+            'plans.*.daily_target_type' => 'required|in:ayahs,pages,juz,hizb',
+            'plans.*.daily_target_value' => 'required|integer|min:1',
+            'plans.*.status' => 'required|in:active,paused,completed',
+            'plans.*.notes' => 'nullable|string',
+            'plans.*.items' => 'nullable|array',
+            'plans.*.items.*.surah_id' => 'required|exists:surahs,id',
+            'plans.*.items.*.from_ayah_id' => 'required|exists:ayahs,id',
+            'plans.*.items.*.to_ayah_id' => 'required|exists:ayahs,id',
+            'plans.*.items.*.day_number' => 'required|integer|min:1',
+            'plans.*.items.*.target_date' => 'required|date',
+            'plans.*.items.*.status' => 'required|in:pending,completed,skipped',
+        ]);
+
+        $userId = Auth::id();
+
+        \Illuminate\Support\Facades\DB::transaction(function () use ($userId, $validated) {
+            foreach ($validated['plans'] as $planData) {
+                $plan = MemorizationPlan::create([
+                    'user_id' => $userId,
+                    'title' => $planData['title'],
+                    'plan_type' => $planData['plan_type'],
+                    'start_date' => $planData['start_date'],
+                    'target_end_date' => $planData['target_end_date'] ?? null,
+                    'daily_target_type' => $planData['daily_target_type'],
+                    'daily_target_value' => $planData['daily_target_value'],
+                    'status' => $planData['status'] ?? 'active',
+                    'notes' => $planData['notes'] ?? null,
+                ]);
+
+                if (!empty($planData['items'])) {
+                    foreach ($planData['items'] as $itemData) {
+                        MemorizationPlanItem::create([
+                            'memorization_plan_id' => $plan->id,
+                            'surah_id' => $itemData['surah_id'],
+                            'from_ayah_id' => $itemData['from_ayah_id'],
+                            'to_ayah_id' => $itemData['to_ayah_id'],
+                            'day_number' => $itemData['day_number'],
+                            'target_date' => $itemData['target_date'],
+                            'status' => $itemData['status'] ?? 'pending',
+                        ]);
+                    }
+                }
+            }
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Plans imported successfully!'
+        ]);
     }
 }

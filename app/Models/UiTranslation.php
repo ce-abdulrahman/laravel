@@ -86,12 +86,21 @@ class UiTranslation extends Model
         // Log version when an existing translation is updated with a new value
         static::updating(function (UiTranslation $translation) {
             if ($translation->isDirty('value')) {
+                $keyStr = $translation->key->key ?? '';
+                $group = $translation->key->group ?? 'general';
+                $latestVer = UiTranslationVersion::where('key', $keyStr)->max('version') ?? 0;
+                $nextVer = $latestVer + 1;
+
                 UiTranslationVersion::create([
                     'ui_translation_id' => $translation->id,
                     'old_value' => $translation->getOriginal('value'),
                     'new_value' => $translation->value,
                     'changed_by' => auth()->id(),
                     'change_source' => self::$currentChangeSource,
+                    'key' => $keyStr,
+                    'module' => $group,
+                    'version' => $nextVer,
+                    'is_auto_generated' => (bool) ($translation->is_auto_generated ?? false),
                 ]);
             }
         });
@@ -99,12 +108,21 @@ class UiTranslation extends Model
         // Log version when a translation is created with an initial value
         static::created(function (UiTranslation $translation) {
             if ($translation->value !== null && $translation->value !== '') {
+                $keyStr = $translation->key->key ?? '';
+                $group = $translation->key->group ?? 'general';
+                $latestVer = UiTranslationVersion::where('key', $keyStr)->max('version') ?? 0;
+                $nextVer = $latestVer + 1;
+
                 UiTranslationVersion::create([
                     'ui_translation_id' => $translation->id,
                     'old_value' => null,
                     'new_value' => $translation->value,
                     'changed_by' => auth()->id(),
                     'change_source' => self::$currentChangeSource,
+                    'key' => $keyStr,
+                    'module' => $group,
+                    'version' => $nextVer,
+                    'is_auto_generated' => (bool) ($translation->is_auto_generated ?? false),
                 ]);
             }
         });

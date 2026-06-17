@@ -31,6 +31,10 @@ class LocalizationCrudTest extends TestCase
         ]);
 
         $this->admin = User::factory()->create(['role' => 'admin']);
+
+        TranslationKey::query()->delete();
+        UiTranslation::query()->delete();
+        \App\Models\UiTranslationVersion::query()->delete();
     }
 
     /** @test */

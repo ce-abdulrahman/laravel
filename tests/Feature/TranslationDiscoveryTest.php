@@ -23,6 +23,10 @@ class TranslationDiscoveryTest extends TestCase
         parent::setUp();
         
         $this->registryService = app(TranslationRegistryService::class);
+        TranslationRegistryService::clearStaticCache();
+        TranslationKey::query()->delete();
+        UiTranslation::query()->delete();
+        \App\Models\UiTranslationVersion::query()->delete();
 
         // Seed languages
         Language::updateOrCreate(['code' => 'en'], [
@@ -34,12 +38,10 @@ class TranslationDiscoveryTest extends TestCase
             'is_active' => true, 'is_default' => false,
         ]);
     }
-
     /** @test */
     public function scanner_registers_new_keys_discovered_in_files(): void
     {
-        $this->assertDatabaseCount('translation_keys', 0);
-
+        $this->assertEquals([], TranslationKey::pluck('key')->toArray());
         // Create temporary blade file
         $tempPath = resource_path('views/temp_discovery_test.blade.php');
         File::put($tempPath, '<div>{{ __("discovered_scan_key.title") }}</div>');
@@ -88,7 +90,7 @@ class TranslationDiscoveryTest extends TestCase
     /** @test */
     public function runtime_auto_registration_registers_missing_keys_on_encounter(): void
     {
-        $this->assertDatabaseCount('translation_keys', 0);
+        $this->assertEquals([], TranslationKey::pluck('key')->toArray());
 
         // Call the translate/double underscore function with a non-existent key
         $resolved = __('runtime_encountered_key.welcome_back');

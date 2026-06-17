@@ -34,6 +34,10 @@ class LocalizationImportTest extends TestCase
             'name' => 'Turkish', 'native_name' => 'Türkçe', 'direction' => 'ltr',
             'is_active' => true, 'is_default' => false,
         ]);
+
+        TranslationKey::query()->delete();
+        UiTranslation::query()->delete();
+        \App\Models\UiTranslationVersion::query()->delete();
     }
 
     /** @test */

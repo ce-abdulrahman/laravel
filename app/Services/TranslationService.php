@@ -49,8 +49,10 @@ class TranslationService
 
         if (!isset($result)) {
             $isMissing = true;
-            // 3. Key is missing — trigger auto-generation
-            $this->autoGenerateMissingKey($key);
+            // 3. Key is missing — register if auto-generate is enabled
+            if (config('translations.auto_generate', true)) {
+                $this->autoGenerateMissingKey($key);
+            }
 
             // Debug mode prefix for missing keys in local environment
             if (app()->environment('local')) {

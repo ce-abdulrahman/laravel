@@ -32,6 +32,8 @@ use App\Http\Controllers\Api\V1\HadithController as V1HadithController;
 use App\Http\Controllers\Api\V1\DailyGoalController;
 use App\Http\Controllers\Api\V1\AchievementController;
 use App\Http\Controllers\Api\V1\ReminderController;
+use App\Http\Controllers\Api\V1\FeatureFlagController;
+use App\Http\Controllers\Api\V1\ContentPackageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +51,13 @@ Route::get('tafsirs/surah/{surah}', [PublicTafsirController::class, 'bySurah'])-
 
 // Streak update root shortcut
 Route::post('streak/update', [App\Http\Controllers\Api\V1\StreakController::class, 'update']);
+
+// ── Feature Flags (public — no auth required, ETag-cached) ────────────────────
+Route::prefix('v1')->group(function () {
+    Route::get('feature-flags',                  [FeatureFlagController::class,   'index']);
+    Route::get('offline-packages/manifest',      [ContentPackageController::class, 'manifest']);
+    Route::get('offline-packages/{package}',     [ContentPackageController::class, 'download']);
+});
 
 // Daily Goal root shortcuts
 Route::get('daily-goal/today', [DailyGoalController::class, 'getToday']);
@@ -96,6 +105,9 @@ Route::prefix('v1')->group(function () {
     Route::get('tasbihs', [V1TasbihController::class, 'index']);
     Route::get('hadiths', [V1HadithController::class, 'index']);
     Route::get('themes', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'index']);
+    Route::get('prayer-settings', [App\Http\Controllers\Api\V1\PrayerSettingsController::class, 'index']);
+    Route::get('prayer-methods', [App\Http\Controllers\Api\V1\PrayerMethodsController::class, 'index']);
+    Route::get('prayer-widget', [App\Http\Controllers\Api\V1\PrayerWidgetController::class, 'index']);
     Route::get('themes/{id}', [App\Http\Controllers\Api\V1\ThemeApiController::class, 'show'])->whereNumber('id');
     Route::post('streak/update', [App\Http\Controllers\Api\V1\StreakController::class, 'update']);
     Route::get('daily-goal/today', [DailyGoalController::class, 'getToday']);
@@ -137,6 +149,7 @@ Route::prefix('v1')->group(function () {
         Route::post('auth/change-password', [AuthController::class, 'changePassword']);
         Route::post('auth/guest-convert', [AuthController::class, 'guestConvert']);
         Route::delete('auth/account/delete', [AuthController::class, 'deleteAccount']);
+        Route::post('user/prayer-method', [App\Http\Controllers\Api\V1\PrayerMethodsController::class, 'updateUserMethod']);
 
         // Advanced Search (requires auth)
         Route::post('search/advanced', [SearchController::class, 'advanced']);
@@ -181,12 +194,19 @@ Route::prefix('v1')->group(function () {
         Route::put('memorization-plans/{planId}/items/{itemId}/status', [MemorizationPlanController::class, 'updateItemStatus']);
 
         // Memorization Reviews
+        Route::get('reviews/due', [MemorizationReviewController::class, 'dueReviews']);
+        Route::get('reviews/weak', [MemorizationReviewController::class, 'weakAyahs']);
+        Route::get('reviews/learning', [MemorizationReviewController::class, 'learningAyahs']);
         Route::apiResource('memorization-reviews', MemorizationReviewController::class)
             ->names('api.v1.memorization-reviews');
 
         // User Progress
         Route::get('user-ayah-progress', [UserAyahProgressController::class, 'index']);
         Route::get('user-ayah-progress/dashboard', [UserAyahProgressController::class, 'dashboard']);
+        Route::get('memorization/statistics', [UserAyahProgressController::class, 'fullStatistics']);
+        Route::get('memorization/progress', [UserAyahProgressController::class, 'detailedProgress']);
+        Route::get('memorization/forecast', [UserAyahProgressController::class, 'forecast']);
+        Route::post('memorization/sessions', [UserAyahProgressController::class, 'storeSession']);
         Route::post('user-ayah-progress', [UserAyahProgressController::class, 'store']);
         Route::put('user-ayah-progress/{id}', [UserAyahProgressController::class, 'update']);
 
