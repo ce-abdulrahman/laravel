@@ -114,6 +114,11 @@ Route::prefix('v1')->group(function () {
     Route::post('daily-goal/update', [DailyGoalController::class, 'updateProgress']);
     Route::post('daily-goal/set', [DailyGoalController::class, 'setGoal']);
 
+    // ── Prayer Times Calendar (DB-first, ETag-cached) ─────────────────────────
+    Route::get('prayer-times',        [App\Http\Controllers\Api\V1\PrayerTimesController::class, 'index']);
+    Route::get('prayer-times/cities', [App\Http\Controllers\Api\V1\PrayerTimesController::class, 'cities']);
+
+
     Route::post('goals/progress/update', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'update']);
     Route::get('goals/progress/{goal_id}', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'show'])->whereNumber('goal_id');
     Route::post('goals/progress/reset', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'reset']);
@@ -189,6 +194,8 @@ Route::prefix('v1')->group(function () {
 
         // Memorization Plans
         Route::get('memorization-plans/today', [MemorizationPlanController::class, 'today']);
+        Route::post('memorization-plans/sync', [MobileSyncController::class, 'syncMemorizationPlans']);
+        Route::get('memorization-plans/{id}', [MobileSyncController::class, 'showPlan']);
         Route::apiResource('memorization-plans', MemorizationPlanController::class)
             ->names('api.v1.memorization-plans');
         Route::put('memorization-plans/{planId}/items/{itemId}/status', [MemorizationPlanController::class, 'updateItemStatus']);
@@ -220,6 +227,9 @@ Route::prefix('v1')->group(function () {
         Route::post('sync/bookmarks', [MobileSyncController::class, 'upsertBookmarks']);
         Route::get('sync/last-read', [MobileSyncController::class, 'lastRead']);
         Route::post('sync/last-read', [MobileSyncController::class, 'saveLastRead']);
+        Route::post('bookmarks/sync', [MobileSyncController::class, 'syncBookmarks']);
+        Route::post('notes/sync', [MobileSyncController::class, 'syncNotes']);
+        Route::get('sync/inbox', [MobileSyncController::class, 'syncInbox']);
 
         // Favorites
         Route::get('favorites', [FavoriteController::class, 'index']);

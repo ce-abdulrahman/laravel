@@ -356,7 +356,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
         $this->authorizeAdmin();
 
         $request->validate([
-            'file' => 'required|file|mimes:json',
+            'file' => 'required|file|extensions:json',
         ]);
 
         $json = file_get_contents($request->file('file')->getRealPath());
@@ -368,37 +368,103 @@ class TajweedRuleController extends Controller implements HasMiddleware
 
         $imported = 0;
         foreach ($rules as $ruleData) {
-            if (empty($ruleData['name'])) {
+            $name = $ruleData['name'] ?? $ruleData['name_en'] ?? null;
+            if (!$name) {
                 continue;
             }
 
-            $slug = $ruleData['slug'] ?? Str::slug($ruleData['name']);
-            // Ensure unique slug
-            $count = 1;
-            $originalSlug = $slug;
-            while (TajweedRule::where('slug', $slug)->exists()) {
-                $slug = $originalSlug . '-' . $count;
-                $count++;
+            $slug = $ruleData['slug'] ?? Str::slug($name);
+            // Ensure unique slug if creating a new rule
+            $existingRule = TajweedRule::where('slug', $slug)->first();
+            if (!$existingRule) {
+                $count = 1;
+                $originalSlug = $slug;
+                while (TajweedRule::where('slug', $slug)->exists()) {
+                    $slug = $originalSlug . '-' . $count;
+                    $count++;
+                }
             }
 
-            TajweedRule::updateOrCreate(
-                ['name' => $ruleData['name']],
+            // Find category id if category_slug is provided
+            $categoryId = null;
+            if (!empty($ruleData['category_slug'])) {
+                $category = \App\Models\TajweedRuleCategory::where('slug', $ruleData['category_slug'])->first();
+                if ($category) {
+                    $categoryId = $category->id;
+                }
+            } elseif (!empty($ruleData['category'])) {
+                // fallback to category field which could be slug or ID
+                $category = \App\Models\TajweedRuleCategory::where('slug', $ruleData['category'])
+                    ->orWhere('id', $ruleData['category'])
+                    ->first();
+                if ($category) {
+                    $categoryId = $category->id;
+                }
+            }
+
+            $rule = TajweedRule::updateOrCreate(
+                ['slug' => $slug],
                 [
-                    'name_ku' => $ruleData['name_ku'] ?? $ruleData['name'],
-                    'name_ar' => $ruleData['name_ar'] ?? null,
-                    'slug' => $slug,
-                    'category' => $ruleData['category'] ?? null,
+                    'tajweed_rule_category_id' => $categoryId,
                     'color_code' => $ruleData['color_code'] ?? null,
-                    'description' => $ruleData['description'] ?? '',
-                    'description_ku' => $ruleData['description_ku'] ?? '',
                     'example_text' => $ruleData['example_text'] ?? null,
                     'priority' => $ruleData['priority'] ?? 0,
                     'is_active' => filter_var($ruleData['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN),
                 ]
             );
+
+            // Handle translations
+            $translations = [];
+            foreach (['en', 'ku', 'ar'] as $locale) {
+                $tName = $ruleData["name_{$locale}"] ?? ($locale === 'en' ? $ruleData['name'] : ($locale === 'ku' ? $ruleData['name_ku'] : ($locale === 'ar' ? $ruleData['name_ar'] : null)));
+                $tDesc = $ruleData["description_{$locale}"] ?? ($locale === 'en' ? $ruleData['description'] : ($locale === 'ku' ? $ruleData['description_ku'] : null));
+
+                if ($tName) {
+                    $translations[$locale] = [
+                        'name' => $tName,
+                        'description' => $tDesc,
+                    ];
+                }
+            }
+
+            if (!empty($translations)) {
+                $rule->saveTranslationsFromArray($translations);
+            }
+
             $imported++;
         }
 
         return redirect()->route('tajweed-rules.index')->with('success', "Imported {$imported} Tajweed Rules successfully.");
+    }
+
+    public function export()
+    {
+        $this->authorizeAdmin();
+
+        $rules = TajweedRule::with(['translations', 'category'])->orderBy('priority', 'desc')->get();
+
+        $data = $rules->map(function (TajweedRule $rule) {
+            $row = [
+                'slug'          => $rule->slug,
+                'color_code'    => $rule->color_code,
+                'category_slug' => $rule->category?->slug,
+                'example_text'  => $rule->example_text,
+                'priority'      => $rule->priority,
+                'is_active'     => (bool) $rule->is_active,
+            ];
+            foreach ($rule->translations as $t) {
+                $row["name_{$t->locale}"]        = $t->name;
+                $row["description_{$t->locale}"] = $t->description;
+            }
+            return $row;
+        });
+
+        $json     = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $filename = 'tajweed_rules_export_' . now()->format('Ymd_His') . '.json';
+
+        return response($json, 200, [
+            'Content-Type'        => 'application/json; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
     }
 }

@@ -26,20 +26,26 @@ class MemorizationTest extends TestCase
 
         $this->user = User::factory()->create();
         
-        $this->surah = Surah::create([
-            'number' => 1,
-            'revelation_type' => 'Meccan',
-            'ayah_count' => 7,
-        ]);
+        $this->surah = Surah::firstOrCreate(
+            ['number' => 1],
+            [
+                'revelation_type' => 'Meccan',
+                'ayah_count' => 7,
+            ]
+        );
 
-        $this->ayah = Ayah::create([
-            'surah_id' => $this->surah->id,
-            'ayah_number' => 1,
-            'text_uthmani' => 'الحمد لله رب العالمين',
-            'text_simple' => 'الحمد لله رب العالمين',
-            'page_number' => 1,
-            'juz_number' => 1,
-        ]);
+        $this->ayah = Ayah::firstOrCreate(
+            [
+                'surah_id' => $this->surah->id,
+                'ayah_number' => 1,
+            ],
+            [
+                'text_uthmani' => 'الحمد لله رب العالمين',
+                'text_simple' => 'الحمد لله رب العالمين',
+                'page_number' => 1,
+                'juz_number' => 1,
+            ]
+        );
     }
 
     public function test_spaced_repetition_perfect_result()
@@ -75,14 +81,18 @@ class MemorizationTest extends TestCase
 
     public function test_due_reviews_sorting_overdue_first()
     {
-        $ayah2 = Ayah::create([
-            'surah_id' => $this->surah->id,
-            'ayah_number' => 2,
-            'text_uthmani' => 'الرحمن الرحيم',
-            'text_simple' => 'الرحمن الرحيم',
-            'page_number' => 1,
-            'juz_number' => 1,
-        ]);
+        $ayah2 = Ayah::firstOrCreate(
+            [
+                'surah_id' => $this->surah->id,
+                'ayah_number' => 2,
+            ],
+            [
+                'text_uthmani' => 'الرحمن الرحيم',
+                'text_simple' => 'الرحمن الرحيم',
+                'page_number' => 1,
+                'juz_number' => 1,
+            ]
+        );
 
         // Overdue review (next_review_date < today)
         UserAyahProgress::create([

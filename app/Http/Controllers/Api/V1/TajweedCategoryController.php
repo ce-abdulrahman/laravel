@@ -41,10 +41,12 @@ class TajweedCategoryController extends Controller
                             'description_ku' => $rule->description_ku,
                             'example_text'   => $rule->example_text,
                             'priority'       => $rule->priority,
+                            'is_active'      => (bool) $rule->is_active,
                         ];
                     }),
                 ];
             });
+
 
         return response()->json([
             'status' => 'success',

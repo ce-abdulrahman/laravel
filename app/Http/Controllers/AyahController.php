@@ -231,7 +231,7 @@ class AyahController extends Controller implements HasMiddleware
         }
 
         $request->validate([
-            'file' => 'required|file|mimes:json',
+            'file' => 'required|file|extensions:json',
         ]);
 
         $json = file_get_contents($request->file('file')->getRealPath());
@@ -280,5 +280,38 @@ class AyahController extends Controller implements HasMiddleware
         }
 
         return redirect()->route('ayahs.index')->with('success', "Imported {$imported} Ayahs successfully.");
+    }
+
+    public function export(Request $request)
+    {
+        if (auth()->user()?->role !== 'admin') {
+            abort(403, 'Unauthorized.');
+        }
+
+        $ayahs = Ayah::with('surah')
+            ->orderBy('surah_id')
+            ->orderBy('ayah_number')
+            ->get();
+
+        $data = $ayahs->map(fn (Ayah $ayah) => [
+            'surah_number' => $ayah->surah?->number,
+            'ayah_number'  => $ayah->ayah_number,
+            'text_uthmani' => $ayah->text_uthmani,
+            'text_simple'  => $ayah->text_simple,
+            'page_number'  => $ayah->page_number,
+            'juz_number'   => $ayah->juz_number,
+            'hizb_number'  => $ayah->hizb_number,
+            'rub_number'   => $ayah->rub_number,
+            'sajda_flag'   => (bool) $ayah->sajda_flag,
+            'is_active'    => (bool) $ayah->is_active,
+        ]);
+
+        $json     = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $filename = 'ayahs_export_' . now()->format('Ymd_His') . '.json';
+
+        return response($json, 200, [
+            'Content-Type'        => 'application/json; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
     }
 }

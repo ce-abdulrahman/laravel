@@ -233,7 +233,7 @@ class TafsirController extends Controller
         $this->authorizeAdmin();
 
         $request->validate([
-            'file' => 'required|file|mimes:json',
+            'file' => 'required|file|extensions:json',
         ]);
 
         $json = file_get_contents($request->file('file')->getRealPath());

@@ -2,29 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Bookmark extends Model
+class Note extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'ayah_id',
-        'note',
-        'bookmark_id',
+        'note_id',
         'surah_number',
         'ayah_number',
+        'content',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function ayah()
-    {
-        return $this->belongsTo(Ayah::class);
     }
 }

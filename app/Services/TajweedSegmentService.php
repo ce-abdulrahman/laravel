@@ -31,7 +31,31 @@ class TajweedSegmentService
                     'errors' => ['Invalid JSON file format.'],
                 ];
             }
-            $rows = $decoded;
+
+            // Support multiple JSON shapes:
+            // 1. Flat array of rows: [{ayah_id, tajweed_rule_id, matched_text, ...}, ...]
+            // 2. Single nested object: {surah_id, matches: [{ayah_number, rule_slug, ...}, ...]}
+            // 3. Array of nested objects: [{surah_id, matches: [...]}, ...]
+            $rows = [];
+
+            // Detect flat array of rows (first element is a row, not a nested object with 'matches')
+            if (isset($decoded[0]) && !isset($decoded[0]['matches'])) {
+                // Shape 1: flat array
+                $rows = $decoded;
+            } elseif (isset($decoded['matches'])) {
+                // Shape 2: single nested object
+                $rows = $decoded['matches'];
+            } elseif (isset($decoded[0]['matches'])) {
+                // Shape 3: array of nested objects
+                foreach ($decoded as $group) {
+                    if (isset($group['matches']) && is_array($group['matches'])) {
+                        $rows = array_merge($rows, $group['matches']);
+                    }
+                }
+            } else {
+                // Fallback: treat as flat array
+                $rows = $decoded;
+            }
         } elseif (strtolower($format) === 'csv') {
             $rows = $this->parseCsv($content);
             if (empty($rows)) {
@@ -64,20 +88,43 @@ class TajweedSegmentService
 
         // Pre-fetch rules and ayahs to avoid N+1 queries during validation
         $validRuleIds = TajweedRule::pluck('id', 'id')->toArray();
+        // slug → id map for nested JSON (e.g. rule_slug: "idhhar_halqi")
+        $ruleSlugMap = TajweedRule::pluck('id', 'slug')->toArray();
         $ayahSurahMap = Ayah::pluck('surah_id', 'id')->toArray();
+        // surah_id+ayah_number → ayah_id for nested JSON (e.g. ayah_number: 7 in surah 1)
+        $ayahNumberMap = Ayah::select('id', 'surah_id', 'ayah_number')
+            ->get()
+            ->mapWithKeys(fn($a) => ["{$a->surah_id}-{$a->ayah_number}" => $a->id])
+            ->toArray();
 
         DB::beginTransaction();
         try {
-            foreach ($rows as $index => $row) {
-                $rowNum = $index + 1;
+            foreach (array_values($rows) as $index => $row) {
+                $rowNum = $index + 1; // always an int now
 
-                // Normalize fields (accept both new matched_text and old text_segment for safety)
-                $ayahId = isset($row['ayah_id']) ? (int) $row['ayah_id'] : null;
-                $ruleId = isset($row['tajweed_rule_id']) ? (int) $row['tajweed_rule_id'] : null;
+                // Normalize fields — support:
+                // - Flat format:  ayah_id, tajweed_rule_id
+                // - Nested format: ayah_number + surah_id, rule_slug
+                $ayahId   = isset($row['ayah_id']) ? (int) $row['ayah_id'] : null;
+                $ruleId   = isset($row['tajweed_rule_id']) ? (int) $row['tajweed_rule_id'] : null;
+
+                // Resolve ayah_number + surah_id → ayah_id (nested JSON format)
+                if (!$ayahId && isset($row['ayah_number'], $row['surah_id'])) {
+                    $mapKey = (int)$row['surah_id'] . '-' . (int)$row['ayah_number'];
+                    $ayahId = $ayahNumberMap[$mapKey] ?? null;
+                }
+
+                // Resolve rule_slug → tajweed_rule_id (nested JSON format)
+                // Normalize slug: "idhhar_halqi" → "idhhar-halqi"
+                if (!$ruleId && isset($row['rule_slug'])) {
+                    $normalizedSlug = strtolower(str_replace('_', '-', $row['rule_slug']));
+                    $ruleId = $ruleSlugMap[$normalizedSlug] ?? $ruleSlugMap[$row['rule_slug']] ?? null;
+                }
+
                 $matchedText = $row['matched_text'] ?? $row['text_segment'] ?? null;
-                $startIndex = isset($row['start_index']) ? (int) $row['start_index'] : null;
-                $endIndex = isset($row['end_index']) ? (int) $row['end_index'] : null;
-                $note = $row['note'] ?? null;
+                $startIndex  = isset($row['start_index']) ? (int) $row['start_index'] : null;
+                $endIndex    = isset($row['end_index'])   ? (int) $row['end_index']   : null;
+                $note        = $row['note'] ?? null;
                 
                 // Parse metadata
                 $metadata = null;

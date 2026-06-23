@@ -1,0 +1,52 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // Update bookmarks table
+        Schema::table('bookmarks', function (Blueprint $table) {
+            if (!Schema::hasColumn('bookmarks', 'bookmark_id')) {
+                $table->string('bookmark_id')->nullable()->unique();
+            }
+            if (!Schema::hasColumn('bookmarks', 'surah_number')) {
+                $table->unsignedInteger('surah_number')->nullable();
+            }
+            if (!Schema::hasColumn('bookmarks', 'ayah_number')) {
+                $table->unsignedInteger('ayah_number')->nullable();
+            }
+        });
+
+        // Create notes table
+        if (!Schema::hasTable('notes')) {
+            Schema::create('notes', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+                $table->string('note_id')->unique();
+                $table->unsignedInteger('surah_number');
+                $table->unsignedInteger('ayah_number');
+                $table->text('content');
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('notes');
+
+        Schema::table('bookmarks', function (Blueprint $table) {
+            $table->dropColumn(['bookmark_id', 'surah_number', 'ayah_number']);
+        });
+    }
+};

@@ -19,6 +19,10 @@ class MemorizationPlan extends Model
         'daily_target_value',
         'status',
         'notes',
+        'plan_id',
+        'surah_id',
+        'from_ayah',
+        'to_ayah',
     ];
 
     protected function casts(): array

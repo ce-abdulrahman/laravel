@@ -115,7 +115,7 @@ class SurahController extends Controller implements HasMiddleware
         }
 
         $request->validate([
-            'file' => 'required|file|mimes:json',
+            'file' => 'required|file|extensions:json',
         ]);
 
         $json = file_get_contents($request->file('file')->getRealPath());
@@ -165,6 +165,45 @@ class SurahController extends Controller implements HasMiddleware
 
         return redirect()->route('surahs.index')->with('success', "Imported {$imported} Surahs successfully.");
     }
+
+    public function export(Request $request)
+    {
+        if (auth()->user()?->role !== 'admin') {
+            abort(403, __('common.unauthorized'));
+        }
+
+        $surahs = Surah::with('translations')->orderBy('number')->get();
+
+        $data = $surahs->map(function (Surah $surah) {
+            $row = [
+                'number'           => $surah->number,
+                'revelation_type'  => $surah->revelation_type,
+                'ayah_count'       => $surah->ayah_count,
+                'page_start'       => $surah->page_start,
+                'page_end'         => $surah->page_end,
+                'juz_start'        => $surah->juz_start,
+                'juz_end'          => $surah->juz_end,
+                'description'      => $surah->description,
+                'is_active'        => $surah->is_active,
+            ];
+
+            // Flatten translations: name_ar, name_ku, name_en, etc.
+            foreach ($surah->translations as $translation) {
+                $row["name_{$translation->locale}"] = $translation->name;
+            }
+
+            return $row;
+        });
+
+        $json     = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $filename = 'surahs_export_' . now()->format('Ymd_His') . '.json';
+
+        return response($json, 200, [
+            'Content-Type'        => 'application/json; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
 
     /**
      * @return array<string, mixed>

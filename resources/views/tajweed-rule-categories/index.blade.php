@@ -17,7 +17,17 @@
             <div class="text-muted">{{ __('tajweed_categories.hints.index') }}</div>
         </div>
         @if(auth()->user()?->role === 'admin')
-        <div class="d-flex gap-2">
+        <div class="d-flex flex-wrap gap-2">
+            <button type="button" class="quran-btn quran-btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="bi bi-upload me-1"></i>
+                Import
+            </button>
+
+            <a href="{{ route('tajweed-rule-categories.export') }}" class="quran-btn quran-btn-outline-primary">
+                <i class="bi bi-download me-1"></i>
+                Export
+            </a>
+
             <a href="{{ route('tajweed-rule-categories.create') }}" class="quran-btn quran-btn-primary">
                 <i class="bi bi-plus-lg me-1"></i>
                 {{ __('tajweed_categories.actions.create') }}
@@ -180,6 +190,34 @@
     @if($categories->hasPages())
     <div class="mt-4">
         {{ $categories->links() }}
+    </div>
+    @endif
+
+    @if(auth()->user()?->role === 'admin')
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <form action="{{ route('tajweed-rule-categories.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-header border-0 bg-primary bg-opacity-10">
+                        <h5 class="modal-title fw-bold text-primary"><i class="bi bi-upload me-2"></i>Import Categories</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body py-4">
+                        <p class="text-muted small">Upload a <strong>JSON</strong> file containing categories. Existing matching categories will be updated automatically.</p>
+                        <div class="mb-3">
+                            <label class="quran-form-label">Choose File</label>
+                            <input type="file" name="file" class="form-control" accept=".json" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0">
+                        <button type="button" class="quran-btn quran-btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="quran-btn quran-btn-primary">Upload & Import</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
     @endif
 </div>

@@ -30,6 +30,8 @@ use App\Http\Controllers\HadithCategoryController;
 use App\Http\Controllers\HadithController;
 use App\Http\Controllers\ReminderTemplateController;
 use App\Http\Controllers\AdminReminderController;
+use App\Http\Controllers\PrayerTimeController;
+use App\Http\Controllers\PrayerTimeImportController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -172,10 +174,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Unified resource routes for authenticated users (permissions handled at controller level)
+    // Surah export/import must be declared BEFORE the resource route
+    // to prevent GET surahs/{surah} from swallowing surahs/export as a wildcard.
+    Route::get('surahs/export', [SurahController::class, 'export'])->name('surahs.export')->middleware('admin');
     Route::resource('surahs', SurahController::class);
     Route::resource('languages', LanguageController::class);
+    // Ayah export must be declared BEFORE the resource route (same reason as surahs).
+    Route::get('ayahs/export', [AyahController::class, 'export'])->name('ayahs.export')->middleware('admin');
     Route::resource('ayahs', AyahController::class);
+    Route::get('tajweed-rules/export', [TajweedRuleController::class, 'export'])->name('tajweed-rules.export')->middleware('admin');
     Route::resource('tajweed-rules', TajweedRuleController::class);
+    Route::get('tajweed-rule-categories/export', [TajweedRuleCategoryController::class, 'export'])->name('tajweed-rule-categories.export')->middleware('admin');
     Route::resource('tajweed-rule-categories', TajweedRuleCategoryController::class);
     Route::resource('reciters', ReciterController::class);
     Route::resource('audio-files', AudioFileController::class);
@@ -199,6 +208,7 @@ Route::middleware('auth')->group(function () {
         Route::post('admin/users/{id}/reset-password', [App\Http\Controllers\AdminUserController::class, 'resetPassword'])->name('admin.users.reset-password')->whereNumber('id');
         Route::post('ayahs/import', [AyahController::class, 'import'])->name('ayahs.import');
         Route::post('tajweed-rules/import', [TajweedRuleController::class, 'import'])->name('tajweed-rules.import');
+        Route::post('tajweed-rule-categories/import', [TajweedRuleCategoryController::class, 'import'])->name('tajweed-rule-categories.import');
         Route::post('tajweed-segments/import', [AyahTajweedSegmentController::class, 'import'])->name('tajweed-segments.import');
         Route::get('tajweed-segments/export', [AyahTajweedSegmentController::class, 'export'])->name('tajweed-segments.export');
         Route::post('tajweed-segments/rebuild', [AyahTajweedSegmentController::class, 'rebuild'])->name('tajweed-segments.rebuild');
@@ -310,6 +320,25 @@ Route::middleware('auth')->group(function () {
         // ── Prayer Widget Settings System ──────────────────────────────────────────────
         Route::get('admin/prayer-widget-settings', [App\Http\Controllers\PrayerWidgetSettingsController::class, 'index'])->name('admin.prayer-widget-settings.index');
         Route::post('admin/prayer-widget-settings', [App\Http\Controllers\PrayerWidgetSettingsController::class, 'update'])->name('admin.prayer-widget-settings.update');
+
+        // ── Prayer Times Calendar System ─────────────────────────────────────────────
+        Route::resource('prayer-times', PrayerTimeController::class)->names([
+            'index'   => 'prayer-times.index',
+            'create'  => 'prayer-times.create',
+            'store'   => 'prayer-times.store',
+            'edit'    => 'prayer-times.edit',
+            'update'  => 'prayer-times.update',
+            'destroy' => 'prayer-times.destroy',
+        ])->except(['show']);
+
+        // Import
+        Route::get('prayer-times-import',         [PrayerTimeImportController::class, 'showImport'])->name('prayer-times.import');
+        Route::post('prayer-times-import/preview', [PrayerTimeImportController::class, 'previewImport'])->name('prayer-times.import.preview');
+        Route::post('prayer-times-import/commit',  [PrayerTimeImportController::class, 'commitImport'])->name('prayer-times.import.commit');
+
+        // Export
+        Route::get('prayer-times-export',      [PrayerTimeImportController::class, 'exportCsv'])->name('prayer-times.export.csv');
+        Route::get('prayer-times-export-json', [PrayerTimeImportController::class, 'exportJson'])->name('prayer-times.export.json');
     });
 
 

@@ -67,7 +67,7 @@ class AyahTajweedSegmentController extends Controller
             ->paginate($request->per_page ?? 20)
             ->withQueryString();
 
-        $tajweedRules = TajweedRule::active()->orderBy('name')->get();
+        $tajweedRules = TajweedRule::active()->orderByTranslation('name')->get();
         $categories = TajweedRuleCategory::active()->orderBy('order')->get();
         $surahs = Surah::orderBy('number')->get();
 
@@ -89,7 +89,7 @@ class AyahTajweedSegmentController extends Controller
     {
         $this->authorizeAdmin();
 
-        $tajweedRules = TajweedRule::active()->orderBy('name')->get();
+        $tajweedRules = TajweedRule::active()->orderByTranslation('name')->get();
         $ayahs = Ayah::with('surah')
             ->orderBy('surah_id')
             ->orderBy('ayah_number')
@@ -155,7 +155,7 @@ class AyahTajweedSegmentController extends Controller
     {
         $this->authorizeAdmin();
 
-        $tajweedRules = TajweedRule::orderBy('name')->get();
+        $tajweedRules = TajweedRule::orderByTranslation('name')->get();
         $ayahs = Ayah::with('surah')
             ->orderBy('surah_id')
             ->orderBy('ayah_number')
@@ -201,40 +201,62 @@ class AyahTajweedSegmentController extends Controller
     }
 
     /**
-     * Import segments from uploaded JSON or CSV.
+     * Import segments from one or more uploaded JSON files.
+     * Accepts: files[] (multiple) or file (single, backward-compat).
      */
     public function import(Request $request)
     {
         $this->authorizeAdmin();
 
-        $request->validate([
-            'file' => 'required|file|mimes:json,csv,txt',
-        ]);
-
-        $file = $request->file('file');
-        $content = file_get_contents($file->getRealPath());
-        $extension = $file->getClientOriginalExtension();
-
-        if ($extension === 'txt') {
-            // Fallback check based on mime type or content analysis
-            $extension = str_contains($content, '{') && str_contains($content, '}') ? 'json' : 'csv';
+        // Determine which field was used and validate accordingly
+        if ($request->hasFile('files')) {
+            $request->validate([
+                'files'   => 'required|array|min:1',
+                'files.*' => 'file|extensions:json',
+            ]);
+            $uploadedFiles = $request->file('files');
+        } else {
+            $request->validate([
+                'file' => 'required|file|extensions:json',
+            ]);
+            $uploadedFiles = [$request->file('file')];
         }
 
-        $result = $this->segmentService->import($content, $extension);
+        $totalImported = 0;
+        $totalSkipped  = 0;
+        $allErrors     = [];
 
-        if (!empty($result['errors'])) {
-            $errorMsg = "Import finished with errors. " . count($result['errors']) . " rows failed. First error: " . $result['errors'][0];
+        foreach ($uploadedFiles as $file) {
+            $content   = file_get_contents($file->getRealPath());
+            $extension = strtolower($file->getClientOriginalExtension());
+
+            if ($extension === 'txt') {
+                $extension = str_contains($content, '{') && str_contains($content, '}') ? 'json' : 'csv';
+            }
+
+            $result = $this->segmentService->import($content, $extension);
+
+            $totalImported += $result['imported'];
+            $totalSkipped  += $result['skipped'];
+
+            foreach ($result['errors'] as $err) {
+                $allErrors[] = "[{$file->getClientOriginalName()}] {$err}";
+            }
+        }
+
+        $fileCount = count($uploadedFiles);
+
+        if (!empty($allErrors)) {
             return redirect()
                 ->route('tajweed-segments.index')
-                ->with('warning', "Import summary - Success: {$result['imported']}, Skipped (Duplicates): {$result['skipped']}. Errors: ")
-                ->withErrors($result['errors']);
+                ->with('warning', "Import finished ({$fileCount} file(s)). Imported: {$totalImported}, Skipped: {$totalSkipped}. Some rows had errors:")
+                ->withErrors($allErrors);
         }
 
         return redirect()
             ->route('tajweed-segments.index')
-            ->with('success', "Imported {$result['imported']} segments successfully. Skipped {$result['skipped']} duplicates.");
+            ->with('success', "Imported {$totalImported} segments from {$fileCount} file(s). Skipped {$totalSkipped} duplicates.");
     }
-
     /**
      * Export segments in JSON or CSV.
      */
@@ -266,7 +288,7 @@ class AyahTajweedSegmentController extends Controller
         $this->authorizeAdmin();
 
         $request->validate([
-            'file' => 'required|file|mimes:json,csv,txt',
+            'file' => 'required|file|extensions:json,csv,txt',
         ]);
 
         $file = $request->file('file');

@@ -22,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        \Illuminate\Pagination\Paginator::useBootstrapFive();
         \App\Models\Language::syncFromConfig();
 
         Surah::saved(function (Surah $surah): void {

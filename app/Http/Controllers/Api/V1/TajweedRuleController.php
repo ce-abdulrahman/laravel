@@ -13,14 +13,20 @@ class TajweedRuleController extends Controller
         $query = TajweedRule::active();
 
         if ($request->has('category')) {
-            $query->where('category', $request->category);
+            $category = $request->category;
+            $query->where(function ($q) use ($category) {
+                $q->where('tajweed_rule_category_id', $category)
+                  ->orWhereHas('category', function ($sub) use ($category) {
+                      $sub->where('slug', $category);
+                  });
+            });
         }
 
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                $q->whereTranslationLikeAny('name', $search)
+                  ->orWhereTranslationLikeAny('description', $search);
             });
         }
 

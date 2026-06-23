@@ -23,6 +23,10 @@
                 <i class="bi bi-file-earmark-arrow-up me-1"></i>
                 Import JSON
             </button>
+            <a href="{{ route('tajweed-rules.export') }}" class="quran-btn quran-btn-outline-primary">
+                <i class="bi bi-file-earmark-arrow-down me-1"></i>
+                Export JSON
+            </a>
             <button type="button" class="quran-btn quran-btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="bi bi-code-slash me-1"></i>
                 Example JSON

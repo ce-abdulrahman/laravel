@@ -26,6 +26,10 @@
                 <i class="bi bi-code-slash me-1"></i>
                 Example JSON
             </button>
+            <a href="{{ route('ayahs.export') }}" class="quran-btn quran-btn-outline-primary">
+                <i class="bi bi-file-earmark-arrow-down me-1"></i>
+                Export JSON
+            </a>
             @endif
 
             @can('create', App\Models\Ayah::class)

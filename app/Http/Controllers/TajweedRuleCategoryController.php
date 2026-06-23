@@ -120,7 +120,7 @@ class TajweedRuleCategoryController extends Controller implements HasMiddleware
             ->with(['translations'])
             ->withCount('ayahTajweedSegments')
             ->orderBy('priority', 'desc')
-            ->orderBy('name')
+            ->orderByTranslation('name')
             ->paginate(20);
 
         return view('tajweed-rule-categories.show', [
@@ -238,5 +238,70 @@ class TajweedRuleCategoryController extends Controller implements HasMiddleware
         if (auth()->user()->role !== 'admin') {
             abort(403, __('common.unauthorized'));
         }
+    }
+
+    public function import(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $request->validate(['file' => 'required|file|extensions:json']);
+
+        $data = json_decode(file_get_contents($request->file('file')->getRealPath()), true);
+
+        if (! is_array($data)) {
+            return back()->with('error', 'Invalid JSON structure.');
+        }
+
+        $imported = 0;
+        foreach ($data as $row) {
+            $slug = $row['slug'] ?? Str::slug($row['name_en'] ?? $row['name'] ?? 'category-' . $imported);
+            if (empty($slug)) continue;
+
+            $category = TajweedRuleCategory::firstOrNew(['slug' => $slug]);
+            $category->order     = $row['order'] ?? 0;
+            $category->is_active = filter_var($row['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN);
+            $category->save();
+
+            $translations = [];
+            foreach (['en', 'ku', 'ar'] as $locale) {
+                $name = $row["name_{$locale}"] ?? $row['name'] ?? null;
+                $desc = $row["description_{$locale}"] ?? $row['description'] ?? null;
+                if ($name) $translations[$locale] = ['name' => $name, 'description' => $desc];
+            }
+            if (! empty($translations)) $category->saveTranslationsFromArray($translations);
+
+            $imported++;
+        }
+
+        return redirect()->route('tajweed-rule-categories.index')
+            ->with('success', "Imported {$imported} categories successfully.");
+    }
+
+    public function export()
+    {
+        $this->authorizeAdmin();
+
+        $categories = TajweedRuleCategory::with('translations')->orderBy('order')->get();
+
+        $data = $categories->map(function (TajweedRuleCategory $cat) {
+            $row = [
+                'slug'      => $cat->slug,
+                'order'     => $cat->order,
+                'is_active' => (bool) $cat->is_active,
+            ];
+            foreach ($cat->translations as $t) {
+                $row["name_{$t->locale}"]        = $t->name;
+                $row["description_{$t->locale}"] = $t->description;
+            }
+            return $row;
+        });
+
+        $json     = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $filename = 'tajweed_categories_export_' . now()->format('Ymd_His') . '.json';
+
+        return response($json, 200, [
+            'Content-Type'        => 'application/json; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
     }
 }
