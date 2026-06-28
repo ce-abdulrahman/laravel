@@ -1,12 +1,16 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
-    | Mobile Mushaf API cache TTL (seconds)
+    | Quran API Configurations
     |--------------------------------------------------------------------------
+    |
+    | Configurations for default reciter slug, cache durations, and other options.
+    |
     */
-    'cache_ttl' => (int) env('QURAN_API_CACHE_TTL', 3600),
 
+    'default_reciter_slug' => env('DEFAULT_RECITER_SLUG', 'alafasy'),
+
+    'cache_ttl' => env('QURAN_API_CACHE_TTL', 3600),
 ];

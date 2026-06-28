@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('text_segment');
             $table->unsignedInteger('start_index')->nullable();
             $table->unsignedInteger('end_index')->nullable();
+            $table->boolean('waqf_assumed')->default(false);
             $table->text('note')->nullable();
             $table->timestamps(); 
 

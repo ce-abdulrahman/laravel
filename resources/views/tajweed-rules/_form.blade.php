@@ -66,14 +66,14 @@
                             {{ __('tajweed_rules.fields.color_code') }}
                         </label>
                         <div class="d-flex gap-2">
-                            <input type="color" name="color_code" id="color_code" 
-                                   class="form-control form-control-color @error('color_code') is-invalid @enderror"
-                                   value="{{ old('color_code', $tajweedRule->color_code ?? '#1B7340') }}"
+                            <input type="color" id="color_code" 
+                                   class="form-control form-control-color"
+                                   value="{{ old('color_code', (is_string($tajweedRule->color_code) && str_starts_with($tajweedRule->color_code, '#') && strlen($tajweedRule->color_code) === 7) ? $tajweedRule->color_code : '#1B7340') }}"
                                    style="width: 60px; height: 44px;">
-                            <input type="text" id="color_code_text" 
-                                   class="quran-form-control" 
+                            <input type="text" name="color_code" id="color_code_text" 
+                                   class="quran-form-control @error('color_code') is-invalid @enderror" 
                                    value="{{ old('color_code', $tajweedRule->color_code) }}"
-                                   placeholder="#RRGGBB" readonly>
+                                   placeholder="#RRGGBB or linear-gradient(...)">
                         </div>
                         @error('color_code')
                         <div class="quran-invalid-feedback">{{ $message }}</div>
@@ -106,7 +106,7 @@
                 <div class="d-flex flex-wrap gap-2">
                     @foreach($colorPalette as $color => $name)
                     <button type="button" class="color-preset-btn" 
-                            style="background-color: {{ $color }}; width: 40px; height: 40px; border-radius: 8px; border: 2px solid var(--quran-border-light); cursor: pointer;"
+                            style="background: {{ $color }}; width: 40px; height: 40px; border-radius: 8px; border: 2px solid var(--quran-border-light); cursor: pointer;"
                             data-color="{{ $color }}"
                             title="{{ $name }}"></button>
                     @endforeach
@@ -194,8 +194,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         colorText.addEventListener('input', function() {
-            if (/^#[0-9A-F]{6}$/i.test(this.value)) {
-                colorInput.value = this.value;
+            if (/^#[0-9A-F]{6}$/i.test(this.value.trim())) {
+                colorInput.value = this.value.trim();
             }
         });
     }
@@ -204,9 +204,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.color-preset-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             const color = this.dataset.color;
-            if (colorInput) {
-                colorInput.value = color;
+            if (colorText) {
                 colorText.value = color;
+            }
+            if (colorInput) {
+                if (color.startsWith('#') && color.length === 7) {
+                    colorInput.value = color;
+                } else {
+                    colorInput.value = '#1B7340'; // fallback picker color for gradients
+                }
             }
         });
     });

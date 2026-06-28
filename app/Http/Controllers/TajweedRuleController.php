@@ -92,7 +92,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
 
         $rules = [
             'tajweed_rule_category_id' => 'nullable|exists:tajweed_rule_categories,id',
-            'color_code'     => 'nullable|string|max:20',
+            'color_code'     => 'nullable|string|max:255',
             'example_text'   => 'nullable|string',
             'priority'       => 'nullable|integer|min:0',
             'is_active'      => 'boolean',
@@ -193,7 +193,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
 
         $rules = [
             'tajweed_rule_category_id' => 'nullable|exists:tajweed_rule_categories,id',
-            'color_code'     => 'nullable|string|max:20',
+            'color_code'     => 'nullable|string|max:255',
             'example_text'   => 'nullable|string',
             'priority'       => 'nullable|integer|min:0',
             'is_active'      => 'boolean',
@@ -338,6 +338,28 @@ class TajweedRuleController extends Controller implements HasMiddleware
             '#FF69B4' => 'پەمەیی کاڵ',
             '#8B4513' => 'قاوەیی',
             '#808080' => 'خۆڵەمێشی',
+            
+            // 20 Gradient presets (No pure black/white, optimized for dark/light modes)
+            'linear-gradient(135deg, #FF6B6B, #FF8E53)' => 'شەبەنگی خۆرئاوابوون (Sunset)',
+            'linear-gradient(135deg, #4E54C8, #8F94FB)' => 'شینی مۆراوی گەش (Indigo)',
+            'linear-gradient(135deg, #11998E, #38EF7D)' => 'سەوزی نیۆن (Neon Green)',
+            'linear-gradient(135deg, #FF416C, #FF4B2B)' => 'مەرجانی گەش (Coral Red)',
+            'linear-gradient(135deg, #00C6FF, #0072FF)' => 'شینی یاقووتی (Sapphire)',
+            'linear-gradient(135deg, #F9D423, #FF4E50)' => 'شەبەنگی گەرمی خۆر (Warm Sun)',
+            'linear-gradient(135deg, #f857a6, #ff5858)' => 'پەمەیی و سووری گەش (Rose Pink)',
+            'linear-gradient(135deg, #43C6AC, #191654)' => 'شینی دەریایی تاریک (Midnight Sea)',
+            'linear-gradient(135deg, #7F00FF, #E100FF)' => 'مۆری کارەبایی (Orchid Violet)',
+            'linear-gradient(135deg, #3A1C71, #D76D77, #FFAF7B)' => 'شەبەنگی سێ ڕەنگ (Tri-Blend)',
+            'linear-gradient(135deg, #159957, #155799)' => 'سەوز و شینی قووڵ (Deep Forest)',
+            'linear-gradient(135deg, #0052D4, #4364F7, #6FB1FC)' => 'تێکەڵەی شینی ئاسمانی (Skyline)',
+            'linear-gradient(135deg, #E55D87, #5FC3E4)' => 'پەمەیی مۆر و شین (Plum-Sky)',
+            'linear-gradient(135deg, #FF9966, #FF5E62)' => 'پرتەقاڵی خۆڵەمێشی (Peach-Red)',
+            'linear-gradient(135deg, #1D976C, #93F9B9)' => 'سەوزی زمڕوتی گەش (Mint Emerald)',
+            'linear-gradient(135deg, #8A2387, #E94057, #F27121)' => 'مۆر و پرتەقاڵی ئەفسوناوی (Mystic)',
+            'linear-gradient(135deg, #f953c6, #b91d73)' => 'پەمەیی تووتڕکی قووڵ (Raspberry)',
+            'linear-gradient(135deg, #4ca2cd, #67B26F)' => 'سەوز و شینی ئارام (Calm Aqua)',
+            'linear-gradient(135deg, #D4145A, #FBB03B)' => 'ئاگری سوور و پرتەقاڵی (Velvet Fire)',
+            'linear-gradient(135deg, #00dbde, #fc00ff)' => 'نیۆن شین و مۆر (Cyan-Magenta)',
         ];
     }
 

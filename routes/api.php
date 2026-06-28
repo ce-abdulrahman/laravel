@@ -34,6 +34,8 @@ use App\Http\Controllers\Api\V1\AchievementController;
 use App\Http\Controllers\Api\V1\ReminderController;
 use App\Http\Controllers\Api\V1\FeatureFlagController;
 use App\Http\Controllers\Api\V1\ContentPackageController;
+use App\Http\Controllers\Api\V1\AudioFavoriteController;
+use App\Http\Controllers\Api\V1\AudioDownloadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,6 +71,13 @@ Route::post('goals/progress/update', [App\Http\Controllers\Api\V1\GoalProgressCo
 Route::get('goals/progress/{goal_id}', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'show'])->whereNumber('goal_id');
 Route::post('goals/progress/reset', [App\Http\Controllers\Api\V1\GoalProgressController::class, 'reset']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('favorites/toggle', [AudioFavoriteController::class, 'toggle']);
+    Route::get('favorites', [AudioFavoriteController::class, 'index']);
+    Route::post('audio-downloads', [AudioDownloadController::class, 'storeOrUpdate']);
+    Route::get('audio-downloads', [AudioDownloadController::class, 'index']);
+});
+
 Route::prefix('v1')->group(function () {
 
     // Public Routes - Authentication
@@ -90,8 +99,11 @@ Route::prefix('v1')->group(function () {
     Route::get('tafsirs', [TafsirController::class, 'index']);
     Route::get('tafsir-books', [TafsirController::class, 'tafsirBooks']);
     Route::get('ayahs/{ayahId}/tafsirs', [TafsirController::class, 'ayahTafsirs']);
+    Route::get('reciters/recent', [\App\Http\Controllers\Api\V1\ReciterHistoryController::class, 'recent']);
     Route::get('reciters', [ReciterController::class, 'index']);
     Route::get('reciters/{id}', [ReciterController::class, 'show']);
+    Route::post('reciters/{id}/select', [\App\Http\Controllers\Api\V1\ReciterHistoryController::class, 'select']);
+    Route::get('reciters/{id}/surahs/{surah}', [ReciterController::class, 'showPlayback']);
     Route::get('tajweed-rules', [TajweedRuleController::class, 'index']);
     Route::get('tajweed-categories', [TajweedCategoryController::class, 'index']);
     Route::get('qiraats', [QiraatController::class, 'index']);
@@ -235,6 +247,12 @@ Route::prefix('v1')->group(function () {
         Route::get('favorites', [FavoriteController::class, 'index']);
         Route::post('favorites/toggle', [FavoriteController::class, 'toggle']);
         Route::delete('favorites/{id}', [FavoriteController::class, 'destroy']);
+
+        // Audio Favorites & Downloads (Reader v2.1)
+        Route::post('audio-favorites/toggle', [AudioFavoriteController::class, 'toggle']);
+        Route::get('audio-favorites', [AudioFavoriteController::class, 'index']);
+        Route::post('audio-downloads', [AudioDownloadController::class, 'storeOrUpdate']);
+        Route::get('audio-downloads', [AudioDownloadController::class, 'index']);
 
         // ─── Smart Reminders ────────────────────────────────────────────────────
         Route::prefix('reminders')->group(function () {

@@ -43,14 +43,27 @@ class Surah extends Model
         return $this->hasMany(AyahTajweedSegment::class);
     }
 
+    /**
+     * @deprecated Use ayahTimings() instead
+     */
     public function audioFiles()
     {
         return $this->hasMany(AudioFile::class);
     }
 
+    public function ayahTimings()
+    {
+        return $this->hasMany(AyahTiming::class);
+    }
+
     public function memorizationPlanItems()
     {
         return $this->hasMany(MemorizationPlanItem::class);
+    }
+
+    public function audioFavorites()
+    {
+        return $this->morphMany(AudioFavorite::class, 'favoritable');
     }
 
     public function scopeActive($query)

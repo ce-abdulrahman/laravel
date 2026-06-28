@@ -15,18 +15,26 @@ class AudioFileSeeder extends Seeder
     public function run(): void
     {
         // 1. Mishary Rashid Alafasy
-        $alafasy = Reciter::where('name', 'Mishary Rashid Alafasy')->first();
+        $alafasy = Reciter::where('slug', 'mishary-alafasy')->first();
         // 2. Maher Al-Muaiqly
-        $maher = Reciter::where('name', 'Maher Al-Muaiqly')->first();
+        $maher = Reciter::where('slug', 'maher-almuaiqly')->first();
         // 3. Abdul Basit Abdus Samad
-        $abdulbasit = Reciter::where('name', 'Abdul Basit Abdus Samad')->first();
+        $abdulbasit = Reciter::where('slug', 'abdul-basit')->first();
+        // 4. Saud Shuraim
+        $shuraim = Reciter::where('slug', 'saud-shuraim')->first();
+        // 5. Yasser Al Dosari
+        $dosari = Reciter::where('slug', 'yasser-dosari')->first();
+        // 6. Peshawa Qader Al-Kurdi
+        $peshawa = Reciter::where('slug', 'peshawa-kurdi')->first();
+        // 7. Raad Mohammad Al-Kurdi
+        $raad = Reciter::where('slug', 'raad-kurdi')->first();
 
         $reciterConfigs = [];
 
         if ($alafasy) {
             $reciterConfigs[] = [
                 'reciter_id' => $alafasy->id,
-                'base_url' => 'https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/',
+                'base_url' => 'https://download.quranicaudio.com/quran/mishari_alafasy/',
                 'quality' => '128',
             ];
         }
@@ -34,8 +42,8 @@ class AudioFileSeeder extends Seeder
         if ($maher) {
             $reciterConfigs[] = [
                 'reciter_id' => $maher->id,
-                'base_url' => 'https://download.quranicaudio.com/quran/maher_256/',
-                'quality' => '256',
+                'base_url' => 'https://download.quranicaudio.com/quran/maher_almuaiqly/',
+                'quality' => '128',
             ];
         }
 
@@ -43,6 +51,38 @@ class AudioFileSeeder extends Seeder
             $reciterConfigs[] = [
                 'reciter_id' => $abdulbasit->id,
                 'base_url' => 'https://download.quranicaudio.com/quran/abdul_basit_murattal/',
+                'quality' => '128',
+            ];
+        }
+
+        if ($shuraim) {
+            $reciterConfigs[] = [
+                'reciter_id' => $shuraim->id,
+                'base_url' => 'https://download.quranicaudio.com/quran/sa3ood_ash_shuraym/',
+                'quality' => '128',
+            ];
+        }
+
+        if ($dosari) {
+            $reciterConfigs[] = [
+                'reciter_id' => $dosari->id,
+                'base_url' => 'https://download.quranicaudio.com/quran/yasser_ad-dussary/',
+                'quality' => '128',
+            ];
+        }
+
+        if ($peshawa) {
+            $reciterConfigs[] = [
+                'reciter_id' => $peshawa->id,
+                'base_url' => 'https://server14.mp3quran.net/peshawa/',
+                'quality' => '128',
+            ];
+        }
+
+        if ($raad) {
+            $reciterConfigs[] = [
+                'reciter_id' => $raad->id,
+                'base_url' => 'https://server12.mp3quran.net/kurd/',
                 'quality' => '128',
             ];
         }

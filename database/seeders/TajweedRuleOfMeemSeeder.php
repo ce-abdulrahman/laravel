@@ -7,14 +7,14 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
-class TajweedSegmentSeeder extends Seeder
+class TajweedRuleOfMeemSeeder extends Seeder
 {
     public function run(): void
     {
-        $path = database_path('data/ayah_tajweed_segments.json');
+        $path = database_path('data/2_role_meem.json');
 
         if (!File::exists($path)) {
-            $this->command->error('ayah_tajweed_segments.json file not found in database/data/');
+            $this->command->error('2_role_meem.json file not found in database/data/');
             return;
         }
 
@@ -22,13 +22,11 @@ class TajweedSegmentSeeder extends Seeder
         $segments = json_decode($json, true);
 
         if (!is_array($segments) || empty($segments)) {
-            $this->command->error('ayah_tajweed_segments.json is empty or invalid.');
+            $this->command->error('2_role_meem.json is empty or invalid.');
             return;
         }
 
         DB::transaction(function () use ($segments) {
-            AyahTajweedSegment::truncate();
-
             foreach (array_chunk($segments, 500) as $chunk) {
                 $mappedChunk = array_map(function ($item) {
                     if (isset($item['text_segment'])) {
@@ -46,6 +44,6 @@ class TajweedSegmentSeeder extends Seeder
             }
         });
 
-        $this->command->info('Tajweed Segments seeded successfully.');
+        $this->command->info('Tajweed rule of meem relations seeded successfully.');
     }
 }

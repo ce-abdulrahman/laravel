@@ -253,6 +253,16 @@ class User extends Authenticatable
         return $this->hasMany(BackupRestoreLog::class, 'user_id');
     }
 
+    public function audioFavorites()
+    {
+        return $this->hasMany(AudioFavorite::class, 'user_id');
+    }
+
+    public function audioDownloads()
+    {
+        return $this->hasMany(AudioDownload::class, 'user_id');
+    }
+
     public function profile()
     {
         return $this->hasOne(UserProfile::class);

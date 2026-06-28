@@ -152,7 +152,7 @@
                 <div class="quran-card-body">
                     <div class="d-flex align-items-start gap-3 mb-3">
                         @if($rule->color_code)
-                        <div style="width: 40px; height: 40px; border-radius: 10px; background-color: {{ $rule->color_code }}; 
+                        <div style="width: 40px; height: 40px; border-radius: 10px; background: {{ $rule->color_code }}; 
                                     border: 2px solid var(--quran-border-light);"></div>
                         @else
                         <div class="quran-plan-icon" style="width: 40px; height: 40px;">

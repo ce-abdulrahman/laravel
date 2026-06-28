@@ -5,12 +5,22 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Ayah;
 use App\Models\AudioFile;
+use App\Models\Reciter;
+use App\Models\Surah;
+use App\Models\AyahTiming;
+use App\Services\RecitationUrlService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class AudioTimingController extends Controller
 {
+    protected RecitationUrlService $urlService;
+
+    public function __construct(RecitationUrlService $urlService)
+    {
+        $this->urlService = $urlService;
+    }
     /**
      * Get audio timing segments for an audio file (word by word timing)
      */
@@ -325,60 +335,98 @@ class AudioTimingController extends Controller
             'quality' => 'nullable|in:low,medium,high',
         ]);
 
-        $query = AudioFile::active()
-            ->with(['reciter', 'surah'])
-            ->where('surah_id', $surahId)
-            ->where('reciter_id', $request->reciter_id);
+        $reciter = Reciter::active()->findOrFail($request->reciter_id);
+        $surah = Surah::active()->findOrFail($surahId);
+        $quality = $request->query('quality', 'high');
 
-        if ($request->has('quality')) {
-            $query->where('quality', $request->quality);
-        }
-
-        // Prefer high > medium > low when not explicitly requested.
-        $audioFile = $query->orderByRaw("CASE quality WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 ELSE 4 END")->first();
-
-        if (!$audioFile) {
+        try {
+            $streamUrl = $this->urlService->generateUrl($reciter, $surah->number, $quality);
+        } catch (\InvalidArgumentException $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Audio file not found for this reciter and surah',
-            ], 404);
+                'message' => $e->getMessage(),
+            ], 400);
         }
 
-        $timingPath = $this->getAyahTimingFilePath($audioFile);
-        if (!Storage::exists($timingPath)) {
-            $ayahTimings = $this->generateBasicAyahTimings($audioFile);
-        } else {
-            $ayahTimings = json_decode(Storage::get($timingPath), true);
+        // Retrieve ayah timings
+        $ayahTiming = AyahTiming::where('reciter_id', $reciter->id)
+            ->where('surah_id', $surah->id)
+            ->first();
+
+        $ayahTimings = [];
+        $hasValidFile = false;
+
+        if ($ayahTiming && $ayahTiming->timing_file_path) {
+            if (Storage::exists($ayahTiming->timing_file_path)) {
+                $fileContent = Storage::get($ayahTiming->timing_file_path);
+                $rawTimings = json_decode($fileContent, true);
+                if (is_array($rawTimings)) {
+                    $hasValidFile = true;
+                    // Format for Flutter Map structure keyed by ayah_id or ayah_number
+                    foreach ($rawTimings as $index => $item) {
+                        $ayahNumber = $item['ayah'] ?? $item['ayah_number'] ?? ($index + 1);
+                        $start = $item['start'] ?? $item['start_time'] ?? 0.0;
+                        $end = $item['end'] ?? $item['end_time'] ?? 0.0;
+
+                        $ayahModel = Ayah::where('surah_id', $surah->id)
+                            ->where('ayah_number', $ayahNumber)
+                            ->first();
+                        $keyId = $ayahModel ? $ayahModel->id : $ayahNumber;
+
+                        $ayahTimings[$keyId] = [
+                            'ayah_number' => (int) $ayahNumber,
+                            'start_time' => (double) $start,
+                            'end_time' => (double) $end,
+                            'duration' => round((double)$end - (double)$start, 2),
+                        ];
+                    }
+                }
+            }
         }
 
-        $streamUrl = (str_starts_with($audioFile->file_path, 'http://') || str_starts_with($audioFile->file_path, 'https://'))
-            ? $audioFile->file_path
-            : url("/api/v1/audio-files/{$audioFile->id}/stream");
+        if (!$hasValidFile) {
+            $duration = $ayahTiming?->duration_seconds ?? ($surah->ayah_count * 5);
+            $durationPerAyah = $duration / $surah->ayah_count;
+
+            $ayahs = Ayah::where('surah_id', $surah->id)->orderBy('ayah_number')->get();
+            foreach ($ayahs as $index => $ayah) {
+                $start = $index * $durationPerAyah;
+                $end = $start + $durationPerAyah;
+
+                $ayahTimings[$ayah->id] = [
+                    'ayah_number' => $ayah->ayah_number,
+                    'start_time' => round($start, 2),
+                    'end_time' => round($end, 2),
+                    'duration' => round($durationPerAyah, 2),
+                    'estimated' => true,
+                ];
+            }
+        }
 
         return response()->json([
             'status' => 'success',
             'success' => true,
             'data' => [
                 'audio_file' => [
-                    'id' => $audioFile->id,
-                    'reciter_id' => $audioFile->reciter_id,
-                    'surah_id' => $audioFile->surah_id,
-                    'file_path' => $audioFile->file_path,
-                    'duration_seconds' => $audioFile->duration_seconds,
-                    'quality' => $audioFile->quality,
-                    'is_active' => $audioFile->is_active,
-                    'reciter' => $audioFile->reciter ? [
-                        'id' => $audioFile->reciter->id,
-                        'name' => $audioFile->reciter->name,
-                        'name_ar' => $audioFile->reciter->name_ar,
-                    ] : null,
-                    'surah' => $audioFile->surah ? [
-                        'id' => $audioFile->surah->id,
-                        'number' => $audioFile->surah->number,
-                        'name_ar' => $audioFile->surah->name_ar,
-                        'name_en' => $audioFile->surah->name_en,
-                        'ayah_count' => $audioFile->surah->ayah_count,
-                    ] : null,
+                    'id' => $ayahTiming?->id ?? 0,
+                    'reciter_id' => $reciter->id,
+                    'surah_id' => $surah->id,
+                    'file_path' => $streamUrl,
+                    'duration_seconds' => $ayahTiming?->duration_seconds ?? ($surah->ayah_count * 5),
+                    'quality' => $quality,
+                    'is_active' => true,
+                    'reciter' => [
+                        'id' => $reciter->id,
+                        'name' => $reciter->name,
+                        'name_ar' => $reciter->name,
+                    ],
+                    'surah' => [
+                        'id' => $surah->id,
+                        'number' => $surah->number,
+                        'name_ar' => $surah->getTranslation('name', 'ar') ?: $surah->name,
+                        'name_en' => $surah->getTranslation('name', 'en') ?: $surah->name,
+                        'ayah_count' => $surah->ayah_count,
+                    ],
                     'stream_url' => $streamUrl,
                 ],
                 'ayah_timings' => $ayahTimings,

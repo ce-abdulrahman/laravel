@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        \App\Models\AyahTajweedSegment::truncate();
+
         $this->call([
             LanguageSeeder::class,
             SurahSeeder::class,
@@ -33,7 +35,13 @@ class DatabaseSeeder extends Seeder
             TafsirBookSeeder::class,
             CategoryTajweedRulesSeeder::class,
             TajweedRuleSeeder::class,
-            TajweedSegmentSeeder::class,
+            TajweedRuleOfNunSakenSeeder::class,
+            TajweedRuleOfMeemSeeder::class,
+            TajweedRuleOfMaddSeeder::class,
+            TajweedRuleOfRaaSeeder::class,
+            TajweedRuleOfQalqalahSeeder::class,
+            TajweedRuleOfIdghmAdvancedSeeder::class,
+            
             ReciterSeeder::class,
             AudioFileSeeder::class,
             SettingSeeder::class,
@@ -50,5 +58,6 @@ class DatabaseSeeder extends Seeder
             PrayerMethodSeeder::class,
             WidgetTranslationSeeder::class,
         ]);
+
     }
 }

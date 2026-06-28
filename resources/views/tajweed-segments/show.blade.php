@@ -26,7 +26,7 @@
             <div class="d-flex align-items-center gap-3 mb-2">
                 @if($tajweedSegment->tajweedRule->color_code)
                 <div style="width: 40px; height: 40px; border-radius: 10px; 
-                            background-color: {{ $tajweedSegment->tajweedRule->color_code }};"></div>
+                            background: {{ $tajweedSegment->tajweedRule->color_code }};"></div>
                 @endif
                 <div>
                     <h1 class="h4 mb-1">{{ $tajweedSegment->tajweedRule->name }}</h1>
@@ -113,8 +113,7 @@
                     <div class="text-center mb-4">
                         <label class="quran-detail-label d-block mb-2">{{ __('tajweed_segments.fields.matched_text') }}</label>
                         <div class="arabic-text p-4 rounded-3 d-inline-block" 
-                             style="font-size: 30px; background-color: {{ $tajweedSegment->tajweedRule->color_code }}20;
-                                    border: 2px solid {{ $tajweedSegment->tajweedRule->color_code }}; min-width: 200px;">
+                             style="font-size: 30px; {{ str_starts_with($tajweedSegment->tajweedRule->color_code ?? '', 'linear-gradient') ? 'background: ' . $tajweedSegment->tajweedRule->color_code . '; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); border: 2px solid transparent;' : 'background-color: ' . $tajweedSegment->tajweedRule->color_code . '20; color: ' . ($tajweedSegment->tajweedRule->color_code ?? 'inherit') . '; border: 2px solid ' . ($tajweedSegment->tajweedRule->color_code ?? 'transparent') . ';' }} min-width: 200px;">
                             {{ $tajweedSegment->matched_text }}
                         </div>
                     </div>
@@ -263,7 +262,7 @@
                             <div class="d-flex align-items-center gap-2">
                                 @if($other->tajweedRule->color_code)
                                 <span style="width: 12px; height: 12px; border-radius: 3px; 
-                                             background-color: {{ $other->tajweedRule->color_code }}; flex-shrink: 0;"></span>
+                                             background: {{ $other->tajweedRule->color_code }}; flex-shrink: 0;"></span>
                                 @endif
                                 <div class="w-100">
                                     <div class="d-flex justify-content-between align-items-center">

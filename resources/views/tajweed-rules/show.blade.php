@@ -18,7 +18,7 @@
         <div>
             <div class="d-flex align-items-center gap-3 mb-2">
                 @if($tajweedRule->color_code)
-                <div style="width: 48px; height: 48px; border-radius: 12px; background-color: {{ $tajweedRule->color_code }}; 
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: {{ $tajweedRule->color_code }}; 
                             border: 2px solid var(--quran-border-light);"></div>
                 @endif
                 <div>
@@ -93,7 +93,7 @@
                             @if($tajweedRule->color_code)
                             <span>{{ $tajweedRule->color_code }}</span>
                             <span class="ms-2 d-inline-block" 
-                                  style="width: 20px; height: 20px; border-radius: 4px; background-color: {{ $tajweedRule->color_code }};"></span>
+                                  style="width: 20px; height: 20px; border-radius: 4px; background: {{ $tajweedRule->color_code }}; border: 1px solid var(--quran-border-light);"></span>
                             @else
                             —
                             @endif
@@ -169,11 +169,11 @@
                                 </td>
                                 <td>
                                     <div class="arabic-text" style="font-size: 18px;">
-                                        <span style="background-color: {{ $tajweedRule->color_code }}20; 
-                                                     padding: 2px 8px; border-radius: 6px;">
-                                            {{ $segment->matched_text }}
-                                        </span>
-                                    </div>
+                                         <span style="{{ str_starts_with($tajweedRule->color_code ?? '', 'linear-gradient') ? 'background: ' . $tajweedRule->color_code . '; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5);' : 'background-color: ' . $tajweedRule->color_code . '20; color: ' . ($tajweedRule->color_code ?? 'inherit') . ';' }} 
+                                                      padding: 2px 8px; border-radius: 6px;">
+                                             {{ $segment->matched_text }}
+                                         </span>
+                                     </div>
                                 </td>
                                 <td>
                                     <div class="quran-table-actions justify-content-end">

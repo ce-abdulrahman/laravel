@@ -217,7 +217,7 @@
                             <div class="d-flex align-items-center gap-2">
                                 @if($segment->tajweedRule->color_code)
                                 <span style="width: 12px; height: 12px; border-radius: 3px; 
-                                             background-color: {{ $segment->tajweedRule->color_code }};"></span>
+                                             background: {{ $segment->tajweedRule->color_code }};"></span>
                                 @endif
                                 <a href="{{ route('tajweed-rules.show', $segment->tajweedRule) }}" 
                                    class="text-decoration-none">
@@ -227,8 +227,8 @@
                         </td>
                         <td>
                             <div class="arabic-text" style="font-size: 18px;">
-                                <span style="background-color: {{ $segment->tajweedRule->color_code }}20; 
-                                             padding: 2px 8px; border-radius: 6px;">
+                                 <span style="{{ str_starts_with($segment->tajweedRule->color_code ?? '', 'linear-gradient') ? 'background: ' . $segment->tajweedRule->color_code . '; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5);' : 'background-color: ' . $segment->tajweedRule->color_code . '20; color: ' . ($segment->tajweedRule->color_code ?? 'inherit') . ';' }} 
+                                              padding: 2px 8px; border-radius: 6px;">
                                     {{ $segment->matched_text }}
                                 </span>
                             </div>
