@@ -59,6 +59,11 @@ Route::prefix('v1')->group(function () {
     Route::get('feature-flags',                  [FeatureFlagController::class,   'index']);
     Route::get('offline-packages/manifest',      [ContentPackageController::class, 'manifest']);
     Route::get('offline-packages/{package}',     [ContentPackageController::class, 'download']);
+    
+    // Offline-First Package Architecture Routes
+    Route::get('packages/manifests',             [ContentPackageController::class, 'manifests']);
+    Route::get('packages/{package}/manifest',    [ContentPackageController::class, 'manifest']);
+    Route::get('packages/{package}/download',    [ContentPackageController::class, 'download']);
 });
 
 // Daily Goal root shortcuts

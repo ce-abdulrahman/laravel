@@ -1,0 +1,3289 @@
+[
+    {
+        "ayah_number": 1,
+        "segments": [
+            {
+                "start_index": 2,
+                "end_index": 4,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 17,
+                "end_index": 18,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 86,
+                "end_index": 87,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 96,
+                "end_index": 97,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 115,
+                "end_index": 116,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 121,
+                "end_index": 122,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 153,
+                "end_index": 154,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 154,
+                "end_index": 155,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            }
+        ]
+    },
+    {
+        "ayah_number": 2,
+        "segments": [
+            {
+                "start_index": 7,
+                "end_index": 9,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 18,
+                "end_index": 19,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 21,
+                "end_index": 23,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 29,
+                "end_index": 30,
+                "rule_id": 7,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 34,
+                "end_index": 35,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 41,
+                "end_index": 42,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 47,
+                "end_index": 48,
+                "rule_id": 7,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 73,
+                "end_index": 75,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 96,
+                "end_index": 98,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 122,
+                "end_index": 124,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 128,
+                "end_index": 130,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 142,
+                "end_index": 144,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 155,
+                "end_index": 157,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 163,
+                "end_index": 164,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 188,
+                "end_index": 189,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 216,
+                "end_index": 219,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "وٌّ"
+            },
+            {
+                "start_index": 224,
+                "end_index": 225,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 225,
+                "end_index": 226,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            }
+        ]
+    },
+    {
+        "ayah_number": 3,
+        "segments": [
+            {
+                "start_index": 9,
+                "end_index": 11,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 20,
+                "end_index": 21,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 23,
+                "end_index": 25,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 28,
+                "end_index": 29,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 35,
+                "end_index": 36,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 41,
+                "end_index": 43,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 46,
+                "end_index": 49,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مَّ"
+            },
+            {
+                "start_index": 58,
+                "end_index": 60,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 82,
+                "end_index": 83,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 85,
+                "end_index": 86,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 88,
+                "end_index": 89,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 94,
+                "end_index": 96,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ةٍ"
+            },
+            {
+                "start_index": 100,
+                "end_index": 101,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 104,
+                "end_index": 106,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "بْ"
+            },
+            {
+                "start_index": 111,
+                "end_index": 112,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 119,
+                "end_index": 120,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 135,
+                "end_index": 137,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 146,
+                "end_index": 148,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 151,
+                "end_index": 152,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 164,
+                "end_index": 165,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 182,
+                "end_index": 184,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 189,
+                "end_index": 190,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 190,
+                "end_index": 191,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            }
+        ]
+    },
+    {
+        "ayah_number": 4,
+        "segments": [
+            {
+                "start_index": 4,
+                "end_index": 5,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 9,
+                "end_index": 11,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 16,
+                "end_index": 18,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 26,
+                "end_index": 28,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 33,
+                "end_index": 34,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 37,
+                "end_index": 39,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نِ"
+            },
+            {
+                "start_index": 53,
+                "end_index": 55,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نِ"
+            },
+            {
+                "start_index": 58,
+                "end_index": 59,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 62,
+                "end_index": 64,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "بْ"
+            },
+            {
+                "start_index": 69,
+                "end_index": 70,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 77,
+                "end_index": 78,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 90,
+                "end_index": 91,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 95,
+                "end_index": 97,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 113,
+                "end_index": 115,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "طْ"
+            },
+            {
+                "start_index": 118,
+                "end_index": 120,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 127,
+                "end_index": 129,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 172,
+                "end_index": 173,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 177,
+                "end_index": 178,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 184,
+                "end_index": 185,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 212,
+                "end_index": 213,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 229,
+                "end_index": 230,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 232,
+                "end_index": 234,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 247,
+                "end_index": 248,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 248,
+                "end_index": 250,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مٌ"
+            }
+        ]
+    },
+    {
+        "ayah_number": 5,
+        "segments": [
+            {
+                "start_index": 13,
+                "end_index": 15,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 20,
+                "end_index": 21,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 39,
+                "end_index": 40,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 46,
+                "end_index": 47,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 80,
+                "end_index": 82,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 85,
+                "end_index": 86,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 89,
+                "end_index": 91,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "بْ"
+            },
+            {
+                "start_index": 95,
+                "end_index": 97,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 104,
+                "end_index": 106,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 116,
+                "end_index": 117,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 121,
+                "end_index": 122,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 156,
+                "end_index": 157,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 159,
+                "end_index": 161,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 167,
+                "end_index": 169,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "بٌ"
+            },
+            {
+                "start_index": 175,
+                "end_index": 176,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            }
+        ]
+    },
+    {
+        "ayah_number": 6,
+        "segments": [
+            {
+                "start_index": 4,
+                "end_index": 6,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مَ"
+            },
+            {
+                "start_index": 9,
+                "end_index": 11,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "بْ"
+            },
+            {
+                "start_index": 17,
+                "end_index": 19,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 25,
+                "end_index": 26,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 50,
+                "end_index": 51,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 87,
+                "end_index": 88,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 109,
+                "end_index": 110,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 129,
+                "end_index": 131,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ءٍ"
+            },
+            {
+                "start_index": 136,
+                "end_index": 137,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 137,
+                "end_index": 139,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "دٌ"
+            }
+        ]
+    },
+    {
+        "ayah_number": 7,
+        "segments": [
+            {
+                "start_index": 4,
+                "end_index": 6,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 9,
+                "end_index": 10,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 32,
+                "end_index": 34,
+                "rule_id": 7,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 73,
+                "end_index": 75,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "رْ"
+            },
+            {
+                "start_index": 89,
+                "end_index": 91,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نُ"
+            },
+            {
+                "start_index": 94,
+                "end_index": 95,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 99,
+                "end_index": 101,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "جْ"
+            },
+            {
+                "start_index": 129,
+                "end_index": 130,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 138,
+                "end_index": 140,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 149,
+                "end_index": 151,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 177,
+                "end_index": 179,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 184,
+                "end_index": 185,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 189,
+                "end_index": 191,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 198,
+                "end_index": 199,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 212,
+                "end_index": 213,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 221,
+                "end_index": 222,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 242,
+                "end_index": 244,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 247,
+                "end_index": 248,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 249,
+                "end_index": 251,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 269,
+                "end_index": 272,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مَّ"
+            },
+            {
+                "start_index": 284,
+                "end_index": 285,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 306,
+                "end_index": 308,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مَ"
+            },
+            {
+                "start_index": 351,
+                "end_index": 353,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ءٍ"
+            },
+            {
+                "start_index": 358,
+                "end_index": 359,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 359,
+                "end_index": 361,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مٌ"
+            }
+        ]
+    },
+    {
+        "ayah_number": 8,
+        "segments": [
+            {
+                "start_index": 4,
+                "end_index": 6,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 9,
+                "end_index": 10,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 25,
+                "end_index": 27,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 46,
+                "end_index": 48,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "جْ"
+            },
+            {
+                "start_index": 55,
+                "end_index": 58,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مَّ"
+            },
+            {
+                "start_index": 67,
+                "end_index": 69,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 86,
+                "end_index": 88,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 88,
+                "end_index": 89,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 105,
+                "end_index": 107,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 117,
+                "end_index": 119,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مِ"
+            },
+            {
+                "start_index": 127,
+                "end_index": 129,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 132,
+                "end_index": 134,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نِ"
+            },
+            {
+                "start_index": 150,
+                "end_index": 151,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 169,
+                "end_index": 170,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 173,
+                "end_index": 174,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 195,
+                "end_index": 197,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 210,
+                "end_index": 211,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 218,
+                "end_index": 219,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 231,
+                "end_index": 233,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 248,
+                "end_index": 250,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 277,
+                "end_index": 278,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 304,
+                "end_index": 306,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 314,
+                "end_index": 316,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 349,
+                "end_index": 350,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 350,
+                "end_index": 351,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            }
+        ]
+    },
+    {
+        "ayah_number": 9,
+        "segments": [
+            {
+                "start_index": 7,
+                "end_index": 8,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 21,
+                "end_index": 23,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 26,
+                "end_index": 27,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 54,
+                "end_index": 56,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 87,
+                "end_index": 89,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مِ"
+            },
+            {
+                "start_index": 97,
+                "end_index": 99,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 102,
+                "end_index": 104,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نِ"
+            },
+            {
+                "start_index": 120,
+                "end_index": 121,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 151,
+                "end_index": 152,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 162,
+                "end_index": 164,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "قْ"
+            },
+            {
+                "start_index": 206,
+                "end_index": 207,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 215,
+                "end_index": 216,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 217,
+                "end_index": 218,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 10,
+        "segments": [
+            {
+                "start_index": 14,
+                "end_index": 16,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "جْ"
+            },
+            {
+                "start_index": 37,
+                "end_index": 39,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نِ"
+            },
+            {
+                "start_index": 42,
+                "end_index": 43,
+                "rule_id": 7,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 58,
+                "end_index": 60,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 63,
+                "end_index": 64,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 85,
+                "end_index": 86,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 87,
+                "end_index": 88,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 92,
+                "end_index": 94,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 125,
+                "end_index": 126,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 143,
+                "end_index": 144,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 173,
+                "end_index": 174,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 11,
+        "segments": [
+            {
+                "start_index": 7,
+                "end_index": 8,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 21,
+                "end_index": 23,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 26,
+                "end_index": 27,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 52,
+                "end_index": 54,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 113,
+                "end_index": 114,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 120,
+                "end_index": 122,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 163,
+                "end_index": 165,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "رْ"
+            },
+            {
+                "start_index": 175,
+                "end_index": 176,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 185,
+                "end_index": 187,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 190,
+                "end_index": 191,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 204,
+                "end_index": 206,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 221,
+                "end_index": 222,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 235,
+                "end_index": 237,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مَ"
+            },
+            {
+                "start_index": 240,
+                "end_index": 241,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 258,
+                "end_index": 259,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 276,
+                "end_index": 278,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 283,
+                "end_index": 284,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 284,
+                "end_index": 285,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            }
+        ]
+    },
+    {
+        "ayah_number": 12,
+        "segments": [
+            {
+                "start_index": 7,
+                "end_index": 8,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 21,
+                "end_index": 23,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 26,
+                "end_index": 27,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 52,
+                "end_index": 54,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 57,
+                "end_index": 58,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 83,
+                "end_index": 85,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 95,
+                "end_index": 97,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "جْ"
+            },
+            {
+                "start_index": 103,
+                "end_index": 105,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 129,
+                "end_index": 131,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "رٌ"
+            },
+            {
+                "start_index": 129,
+                "end_index": 130,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 137,
+                "end_index": 139,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 144,
+                "end_index": 146,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "طْ"
+            },
+            {
+                "start_index": 148,
+                "end_index": 149,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 157,
+                "end_index": 158,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 162,
+                "end_index": 164,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 196,
+                "end_index": 198,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "رٌ"
+            },
+            {
+                "start_index": 196,
+                "end_index": 197,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 199,
+                "end_index": 200,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 204,
+                "end_index": 205,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 205,
+                "end_index": 207,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مٌ"
+            }
+        ]
+    },
+    {
+        "ayah_number": 13,
+        "segments": [
+            {
+                "start_index": 8,
+                "end_index": 10,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "قْ"
+            },
+            {
+                "start_index": 12,
+                "end_index": 14,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 17,
+                "end_index": 18,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 36,
+                "end_index": 38,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 48,
+                "end_index": 50,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "جْ"
+            },
+            {
+                "start_index": 56,
+                "end_index": 58,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 81,
+                "end_index": 83,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 109,
+                "end_index": 110,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 120,
+                "end_index": 122,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 152,
+                "end_index": 153,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 194,
+                "end_index": 195,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 201,
+                "end_index": 202,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 214,
+                "end_index": 215,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 222,
+                "end_index": 223,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 240,
+                "end_index": 241,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 14,
+        "segments": [
+            {
+                "start_index": 6,
+                "end_index": 8,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 11,
+                "end_index": 12,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 27,
+                "end_index": 29,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 62,
+                "end_index": 63,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 73,
+                "end_index": 74,
+                "rule_id": 7,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 82,
+                "end_index": 83,
+                "rule_id": 7,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 90,
+                "end_index": 92,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 101,
+                "end_index": 103,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 105,
+                "end_index": 107,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 119,
+                "end_index": 121,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 142,
+                "end_index": 144,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 153,
+                "end_index": 154,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 15,
+        "segments": [
+            {
+                "start_index": 13,
+                "end_index": 14,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 20,
+                "end_index": 22,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 39,
+                "end_index": 40,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 50,
+                "end_index": 52,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 55,
+                "end_index": 56,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 81,
+                "end_index": 82,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 16,
+        "segments": [
+            {
+                "start_index": 15,
+                "end_index": 16,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 25,
+                "end_index": 27,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 33,
+                "end_index": 35,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ةً"
+            },
+            {
+                "start_index": 49,
+                "end_index": 50,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 64,
+                "end_index": 65,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 73,
+                "end_index": 75,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 81,
+                "end_index": 83,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "بٌ"
+            },
+            {
+                "start_index": 89,
+                "end_index": 90,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            }
+        ]
+    },
+    {
+        "ayah_number": 17,
+        "segments": [
+            {
+                "start_index": 3,
+                "end_index": 4,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 16,
+                "end_index": 18,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 20,
+                "end_index": 22,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 25,
+                "end_index": 27,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 34,
+                "end_index": 36,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 41,
+                "end_index": 42,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 46,
+                "end_index": 47,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 56,
+                "end_index": 57,
+                "rule_id": 7,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 69,
+                "end_index": 70,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 85,
+                "end_index": 86,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 114,
+                "end_index": 115,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 121,
+                "end_index": 123,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 139,
+                "end_index": 140,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 18,
+        "segments": [
+            {
+                "start_index": 4,
+                "end_index": 6,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مَ"
+            },
+            {
+                "start_index": 9,
+                "end_index": 11,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "بْ"
+            },
+            {
+                "start_index": 17,
+                "end_index": 19,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 25,
+                "end_index": 26,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 48,
+                "end_index": 50,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 53,
+                "end_index": 54,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 72,
+                "end_index": 74,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 79,
+                "end_index": 81,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 105,
+                "end_index": 107,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 128,
+                "end_index": 129,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 138,
+                "end_index": 140,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 143,
+                "end_index": 145,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 157,
+                "end_index": 158,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 19,
+        "segments": [
+            {
+                "start_index": 20,
+                "end_index": 22,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 34,
+                "end_index": 36,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نُ"
+            },
+            {
+                "start_index": 48,
+                "end_index": 50,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 55,
+                "end_index": 56,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 63,
+                "end_index": 64,
+                "rule_id": 10,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 70,
+                "end_index": 71,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 109,
+                "end_index": 110,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 114,
+                "end_index": 117,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَّ"
+            },
+            {
+                "start_index": 136,
+                "end_index": 138,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نِ"
+            },
+            {
+                "start_index": 141,
+                "end_index": 143,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 153,
+                "end_index": 154,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 155,
+                "end_index": 156,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    },
+    {
+        "ayah_number": 20,
+        "segments": [
+            {
+                "start_index": 13,
+                "end_index": 15,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 20,
+                "end_index": 21,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 39,
+                "end_index": 40,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 46,
+                "end_index": 47,
+                "rule_id": 10,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 53,
+                "end_index": 54,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 79,
+                "end_index": 80,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            }
+        ]
+    },
+    {
+        "ayah_number": 21,
+        "segments": [
+            {
+                "start_index": 12,
+                "end_index": 13,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 38,
+                "end_index": 39,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 67,
+                "end_index": 70,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ىٌّ"
+            },
+            {
+                "start_index": 75,
+                "end_index": 76,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            }
+        ]
+    },
+    {
+        "ayah_number": 22,
+        "segments": [
+            {
+                "start_index": 29,
+                "end_index": 31,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 39,
+                "end_index": 40,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 51,
+                "end_index": 53,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مِ"
+            },
+            {
+                "start_index": 63,
+                "end_index": 64,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 70,
+                "end_index": 71,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 76,
+                "end_index": 78,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 81,
+                "end_index": 83,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 86,
+                "end_index": 87,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 102,
+                "end_index": 103,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 109,
+                "end_index": 110,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 132,
+                "end_index": 133,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 135,
+                "end_index": 136,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 141,
+                "end_index": 143,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 146,
+                "end_index": 147,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 151,
+                "end_index": 153,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "بْ"
+            },
+            {
+                "start_index": 155,
+                "end_index": 156,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 161,
+                "end_index": 163,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 166,
+                "end_index": 167,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 180,
+                "end_index": 182,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 185,
+                "end_index": 186,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 193,
+                "end_index": 194,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 199,
+                "end_index": 201,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 206,
+                "end_index": 207,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 238,
+                "end_index": 240,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 246,
+                "end_index": 247,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 251,
+                "end_index": 253,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 258,
+                "end_index": 259,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ي"
+            },
+            {
+                "start_index": 265,
+                "end_index": 266,
+                "rule_id": 6,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "م"
+            },
+            {
+                "start_index": 269,
+                "end_index": 270,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 272,
+                "end_index": 274,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "حٍ"
+            },
+            {
+                "start_index": 278,
+                "end_index": 280,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 280,
+                "end_index": 281,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 289,
+                "end_index": 291,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "دْ"
+            },
+            {
+                "start_index": 297,
+                "end_index": 299,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 307,
+                "end_index": 309,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "تٍ"
+            },
+            {
+                "start_index": 312,
+                "end_index": 315,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "جْ"
+            },
+            {
+                "start_index": 320,
+                "end_index": 321,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ن"
+            },
+            {
+                "start_index": 337,
+                "end_index": 339,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 343,
+                "end_index": 344,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 355,
+                "end_index": 357,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَ"
+            },
+            {
+                "start_index": 367,
+                "end_index": 368,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": false,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 379,
+                "end_index": 380,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 384,
+                "end_index": 386,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 388,
+                "end_index": 390,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مْ"
+            },
+            {
+                "start_index": 393,
+                "end_index": 394,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ر"
+            },
+            {
+                "start_index": 403,
+                "end_index": 405,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "نْ"
+            },
+            {
+                "start_index": 405,
+                "end_index": 406,
+                "rule_id": 10,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 412,
+                "end_index": 413,
+                "rule_id": 3,
+                "color_id": 3,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            },
+            {
+                "start_index": 436,
+                "end_index": 437,
+                "rule_id": 10,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 445,
+                "end_index": 446,
+                "rule_id": 2,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "ا"
+            },
+            {
+                "start_index": 450,
+                "end_index": 453,
+                "rule_id": 1,
+                "color_id": 1,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "نَّ"
+            },
+            {
+                "start_index": 466,
+                "end_index": 467,
+                "rule_id": 11,
+                "color_id": 6,
+                "connects_to_left": true,
+                "connects_to_right": true,
+                "text_segment": "ه"
+            },
+            {
+                "start_index": 471,
+                "end_index": 473,
+                "rule_id": 8,
+                "color_id": 4,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "مُ"
+            },
+            {
+                "start_index": 485,
+                "end_index": 486,
+                "rule_id": 4,
+                "color_id": 2,
+                "connects_to_left": true,
+                "connects_to_right": false,
+                "text_segment": "و"
+            }
+        ]
+    }
+]

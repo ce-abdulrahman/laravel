@@ -1,0 +1,16 @@
+{
+    "package": "allah_names",
+    "version": 1,
+    "minimum_app_version": "1.0.0",
+    "recommended_app_version": "1.1.0",
+    "schema_version": 1,
+    "created_at": "2026-07-01T18:40:54+03:00",
+    "updated_at": "2026-07-01T18:40:54+03:00",
+    "checksum": "850288d8d5ffeb4020bc2b7ebffee5e2c6a3804e655960f385c3089cea1e0961",
+    "records": 99,
+    "compressed_size": 19733,
+    "uncompressed_size": 116266,
+    "signature": "signed_850288d8d5ffeb4020bc2b7ebffee5e2c6a3804e655960f385c3089cea1e0961",
+    "supports_delta": false,
+    "dependencies": []
+}

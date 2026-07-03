@@ -1,0 +1,16 @@
+{
+    "package": "adhkar",
+    "version": 1,
+    "minimum_app_version": "1.0.0",
+    "recommended_app_version": "1.1.0",
+    "schema_version": 1,
+    "created_at": "2026-07-01T18:40:54+03:00",
+    "updated_at": "2026-07-01T18:40:54+03:00",
+    "checksum": "a7eef62976684393da6912a2f67226335a5a4ea9ae837f718a35a8904177310d",
+    "records": 4,
+    "compressed_size": 4358,
+    "uncompressed_size": 27916,
+    "signature": "signed_a7eef62976684393da6912a2f67226335a5a4ea9ae837f718a35a8904177310d",
+    "supports_delta": false,
+    "dependencies": []
+}

@@ -1,0 +1,498 @@
+[
+    {
+        "id": 1,
+        "slug": "noon-sakinah-tanween",
+        "name_ku": "نوونی ساکین و تەنوین",
+        "name_ar": "أحكام النون الساكنة والتنوين",
+        "name": "Noon Sakinah & Tanween",
+        "order": 1,
+        "rules": [
+            {
+                "id": 1,
+                "slug": "idhhar-halqi",
+                "name_ar": "الإظهار الحلقي",
+                "name": "Idhhar Halqi (Clear)",
+                "name_ku": "ئیزھاری حەلقی",
+                "color_code": "#a54e4eff",
+                "color_id": 1,
+                "description_ku": "دەرخستنی نوونی ساکن یان تەنووین بەبێ غوننە لە کاتی گەیشتن بە یەکێک لە پیتی قورگەکان (ء، هـ، ع، ح، غ، خ).",
+                "description": "Pronouncing the Noon Sakinah or Tanween clearly without extra Ghunnah when followed by throat letters (ء, ه, ع, ح, غ, خ)."
+            },
+            {
+                "id": 2,
+                "slug": "idgham-halqi",
+                "name_ar": "الإدغام الحلقي",
+                "name": "Idgham Halqi",
+                "name_ku": "ئیدغامی حەلقی",
+                "color_code": "#4CAF50",
+                "color_id": 2,
+                "description_ku": "تێکەڵکردنی نوونی ساکن یان تەنووین لەگەڵ پیتی دوای خۆی بە غوننەوە بۆ ماوەی ٢ جووڵە (ي، ن، م، و، ل، ر).",
+                "description": "Merging the Noon into the following letter with a 2-beat nasal hold. Letters: ي, ن, م, و, ل, ر."
+            },
+            {
+                "id": 3,
+                "slug": "iqlab",
+                "name_ar": "الإقلاب",
+                "name": "Iqlab (Changing)",
+                "name_ku": "ئیقلاب (گۆڕین)",
+                "color_code": "#2196F3",
+                "color_id": 3,
+                "description_ku": "گۆڕینی دەنگی نوونی ساکن یان تەنووین بۆ میمێکی شاراوە لەگەڵ دروستبوونی غوننە کاتێک پیتەکە بە (ب) دەگات.",
+                "description": "Changing the Noon sound into a hidden Meem with a 2-beat Ghunnah when followed by Ba (ب)."
+            },
+            {
+                "id": 4,
+                "slug": "ikhfa-haqiqi",
+                "name_ar": "الإخفاء الحقيقي",
+                "name": "Ikhfa Haqiqi (Hiding)",
+                "name_ku": "ئیخفای حەقیقی",
+                "color_code": "#4CAF50",
+                "color_id": 2,
+                "description_ku": "شاردنەوەی دەنگی نوونی ساکن یان تەنووین لەگەڵ غوننە بۆ ماوەی ٢ جووڵە لەگەڵ ١٥ پیتەکەی تر.",
+                "description": "Hiding the Noon sound in the nasal cavity with a 2-beat hold before the remaining 15 letters."
+            },
+            {
+                "id": 5,
+                "slug": "words-with-idgham",
+                "name_ar": "الكلمات التي فيها إدغام",
+                "name": "Words with Idgham",
+                "name_ku": "وشە شازەکانی نوون و تەنوین",
+                "color_code": "#000000",
+                "color_id": 4,
+                "description_ku": "کاتێک نوونی ساکن و پیتی ئیدغام لە یەک وشەدا کۆدەبنەوە و ناتواندرێنەوە بەڵکو بە ڕوونی دەخوێندرێنەوە.",
+                "description": "Exceptional cases where Noon and an Idgham letter meet in one word; the Noon is pronounced clearly without merging."
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "slug": "meem-sakinah",
+        "name_ku": "میمی ساکین",
+        "name_ar": "أحكام الميم الساكنة",
+        "name": "Meem Sakinah",
+        "order": 2,
+        "rules": [
+            {
+                "id": 6,
+                "slug": "ikhfa-shafawi",
+                "name_ar": "الإخفاء الشفوي",
+                "name": "Ikhfa Shafawi",
+                "name_ku": "ئیخفای دەمی",
+                "color_code": "#4CAF50",
+                "color_id": 2,
+                "description_ku": "شاردنەوەی میمی ساکن لەگەڵ غوننە کاتێک پیتی (ب) لە دوایەوە دێت.",
+                "description": "Hiding the Meem lightly with a 2-beat Ghunnah when followed by Ba (ب)."
+            },
+            {
+                "id": 7,
+                "slug": "idgham-shafawi",
+                "name_ar": "الإدغام الشفوي",
+                "name": "Idgham Shafawi",
+                "name_ku": "ئیدغامی دەمی",
+                "color_code": "#4CAF50",
+                "color_id": 2,
+                "description_ku": "تێکەڵکردنی میمی ساکن لەگەڵ میمێکی تری جووڵاو لەگەڵ غوننە بۆ ماوەی ٢ جووڵە.",
+                "description": "Merging the Meem into another Meem with a 2-beat Ghunnah."
+            },
+            {
+                "id": 8,
+                "slug": "idhhar-shafawi",
+                "name_ar": "الإظهار الشفوي",
+                "name": "Idhhar Shafawi",
+                "name_ku": "ئیزھاری دەمی",
+                "color_code": "#000000",
+                "color_id": 4,
+                "description_ku": "دەرخستنی میمی ساکن بە ڕوونی لە کاتی گەیشتن بە هەموو پیتەکان بیجگە لە (ب) و (م).",
+                "description": "Pronouncing the Meem clearly with closed lips before any letter other than Meem or Ba."
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "slug": "madd-prolongation",
+        "name_ku": "مەد (درێژکردنەوە)",
+        "name_ar": "المدود",
+        "name": "Madd (Prolongation)",
+        "order": 3,
+        "rules": [
+            {
+                "id": 9,
+                "slug": "madd-tabii",
+                "name_ar": "المد الطبيعي",
+                "name": "Madd Tabii (Natural Madd)",
+                "name_ku": "مەدی سروشتی",
+                "color_code": "#FF9800",
+                "color_id": 5,
+                "description_ku": "درێژکردنەوەی دەنگی پیتەکانی مەد (ا، و، ی) بە بڕی ٢ جووڵە کاتێک هەمزە یان ساکنی لە دوا نەبێت.",
+                "description": "The natural 2-beat prolongation of Alif, Waw, or Yaa when not followed by a Hamzah or Sukoon."
+            },
+            {
+                "id": 10,
+                "slug": "madd-muttasil",
+                "name_ar": "المد المتصل",
+                "name": "Madd Muttasil (Attached)",
+                "name_ku": "مەدی متصل",
+                "color_code": "#E53935",
+                "color_id": 6,
+                "description_ku": "کاتێک پیتی مەد و هەمزە لە یەک وشەدا کۆدەبنەوە، بە بڕی ٤ بۆ ٥ جووڵە درێژ دەکرێتەوە.",
+                "description": "A mandatory 4 or 5 beat prolongation when a Madd letter is followed by a Hamzah in the same word."
+            },
+            {
+                "id": 11,
+                "slug": "madd-munfasil",
+                "name_ar": "المد المنفصل",
+                "name": "Madd Munfasil (Separated)",
+                "name_ku": "مەدی منفصل",
+                "color_code": "#E53935",
+                "color_id": 6,
+                "description_ku": "کاتێک پیتی مەد لە کۆتایی وشەیەکدا بێت و هەمزە لە سەرەتای وشەی دواتر بێت، بە بڕی ٤ بۆ ٥ جووڵە درێژ دەکرێتەوە.",
+                "description": "A 4 or 5 beat prolongation when a Madd letter ends a word and Hamzah begins the next. (2 beats is permissible in some readings)."
+            },
+            {
+                "id": 12,
+                "slug": "madd-badal",
+                "name_ar": "مد البدل",
+                "name": "Madd Badal (Substituted)",
+                "name_ku": "مەدی بەدەل",
+                "color_code": "#FF9800",
+                "color_id": 5,
+                "description_ku": "پێشکەوتنی هەمزە بەسەر پیتی مەددا لە یەک وشەدا، بە بڕی ٢ جووڵە درێژ دەکرێتەوە.",
+                "description": "A 2-beat prolongation occurring when a Hamzah precedes a Madd letter."
+            },
+            {
+                "id": 13,
+                "slug": "madd-aridh",
+                "name_ar": "المد العارض للسكون",
+                "name": "Madd Aridh li-Sukun (Temporary Stop)",
+                "name_ku": "مەدی عارز بۆ ساکن",
+                "color_code": "#E53935",
+                "color_id": 6,
+                "description_ku": "درێژکردنەوەی پیتی مەد بە بڕی ٢، ٤، یان ٦ جووڵە کاتێک بەهۆی وەستانەوە پیتەکەی تەنیشتی ساکن دەبێت.",
+                "description": "Prolonging the Madd letter for 2, 4, or 6 beats when stopping on the last letter of a word, creating a temporary Sukoon."
+            },
+            {
+                "id": 14,
+                "slug": "madd-leen",
+                "name_ar": "مد اللين",
+                "name": "Madd Leen (Soft Madd)",
+                "name_ku": "مەدی لین",
+                "color_code": "#FF9800",
+                "color_id": 5,
+                "description_ku": "درێژکردنەوەی پیتی لینی ساکن (و، ی پێش فەتحە) بۆ ماوەی ٢، ٤، یان ٦ جووڵە کاتێک وەستان لەسەر وشەکە دەکرێت.",
+                "description": "Prolonging a Waw or Yaa with a Sukoon (preceded by a Fatha) for 2, 4, or 6 beats when stopping on the word."
+            },
+            {
+                "id": 15,
+                "slug": "madd-lazim-kalimi-muthaqqal",
+                "name_ar": "المد اللازم الكلمي المثقل",
+                "name": "Madd Lazim Kalimi Muthaqqal (Compulsory Word Heavy)",
+                "name_ku": "مەدی لازمی کەلیمی قورس",
+                "color_code": "#B71C1C",
+                "color_id": 7,
+                "description_ku": "درێژکردنەوەی پیتی مەد بە بڕی ٦ جووڵە بەهۆی هاتنی پیتێکی شەددەدار لە دوایەوە لە یەک وشەدا.",
+                "description": "A strict 6-beat prolongation when a Madd letter is followed by a Shaddah in the same word."
+            },
+            {
+                "id": 16,
+                "slug": "madd-lazim-kalimi-mukhaffaf",
+                "name_ar": "المد اللازم الكلمي المخفف",
+                "name": "Madd Lazim Kalimi Mukhaffaf (Compulsory Word Light)",
+                "name_ku": "مەدی لازمی کەلیمی سووک",
+                "color_code": "#B71C1C",
+                "color_id": 7,
+                "description_ku": "درێژکردنەوەی پیتی مەد بە بڕی ٦ جووڵە بەهۆی هاتنی پیتێکی ساکنی ڕەسەن بەبێ تێکەڵبوون لە یەک وشەدا.",
+                "description": "A strict 6-beat prolongation when a Madd letter is followed by a non-merged Sukoon in the same word."
+            },
+            {
+                "id": 17,
+                "slug": "madd-lazim-harfi-muthaqqal",
+                "name_ar": "المد اللازم الحرفي المثقل",
+                "name": "Madd Lazim Harfi Muthaqqal (Compulsory Letter Heavy)",
+                "name_ku": "مەدی لازمی حەرفی قورس",
+                "color_code": "#B71C1C",
+                "color_id": 7,
+                "description_ku": "درێژکردنەوەی پیتی مەد بە بڕی ٦ جووڵە لە پیتە بچڕاوەکانی سەرەتای سورەتەکاندا کە پیتەکە تێکەڵ بە دوای خۆی دەبێت.",
+                "description": "A strict 6-beat prolongation in the disconnected letters (Muqatta'at) where one letter merges into the next."
+            },
+            {
+                "id": 18,
+                "slug": "madd-lazim-harfi-mukhaffaf",
+                "name_ar": "المد اللازم الحرفي المخفف",
+                "name": "Madd Lazim Harfi Mukhaffaf (Compulsory Letter Light)",
+                "name_ku": "مەدی لازمی حەرفی سووک",
+                "color_code": "#B71C1C",
+                "color_id": 7,
+                "description_ku": "درێژکردنەوەی پیتی مەد بە بڕی ٦ جووڵە لە پیتە بچڕاوەکانی سەرەتای سورەتەکاندا بەبێ تێکەڵبوون بە پیتی دواتر.",
+                "description": "A strict 6-beat prolongation in the disconnected letters (Muqatta'at) where the letter does not merge into the next."
+            },
+            {
+                "id": 19,
+                "slug": "madd-silah-kubra",
+                "name_ar": "مد الصلة الكبرى",
+                "name": "Madd Silah Kubra (Connecting)",
+                "name_ku": "مەدی سڵەی گەورە",
+                "color_code": "#FF9800",
+                "color_id": 5,
+                "description_ku": "درێژکردنەوەی ڕاناوی (هـ) بە بڕی ٤ یان ٥ جووڵە کاتێک دەکەوێتە نێوان پیتێکی جووڵاو و هەمزەوە.",
+                "description": "Prolonging the pronoun Ha (ـه) followed by a Hamzah, making 4\/5 beats (Kubra)."
+            },
+            {
+                "id": 20,
+                "slug": "madd-silah-sughra",
+                "name_ar": "مد الصلة الصغرى",
+                "name": "Madd Silah Sughra (Connecting)",
+                "name_ku": "مەدی سڵەی بچووک",
+                "color_code": "#FF9800",
+                "color_id": 5,
+                "description_ku": "درێژکردنەوەی ڕاناوی (هـ) بە بڕی ٢ جووڵە کاتێک دەکەوێتە نێوان دوو پیتی جووڵاو بەبێ هاتنی هەمزە لە دوایەوە.",
+                "description": "Prolonging the pronoun Ha (ـه) for 2 beats (Sughra) when it is NOT followed by a Hamzah."
+            },
+            {
+                "id": 21,
+                "slug": "madd-iwad",
+                "name_ar": "مد العوض",
+                "name": "Madd Iwad (Compensation)",
+                "name_ku": "مەدی عەواز",
+                "color_code": "#FF9800",
+                "color_id": 5,
+                "description_ku": "گۆڕینی تەنوینی فەتحە (ـً) بۆ ئەلف بە بڕی ٢ جووڵە تەنها لە کاتی وەستان لەسەر وشەکەدا.",
+                "description": "A 2-beat prolongation that substitutes a Fathatain (double Fatha) when stopping on a word, turning it into a spoken Alif."
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "slug": "rules-of-raa",
+        "name_ku": "حوکمەکانی ڕا (ر)",
+        "name_ar": "أحكام الراء",
+        "name": "Rules of Raa",
+        "order": 4,
+        "rules": [
+            {
+                "id": 22,
+                "slug": "raa-tafkhim",
+                "name_ar": "تفخيم الراء",
+                "name": "Raa Tafkhim (Heavy Raa)",
+                "name_ku": "قەڵەوکردنی پیتی ڕاء",
+                "color_code": "#3F51B5",
+                "color_id": 8,
+                "description_ku": "خوێندنەوەی پیتی ڕاء بە قەڵەوی (تەفخیم) بەهۆی هەبوونی فەتحە، زەممە یان ساکن پێش فەتحە و زەممە.",
+                "description": "Pronouncing the Raa with a full, heavy mouth. Occurs when Raa has a Fatha\/Damma, or a Sukoon preceded by Fatha\/Damma."
+            },
+            {
+                "id": 23,
+                "slug": "raa-tarqiq",
+                "name_ar": "ترقيق الراء",
+                "name": "Raa Tarqiq (Light Raa)",
+                "name_ku": "تەنککردنی پیتی ڕاء",
+                "color_code": "#03A9F4",
+                "color_id": 9,
+                "description_ku": "خوێندنەوەی پیتی ڕاء بە تەنکی (تەرقێق) بەهۆی هەبوونی کەسرە یان ساکن پێش کەسرە.",
+                "description": "Pronouncing the Raa with an empty, flat mouth. Occurs when Raa has a Kasra, or a Sukoon preceded by a Kasra."
+            },
+            {
+                "id": 24,
+                "slug": "raa-jawaz",
+                "name_ar": "جواز الوجهين في الراء",
+                "name": "Raa Jawaz (Permissible Both Ways)",
+                "name_ku": "دروستبوونی هەردوو بار لە ڕاء",
+                "color_code": "#9C27B0",
+                "color_id": 10,
+                "description_ku": "ئەو حاڵەتانەی کە تێیدا خوێندنەوەی ڕاء بە قەڵەوی یان تەنکی بە دروستی ڕێگەپێدراوە.",
+                "description": "Rare scenarios where the Raa can be read as either heavy or light (e.g., when followed by a heavy letter with a Kasra, or stopping on specific words)."
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "slug": "qalqalah",
+        "name_ku": "قەلقەلە",
+        "name_ar": "القلقلة",
+        "name": "Qalqalah",
+        "order": 5,
+        "rules": [
+            {
+                "id": 25,
+                "slug": "qalqalah-kubra",
+                "name_ar": "القلقلة الكبرى",
+                "name": "Qalqalah Kubra (Major Echo)",
+                "name_ku": "قەلقەلەی گەورە",
+                "color_code": "#00BCD4",
+                "color_id": 11,
+                "description_ku": "لەرزاندنی بەهێزی دەنگ لە کاتی وەستان لەسەر پیتەکانی قەلقەلە (ق، ط، ب، ج، د) لە کۆتایی وشەدا.",
+                "description": "A strong echoing bounce sound made when stopping on one of the Qalqalah letters (ق, ط, ب, ج, د) at the end of a word."
+            },
+            {
+                "id": 26,
+                "slug": "qalqalah-sughra",
+                "name_ar": "القلقلة الصغرى",
+                "name": "Qalqalah Sughra (Minor Echo)",
+                "name_ku": "قەلقەلەی بچووک",
+                "color_code": "#00BCD4",
+                "color_id": 11,
+                "description_ku": "لەرزاندنی مامناوەندی دەنگ لە کاتی هاتنی پیتەکانی قەلقەلە بە ساکنی لە ناوەڕاستی وشەدا.",
+                "description": "A softer echoing bounce sound made when a Qalqalah letter has a Sukoon in the middle of a word."
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "slug": "ghunnah",
+        "name_ku": "غوننە",
+        "name_ar": "الغنة",
+        "name": "Ghunnah",
+        "order": 6,
+        "rules": [
+            {
+                "id": 27,
+                "slug": "ghunnah-mushaddadah",
+                "name_ar": "الغنة المشددة",
+                "name": "Ghunnah Mushaddadah",
+                "name_ku": "غوننەی شەددەدار",
+                "color_code": "#4CAF50",
+                "color_id": 2,
+                "description_ku": "دەرکردنی دەنگی غوننە لە لوتەوە بۆ ماوەی ٢ جووڵە کاتێک پیتەکانی نوون (ن) یان میم (م) شەددەیان لەسەر بێت.",
+                "description": "A mandatory 2-beat strong nasal sound whenever a Noon (ن) or Meem (م) carries a Shaddah."
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "slug": "laam-of-allah",
+        "name_ku": "لامی لەفزی جەلالە",
+        "name_ar": "لام لفظ الجلالة",
+        "name": "Laam of Allah",
+        "order": 7,
+        "rules": [
+            {
+                "id": 28,
+                "slug": "laam-tafkhim",
+                "name_ar": "تفخيم اللام في لفظ الجلالة",
+                "name": "Laam Tafkhim (Heavy Laam)",
+                "name_ku": "قەڵەوکردنی لامی جەلالە",
+                "color_code": "#3F51B5",
+                "color_id": 8,
+                "description_ku": "خوێندنەوەی پیتی لامی لفظ الجلالة (الله) بە قەڵەوی ئەگەر پێشینەکەی فەتحە یان زەممە بێت.",
+                "description": "Pronouncing the Laam in the word \"Allah\" with a heavy, full mouth when preceded by a Fatha or Damma."
+            },
+            {
+                "id": 29,
+                "slug": "laam-tarqiq",
+                "name_ar": "ترقيق اللام في لفظ الجلالة",
+                "name": "Laam Tarqiq (Light Laam)",
+                "name_ku": "تەنککردنی لامی جەلالە",
+                "color_code": "#03A9F4",
+                "color_id": 9,
+                "description_ku": "خوێندنەوەی پیتی لامی لفظ الجلالة (الله) بە تەنکی ئەگەر پێشینەکەی کەسرە بێت.",
+                "description": "Pronouncing the Laam in the word \"Allah\" with a light, empty mouth when preceded by a Kasra."
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "slug": "laam-al-taareef",
+        "name_ku": "لامی ئال التعریف",
+        "name_ar": "لام التعريف",
+        "name": "Laam Al-Ta'reef",
+        "order": 8,
+        "rules": [
+            {
+                "id": 30,
+                "slug": "idhhar-qamari",
+                "name_ar": "الإظهار القمري",
+                "name": "Idhhar Qamari (Clear Laam)",
+                "name_ku": "ئیزھاری قەمەری",
+                "color_code": "#000000",
+                "color_id": 4,
+                "description_ku": "خوێندنەوەی لامی پێناس بە ڕوونی کاتێک بەدوایدا یەکێک لە ١٤ پیتی قەمەری بێت.",
+                "description": "Pronouncing the Laam clearly when followed by any of the 14 lunar letters (e.g., ب، ج، ح)."
+            },
+            {
+                "id": 31,
+                "slug": "idgham-shamsi",
+                "name_ar": "الإدغام الشمسي",
+                "name": "Idgham Shamsi (Merged Laam)",
+                "name_ku": "ئیدغامی شەمسى",
+                "color_code": "#9E9E9E",
+                "color_id": 12,
+                "description_ku": "تواندنەوەی لامی پێناس لە ناو پیتی دوای خۆی بەبێ خوێندنەوە کاتێک بەدوایدا یەکێک لە ١٤ پیتی شەمسى بێت.",
+                "description": "Merging the Laam completely into the following letter without pronouncing it, applied to the 14 solar letters (e.g., ش، س، ت)."
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "slug": "advanced-idgham",
+        "name_ku": "ئیدغامی پێشکەوتوو",
+        "name_ar": "الإدغام المتماثل والمتجانس والمتقارب",
+        "name": "Advanced Idgham",
+        "order": 9,
+        "rules": [
+            {
+                "id": 32,
+                "slug": "idgham-mutamathilayn",
+                "name_ar": "إدغام المتماثلين",
+                "name": "Idgham Mutamathilayn (Identical)",
+                "name_ku": "ئیدغامی هاوشێوەکان",
+                "color_code": "#9E9E9E",
+                "color_id": 12,
+                "description_ku": "تێکەڵکردنی دوو پیتی هاوشێوە کە یەکەم ساکن و دووەم جووڵاو بێت لە یەک وشە یان دوو وشەدا.",
+                "description": "Merging two identical letters when the first has a Sukoon and the second has a vowel."
+            },
+            {
+                "id": 33,
+                "slug": "idgham-mutajanisayn",
+                "name_ar": "إدغام المتجانسين",
+                "name": "Idgham Mutajanisayn (Similar)",
+                "name_ku": "ئیدغامی هاوڕەگەزەکان",
+                "color_code": "#9E9E9E",
+                "color_id": 12,
+                "description_ku": "تێکەڵکردنی دوو پیت کە یەک دەرچەیان هەیە بەڵام سیفەتیان جیاوازە کاتێک یەکەم ساکن و دووەم جووڵاو بێت.",
+                "description": "Merging two letters that share the same articulation point but have different characteristics (e.g., Ta and Da)."
+            },
+            {
+                "id": 34,
+                "slug": "idgham-mutaqaribayn",
+                "name_ar": "إدغام المتقاربين",
+                "name": "Idgham Mutaqaribayn (Close)",
+                "name_ku": "ئیدغامی لێک نزیکەکان",
+                "color_code": "#9E9E9E",
+                "color_id": 12,
+                "description_ku": "تێکەڵکردنی دوو پیت کە لە دەرچە یان سیفەتدا لێک نزیک بن کاتێک یەکەم ساکن و دووەم جووڵاو بێت.",
+                "description": "Merging two letters that are very close in articulation point and characteristics (e.g., Qaf and Kaf)."
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "slug": "special-rules",
+        "name_ku": "حوکمە تایبەتەکان",
+        "name_ar": "الأحكام الخاصة",
+        "name": "Special Rules",
+        "order": 10,
+        "rules": [
+            {
+                "id": 35,
+                "slug": "saktah",
+                "name_ar": "السكت",
+                "name": "Saktah (Breathless Pause)",
+                "name_ku": "سەکتە (وەستانی بێ هەناسە)",
+                "color_code": "#E91E63",
+                "color_id": 13,
+                "description_ku": "وەستانێکی زۆر کورت لە کاتی خوێندنەوەدا بەبێ کێشانی هەناسە بە مەبەستی ڕوونکندرەوەی مانا.",
+                "description": "A mandatory short pause of about 2 beats without breaking the breath. Marked by a small (س)."
+            },
+            {
+                "id": 36,
+                "slug": "silent-letters",
+                "name_ar": "الحروف التي تكتب ولا تنطق",
+                "name": "Silent Letters (Tuktab wa la Tantaq)",
+                "name_ku": "پیتە بێدەنگەکان (دەنووسرێن و ناخوێندرێنەوە)",
+                "color_code": "#B0BEC5",
+                "color_id": 14,
+                "description_ku": "ئەو پیتانەی لە نووسینی قورئانیدا هەن بەڵام لە کاتی خوێندنەوەدا دەپەڕێندرێن و دەنگیان نییە.",
+                "description": "Letters that are written in the Quranic text but dropped and not pronounced during recitation (e.g., extra Alifs, Hamzat Wasl in the middle of speech)."
+            }
+        ]
+    }
+]

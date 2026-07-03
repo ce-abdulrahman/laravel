@@ -26,19 +26,34 @@ class TajweedRuleOfIdghmAdvancedSeeder extends Seeder
             return;
         }
 
-        DB::transaction(function () use ($segments) {
+        $ayahs = DB::table('ayahs')->select('id', 'surah_id', 'ayah_number')->get();
+        $ayahMap = [];
+        foreach ($ayahs as $ayah) {
+            $ayahMap[$ayah->surah_id][$ayah->ayah_number] = $ayah->id;
+        }
+
+        DB::transaction(function () use ($segments, $ayahMap) {
             foreach (array_chunk($segments, 500) as $chunk) {
-                $mappedChunk = array_map(function ($item) {
-                    if (isset($item['text_segment'])) {
-                        $item['matched_text'] = $item['text_segment'];
-                        unset($item['text_segment']);
-                    }
-                    if (!isset($item['metadata'])) {
-                        $item['metadata'] = json_encode([]);
-                    }
-                    $item['created_at'] = now();
-                    $item['updated_at'] = now();
-                    return $item;
+                $mappedChunk = array_map(function ($item) use ($ayahMap) {
+                    $surahId = $item['surah_id'];
+                    $ayahNumber = $item['ayah_id']; // This is actually the ayah_number in the json!
+                    $realAyahId = $ayahMap[$surahId][$ayahNumber] ?? null;
+
+                    return [
+                        'surah_id' => $surahId,
+                        'ayah_id' => $realAyahId,
+                        'tajweed_rule_id' => $item['tajweed_rule_id'],
+                        'matched_text' => $item['text_segment'] ?? $item['matched_text'] ?? '',
+                        'start_index' => $item['start_index'] ?? null,
+                        'end_index' => $item['end_index'] ?? null,
+                        'waqf_assumed' => $item['waqf_assumed'] ?? false,
+                        'metadata' => isset($item['metadata'])
+                            ? (is_array($item['metadata']) ? json_encode($item['metadata']) : $item['metadata'])
+                            : json_encode([]),
+                        'note' => $item['note'] ?? null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
                 }, $chunk);
                 AyahTajweedSegment::insert($mappedChunk);
             }

@@ -1,0 +1,16 @@
+{
+    "package": "quran",
+    "version": 1,
+    "minimum_app_version": "1.0.0",
+    "recommended_app_version": "1.1.0",
+    "schema_version": 1,
+    "created_at": "2026-07-01T18:40:54+03:00",
+    "updated_at": "2026-07-01T18:40:54+03:00",
+    "checksum": "90bdbd200e660a6f86bc3e37bafe8506cf368b7a99771c8c6847dbb48b6ed1b5",
+    "records": 6350,
+    "compressed_size": 1885731,
+    "uncompressed_size": 14923451,
+    "signature": "signed_90bdbd200e660a6f86bc3e37bafe8506cf368b7a99771c8c6847dbb48b6ed1b5",
+    "supports_delta": false,
+    "dependencies": []
+}

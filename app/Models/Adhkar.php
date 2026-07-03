@@ -37,4 +37,13 @@ class Adhkar extends Model
     {
         return $this->belongsTo(AdhkarCategory::class, 'category_id');
     }
+
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) \Illuminate\Support\Str::uuid();
+            }
+        });
+    }
 }

@@ -1,0 +1,16 @@
+{
+    "package": "sahaba",
+    "version": 1,
+    "minimum_app_version": "1.0.0",
+    "recommended_app_version": "1.1.0",
+    "schema_version": 1,
+    "created_at": "2026-07-01T18:40:54+03:00",
+    "updated_at": "2026-07-01T18:40:54+03:00",
+    "checksum": "71a70b9ad090ef9d310458ea88babdebbdeef17c943bba6db506272e69b26d49",
+    "records": 60,
+    "compressed_size": 64307,
+    "uncompressed_size": 326712,
+    "signature": "signed_71a70b9ad090ef9d310458ea88babdebbdeef17c943bba6db506272e69b26d49",
+    "supports_delta": false,
+    "dependencies": []
+}

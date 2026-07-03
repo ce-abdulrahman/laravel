@@ -22,6 +22,14 @@ if (!File::exists($quranDir)) {
     File::makeDirectory($quranDir, 0755, true);
 }
 
+// Build color palette map
+$rulesList = \App\Models\TajweedRule::where('is_active', true)->orderBy('priority')->get();
+$uniqueColors = $rulesList->pluck('color_code')->filter()->unique()->values()->toArray();
+$colorMap = [];
+foreach ($uniqueColors as $idx => $color) {
+    $colorMap[$color] = $idx + 1; // 1-based index
+}
+
 $surahs = Surah::active()->orderBy('number')->get();
 foreach ($surahs as $surah) {
     echo "Exporting Surah {$surah->number} ({$surah->name})...\n";
@@ -37,7 +45,7 @@ foreach ($surahs as $surah) {
         ->get();
 
     // Map each ayah to match Mobile app expected format
-    $mappedAyahs = $ayahs->map(function ($ayah) {
+    $mappedAyahs = $ayahs->map(function ($ayah) use ($colorMap) {
         $translations = $ayah->translations->map(function ($t) {
             return [
                 'id' => $t->id,
@@ -47,24 +55,77 @@ foreach ($surahs as $surah) {
             ];
         })->toArray();
 
-        $segments = $ayah->tajweedSegments->map(function ($seg) {
+        $text = $ayah->text_uthmani;
+        $rawSegments = $ayah->tajweedSegments;
+        $processed = [];
+
+        foreach ($rawSegments as $seg) {
+            $start = $seg->start_index;
+            $end = $seg->end_index;
+
+            // 1. Validation Stage
+            if ($start === null || $end === null || $start >= $end || $start < 0 || $end > mb_strlen($text)) {
+                continue; // Skip invalid indices
+            }
+
             $rule = $seg->tajweedRule;
-            return [
+            if (!$rule || !$rule->is_active) {
+                continue; // Skip missing/inactive rules
+            }
+
+            // 2. Compiler Stage: Precompute joining ZWJ boundary flags
+            $connectsToLeft = false;
+            $connectsToRight = false;
+
+            if ($start > 0 && $start < mb_strlen($text)) {
+                $prevChar = mb_substr($text, $start - 1, 1);
+                $currChar = mb_substr($text, $start, 1);
+                if (connectsToLeft($prevChar) && connectsToRight($currChar)) {
+                    $connectsToLeft = true;
+                }
+            }
+
+            if ($end > 0 && $end < mb_strlen($text)) {
+                $lastChar = mb_substr($text, $end - 1, 1);
+                $nextChar = mb_substr($text, $end, 1);
+                if (connectsToLeft($lastChar) && connectsToRight($nextChar)) {
+                    $connectsToRight = true;
+                }
+            }
+
+            $processed[] = [
+                'start_index' => $start,
+                'end_index' => $end,
+                'rule_id' => $rule->id,
+                'color_id' => $colorMap[$rule->color_code] ?? 1,
+                'connects_to_left' => $connectsToLeft,
+                'connects_to_right' => $connectsToRight,
                 'text_segment' => $seg->matched_text ?? '',
-                'start_index' => $seg->start_index,
-                'end_index' => $seg->end_index,
-                'note' => $seg->note,
-                'waqf_assumed' => (bool)($seg->waqf_assumed ?? false),
-                'rule' => $rule ? [
-                    'id' => $rule->id,
-                    'slug' => $rule->slug,
-                    'name' => $rule->name,
-                    'name_ku' => $rule->name_ku,
-                    'name_ar' => $rule->name_ar,
-                    'color_code' => $rule->color_code,
-                ] : null,
             ];
-        })->toArray();
+        }
+
+        // 3. Optimization Stage (Dedup, Sort, and Compress Adjacent Segments)
+        usort($processed, function ($x, $y) {
+            return $x['start_index'] <=> $y['start_index'];
+        });
+
+        $compressed = [];
+        foreach ($processed as $p) {
+            if (empty($compressed)) {
+                $compressed[] = $p;
+                continue;
+            }
+            $lastIdx = count($compressed) - 1;
+            $last = &$compressed[$lastIdx];
+
+            // Merge contiguous segments of the same rule and color
+            if ($last['end_index'] === $p['start_index'] && $last['rule_id'] === $p['rule_id'] && $last['color_id'] === $p['color_id']) {
+                $last['end_index'] = $p['end_index'];
+                $last['connects_to_right'] = $p['connects_to_right'];
+            } else {
+                $compressed[] = $p;
+            }
+        }
 
         return [
             'id' => $ayah->id,
@@ -76,7 +137,7 @@ foreach ($surahs as $surah) {
             'hizb_number' => $ayah->hizb_number,
             'rub_number' => $ayah->rub_number,
             'translations' => $translations,
-            'tajweed_segments' => $segments,
+            'tajweed_segments' => $compressed,
         ];
     })->toArray();
 
@@ -227,3 +288,29 @@ File::put($assetsPath . '/tasbihs.json', json_encode($tasbihs, JSON_UNESCAPED_UN
 echo "Exported " . count($tasbihs) . " tasbihs.\n";
 
 echo "Export completed successfully!\n";
+
+function connectsToLeft($char)
+{
+    if (empty($char)) return false;
+    $code = mb_ord($char, 'UTF-8');
+    if ($code < 0x0600 || $code > 0x06FF) return false;
+
+    $rightOnly = [
+        0x0621, // Hamza
+        0x0622, 0x0623, 0x0625, 0x0627, 0x0671, 0x0672, 0x0673, 0x0675, // Alifs
+        0x062F, 0x0630, 0x0688, 0x0689, 0x068A, 0x068B, 0x068C, 0x068D, 0x068E, 0x068F, 0x0690, // Dals
+        0x0631, 0x0632, 0x0691, 0x0692, 0x0693, 0x0694, 0x0695, 0x0696, 0x0697, 0x0698, 0x0699, // Ras
+        0x0648, 0x0676, 0x0677, 0x06C4, 0x06C5, 0x06C6, 0x06C7, 0x06C8, 0x06C9, 0x06CA, 0x06CB, 0x06CF, // Waws
+        0x0629, 0x06C0, 0x06C2 // Teh Marbuta
+    ];
+    return !in_array($code, $rightOnly);
+}
+
+function connectsToRight($char)
+{
+    if (empty($char)) return false;
+    $code = mb_ord($char, 'UTF-8');
+    if ($code < 0x0600 || $code > 0x06FF) return false;
+    if ($code === 0x0621) return false; // Hamza
+    return true;
+}

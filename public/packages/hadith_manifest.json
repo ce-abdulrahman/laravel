@@ -1,0 +1,16 @@
+{
+    "package": "hadith",
+    "version": 1,
+    "minimum_app_version": "1.0.0",
+    "recommended_app_version": "1.1.0",
+    "schema_version": 1,
+    "created_at": "2026-07-01T18:40:54+03:00",
+    "updated_at": "2026-07-01T18:40:54+03:00",
+    "checksum": "7722effb1820ed653738abd2bc372fd22d11070d8b37632f8a6b2a064f7ff615",
+    "records": 5,
+    "compressed_size": 2243,
+    "uncompressed_size": 7870,
+    "signature": "signed_7722effb1820ed653738abd2bc372fd22d11070d8b37632f8a6b2a064f7ff615",
+    "supports_delta": false,
+    "dependencies": []
+}

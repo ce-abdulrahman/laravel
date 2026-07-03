@@ -30,7 +30,11 @@ class AyahSeeder extends Seeder
             Ayah::truncate();
 
             foreach (array_chunk($ayahs, 500) as $chunk) {
-                Ayah::insert($chunk);
+                $mappedChunk = array_map(function ($item) {
+                    $item['uuid'] = (string) \Illuminate\Support\Str::uuid();
+                    return $item;
+                }, $chunk);
+                Ayah::insert($mappedChunk);
             }
         });
 

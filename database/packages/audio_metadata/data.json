@@ -1,0 +1,93 @@
+[
+    {
+        "id": 1,
+        "name_ku": "Mishary Rashid Alafasy",
+        "name_ar": "Mishary Rashid Alafasy",
+        "type": "arabic",
+        "bio_ku": "",
+        "image_asset": "",
+        "sample_audio_url": "",
+        "download_base_url": "",
+        "slug": "mishary-alafasy",
+        "version": 1,
+        "surah_timings": []
+    },
+    {
+        "id": 2,
+        "name_ku": "Maher Al Muaiqly",
+        "name_ar": "Maher Al Muaiqly",
+        "type": "arabic",
+        "bio_ku": "",
+        "image_asset": "",
+        "sample_audio_url": "",
+        "download_base_url": "",
+        "slug": "maher-almuaiqly",
+        "version": 1,
+        "surah_timings": []
+    },
+    {
+        "id": 3,
+        "name_ku": "Abdul Basit Abdus Samad",
+        "name_ar": "Abdul Basit Abdus Samad",
+        "type": "arabic",
+        "bio_ku": "",
+        "image_asset": "",
+        "sample_audio_url": "",
+        "download_base_url": "",
+        "slug": "abdul-basit",
+        "version": 1,
+        "surah_timings": []
+    },
+    {
+        "id": 4,
+        "name_ku": "Saud Shuraim",
+        "name_ar": "Saud Shuraim",
+        "type": "arabic",
+        "bio_ku": "",
+        "image_asset": "",
+        "sample_audio_url": "",
+        "download_base_url": "",
+        "slug": "saud-shuraim",
+        "version": 1,
+        "surah_timings": []
+    },
+    {
+        "id": 5,
+        "name_ku": "Yasser Al Dosari",
+        "name_ar": "Yasser Al Dosari",
+        "type": "arabic",
+        "bio_ku": "",
+        "image_asset": "",
+        "sample_audio_url": "",
+        "download_base_url": "",
+        "slug": "yasser-dosari",
+        "version": 1,
+        "surah_timings": []
+    },
+    {
+        "id": 6,
+        "name_ku": "Peshawa Qader Al-Kurdi",
+        "name_ar": "Peshawa Qader Al-Kurdi",
+        "type": "arabic",
+        "bio_ku": "",
+        "image_asset": "",
+        "sample_audio_url": "",
+        "download_base_url": "",
+        "slug": "peshawa-kurdi",
+        "version": 1,
+        "surah_timings": []
+    },
+    {
+        "id": 7,
+        "name_ku": "Raad Mohammad Al-Kurdi",
+        "name_ar": "Raad Mohammad Al-Kurdi",
+        "type": "arabic",
+        "bio_ku": "",
+        "image_asset": "",
+        "sample_audio_url": "",
+        "download_base_url": "",
+        "slug": "raad-kurdi",
+        "version": 1,
+        "surah_timings": []
+    }
+]
