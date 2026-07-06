@@ -34,7 +34,7 @@ class AudioFileSeeder extends Seeder
         if ($alafasy) {
             $reciterConfigs[] = [
                 'reciter_id' => $alafasy->id,
-                'base_url' => 'https://download.quranicaudio.com/quran/mishari_alafasy/',
+                'base_url' => 'https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/',
                 'quality' => '128',
             ];
         }

@@ -17,7 +17,7 @@ class ReciterSeeder extends Seeder
                 'riwayah' => 'Hafs',
                 'country' => 'Kuwait',
                 'language' => 'ar',
-                'audio_base_url' => 'https://download.quranicaudio.com/quran/mishari_alafasy/',
+                'audio_base_url' => 'https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/',
                 'supports_ayah_audio' => true,
                 'image' => null,
                 'is_active' => true,
