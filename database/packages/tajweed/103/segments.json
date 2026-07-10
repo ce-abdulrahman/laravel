@@ -1,71 +1,14 @@
 [
     {
         "ayah_number": 1,
-        "segments": [
-            {
-                "start_index": 9,
-                "end_index": 10,
-                "rule_id": 2,
-                "color_id": 2,
-                "connects_to_left": true,
-                "connects_to_right": false,
-                "text_segment": "ر"
-            }
-        ]
+        "segments": []
     },
     {
         "ayah_number": 2,
-        "segments": [
-            {
-                "start_index": 16,
-                "end_index": 18,
-                "rule_id": 2,
-                "color_id": 2,
-                "connects_to_left": true,
-                "connects_to_right": false,
-                "text_segment": "نَ"
-            },
-            {
-                "start_index": 29,
-                "end_index": 30,
-                "rule_id": 1,
-                "color_id": 1,
-                "connects_to_left": true,
-                "connects_to_right": false,
-                "text_segment": "ر"
-            }
-        ]
+        "segments": []
     },
     {
         "ayah_number": 3,
-        "segments": [
-            {
-                "start_index": 14,
-                "end_index": 16,
-                "rule_id": 1,
-                "color_id": 1,
-                "connects_to_left": true,
-                "connects_to_right": false,
-                "text_segment": "نَ"
-            },
-            {
-                "start_index": 19,
-                "end_index": 20,
-                "rule_id": 3,
-                "color_id": 3,
-                "connects_to_left": true,
-                "connects_to_right": false,
-                "text_segment": "ا"
-            },
-            {
-                "start_index": 102,
-                "end_index": 105,
-                "rule_id": 2,
-                "color_id": 2,
-                "connects_to_left": true,
-                "connects_to_right": false,
-                "text_segment": "بْ"
-            }
-        ]
+        "segments": []
     }
 ]

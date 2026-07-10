@@ -91,6 +91,7 @@ class AyahTajweedSegmentController extends Controller
 
         $tajweedRules = TajweedRule::active()->orderByTranslation('name')->get();
         $ayahs = Ayah::with('surah')
+            ->withCount('tajweedSegments')
             ->orderBy('surah_id')
             ->orderBy('ayah_number')
             ->get();
@@ -117,13 +118,31 @@ class AyahTajweedSegmentController extends Controller
     public function store(StoreTajweedSegmentRequest $request)
     {
         $validated = $request->validated();
+        $ayah = Ayah::findOrFail($validated['ayah_id']);
+
+        if ($request->has('segments')) {
+            $createdCount = 0;
+            foreach ($validated['segments'] as $segmentData) {
+                if (isset($segmentData['metadata']) && is_string($segmentData['metadata'])) {
+                    $segmentData['metadata'] = json_decode($segmentData['metadata'], true);
+                }
+                $segmentData['ayah_id'] = $ayah->id;
+                $segmentData['surah_id'] = $ayah->surah_id;
+
+                AyahTajweedSegment::create($segmentData);
+                $createdCount++;
+            }
+
+            return redirect()
+                ->route('tajweed-segments.index')
+                ->with('success', __('Successfully created :count segments.', ['count' => $createdCount]));
+        }
 
         if (isset($validated['metadata']) && is_string($validated['metadata'])) {
             $validated['metadata'] = json_decode($validated['metadata'], true);
         }
 
         // Auto-resolve surah_id
-        $ayah = Ayah::findOrFail($validated['ayah_id']);
         $validated['surah_id'] = $ayah->surah_id;
 
         $segment = AyahTajweedSegment::create($validated);
@@ -157,6 +176,7 @@ class AyahTajweedSegmentController extends Controller
 
         $tajweedRules = TajweedRule::orderByTranslation('name')->get();
         $ayahs = Ayah::with('surah')
+            ->withCount('tajweedSegments')
             ->orderBy('surah_id')
             ->orderBy('ayah_number')
             ->get();

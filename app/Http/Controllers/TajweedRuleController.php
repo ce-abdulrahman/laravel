@@ -147,7 +147,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
         }
 
         return redirect()
-            ->route('tajweed-rules.show', $tajweedRule)
+            ->back()
             ->with('success', __('tajweed_rules.messages.created'));
     }
 
@@ -249,7 +249,7 @@ class TajweedRuleController extends Controller implements HasMiddleware
         }
 
         return redirect()
-            ->route('tajweed-rules.show', $tajweedRule)
+            ->back()
             ->with('success', __('tajweed_rules.messages.updated'));
     }
 

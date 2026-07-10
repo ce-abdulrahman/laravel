@@ -21,6 +21,19 @@ class StoreTajweedSegmentRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->has('segments')) {
+            return [
+                'ayah_id' => 'required|exists:ayahs,id',
+                'segments' => 'required|array|min:1',
+                'segments.*.tajweed_rule_id' => 'required|exists:tajweed_rules,id',
+                'segments.*.matched_text' => 'required|string',
+                'segments.*.start_index' => 'nullable|integer|min:0',
+                'segments.*.end_index' => 'nullable|integer|min:0|gte:segments.*.start_index',
+                'segments.*.metadata' => 'nullable',
+                'segments.*.note' => 'nullable|string',
+            ];
+        }
+
         return [
             'ayah_id' => 'required|exists:ayahs,id',
             'tajweed_rule_id' => 'required|exists:tajweed_rules,id',

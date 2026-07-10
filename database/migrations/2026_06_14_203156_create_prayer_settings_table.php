@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('prayer_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('calculation_method')->default('muslim_world_league');
+            $table->string('calculation_method')->default('kurdistan');
             $table->boolean('global_notifications_enabled')->default(true);
             $table->json('adhan_settings')->nullable();
             $table->longText('cached_prayer_data')->nullable();

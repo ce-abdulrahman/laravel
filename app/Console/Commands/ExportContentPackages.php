@@ -25,7 +25,7 @@ class ExportContentPackages extends Command
      *
      * @var string
      */
-    protected $signature = 'content:export {category? : The category to export (quran, tajweed, tafsir, hadith, adhkar, seerah, sahaba, allah_names, prayer_database, translations, audio_metadata)} {--all : Export all categories}';
+    protected $signature = 'content:export {category? : The category to export (quran, tajweed, tafsir, hadith, adhkar, seerah, sahaba, allah_names, prayer_database, translations, audio_metadata)} {--all : Export all categories} {--surah= : Export only a specific surah number (1-114, tajweed only)}';
 
     /**
      * The console command description.
@@ -42,11 +42,25 @@ class ExportContentPackages extends Command
         $this->info('Starting Unified Package Exporter Pipeline...');
 
         $exportAll = $this->option('all');
-        $category = $this->argument('category');
+        $category  = $this->argument('category');
+        $surahNum  = $this->option('surah');
 
         if (!$exportAll && !$category) {
             $this->error('Please specify a category or use the --all flag.');
             return 1;
+        }
+
+        // Validate --surah option
+        if ($surahNum !== null) {
+            if ($category !== 'tajweed') {
+                $this->error('--surah option is only supported for the "tajweed" category.');
+                return 1;
+            }
+            $surahNum = (int) $surahNum;
+            if ($surahNum < 1 || $surahNum > 114) {
+                $this->error('--surah must be between 1 and 114.');
+                return 1;
+            }
         }
 
         $categories = [
@@ -85,7 +99,7 @@ class ExportContentPackages extends Command
             $this->info("Exporting category: {$cat}...");
 
             if ($cat === 'tajweed') {
-                $this->exportTajweed($localPackagesDir, $publicPackagesDir, $flutterAssetsDir);
+                $this->exportTajweed($localPackagesDir, $publicPackagesDir, $flutterAssetsDir, $surahNum);
             } else {
                 $this->exportGeneralCategory($cat, $localPackagesDir, $publicPackagesDir, $flutterAssetsDir);
             }
@@ -97,8 +111,9 @@ class ExportContentPackages extends Command
 
     /**
      * Export Tajweed rule segments per Surah.
+     * If $onlySurah is provided (1–114), only that surah is exported.
      */
-    private function exportTajweed($localDir, $publicDir, $flutterDir)
+    private function exportTajweed($localDir, $publicDir, $flutterDir, ?int $onlySurah = null)
     {
         $this->info('Compiling Tajweed rule presets and colors...');
         
@@ -137,10 +152,21 @@ class ExportContentPackages extends Command
 
         $rulesJson = json_encode($categoriesList, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         File::ensureDirectoryExists("{$localDir}/tajweed");
-        File::put("{$localDir}/tajweed/tajweed_rules.json", $rulesJson);
 
-        // Export individual Surah packages (114 packages)
-        for ($s = 1; $s <= 114; $s++) {
+        // Only write tajweed_rules.json when exporting all surahs
+        if ($onlySurah === null) {
+            File::put("{$localDir}/tajweed/tajweed_rules.json", $rulesJson);
+        }
+
+        // Determine which surahs to process
+        $surahRange = $onlySurah !== null ? [$onlySurah] : range(1, 114);
+
+        if ($onlySurah !== null) {
+            $this->info("Exporting only Surah {$onlySurah}...");
+        }
+
+        // Export individual Surah packages
+        foreach ($surahRange as $s) {
             $surah = Surah::where('number', $s)->first();
             if (!$surah) continue;
 
@@ -273,13 +299,18 @@ class ExportContentPackages extends Command
             }
         }
 
-        // Copy rules master file to flutter assets as well
-        if (File::exists($flutterDir)) {
+        // Copy rules master file to flutter assets as well (only when exporting all)
+        if ($onlySurah === null && File::exists($flutterDir)) {
             File::ensureDirectoryExists("{$flutterDir}/tajweed");
             File::copy("{$localDir}/tajweed/tajweed_rules.json", "{$flutterDir}/tajweed/tajweed_rules.json");
         }
 
-        $this->info('Tajweed segments packages created successfully.');
+        if ($onlySurah !== null) {
+            $surahStr = str_pad($onlySurah, 3, '0', STR_PAD_LEFT);
+            $this->info("Surah {$surahStr} exported successfully.");
+        } else {
+            $this->info('Tajweed segments packages created successfully.');
+        }
     }
 
     /**

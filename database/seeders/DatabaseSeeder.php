@@ -35,12 +35,12 @@ class DatabaseSeeder extends Seeder
             TafsirBookSeeder::class,
             CategoryTajweedRulesSeeder::class,
             TajweedRuleSeeder::class,
-            TajweedRuleOfNunSakenSeeder::class,
-            TajweedRuleOfMeemSeeder::class,
-            TajweedRuleOfMaddSeeder::class,
-            TajweedRuleOfRaaSeeder::class,
-            TajweedRuleOfQalqalahSeeder::class,
-            TajweedRuleOfIdghmAdvancedSeeder::class,
+            //TajweedRuleOfNunSakenSeeder::class,
+            //TajweedRuleOfMeemSeeder::class,
+            //TajweedRuleOfMaddSeeder::class,
+            //TajweedRuleOfRaaSeeder::class,
+            //TajweedRuleOfQalqalahSeeder::class,
+            //TajweedRuleOfIdghmAdvancedSeeder::class,
             
             ReciterSeeder::class,
             AudioFileSeeder::class,
@@ -59,5 +59,9 @@ class DatabaseSeeder extends Seeder
             WidgetTranslationSeeder::class,
         ]);
 
+        \Illuminate\Support\Facades\DB::table('prayer_settings')->updateOrInsert(
+            ['id' => 1],
+            ['calculation_method' => 'kurdistan']
+        );
     }
 }

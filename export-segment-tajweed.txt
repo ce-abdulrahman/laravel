@@ -1,0 +1,11 @@
+کاری دەوێیت	فەرمان
+تەنها یەک سوورەت ئەکسپۆرت بکەیت	    php artisan content:export tajweed --surah=1
+هەموو ١١٤ سوورەت +                  tajweed_rules.json	php artisan content:export tajweed
+تایبەتمەندی ئەکسپۆرتی تەنها یەک سوورەت:
+⚡ زیادتر خێرا — تەنها یەک سوورەت پرۆسێس دەکات
+📁 فایلی tajweed_rules.json نوێ ناکرێتەوە (نیازی پێ نییە)
+✅ ڕاستەوخۆ لە quran_mobile/assets/data/packages/tajweed/001/segments.json نووسەرەوە
+شێوازی کارکردنی ئاسان: هەر کاتێک سوورەتێک تەواو کردیت لە Laravel admin:
+
+
+php artisan content:export tajweed --surah=3

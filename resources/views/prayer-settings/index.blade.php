@@ -40,6 +40,7 @@
                         <div class="mb-3">
                             <label class="quran-form-label" for="calculation_method">Calculation Method</label>
                             <select name="calculation_method" id="calculation_method" class="quran-form-select">
+                                <option value="kurdistan" {{ $settings->calculation_method == 'kurdistan' ? 'selected' : '' }}>Kurdistan Region (Ministry of Awqaf)</option>
                                 <option value="muslim_world_league" {{ $settings->calculation_method == 'muslim_world_league' ? 'selected' : '' }}>Muslim World League (MWL)</option>
                                 <option value="egyptian" {{ $settings->calculation_method == 'egyptian' ? 'selected' : '' }}>Egyptian General Authority of Survey</option>
                                 <option value="karachi" {{ $settings->calculation_method == 'karachi' ? 'selected' : '' }}>University of Islamic Sciences, Karachi</option>
