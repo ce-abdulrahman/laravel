@@ -39,7 +39,9 @@ class TranslationSeeder extends Seeder
                     'updated_at' => now(),
                 ];
             }
-            DB::table('translations')->insert($translations);
+            foreach (array_chunk($translations, 100) as $chunk) {
+                DB::table('translations')->insert($chunk);
+            }
             $this->command->info('Dummy translations seeded successfully.');
             return;
         }
@@ -120,8 +122,8 @@ class TranslationSeeder extends Seeder
                 }
             }
 
-            // Bulk insert in chunks of 500
-            if (count($translationsToInsert) >= 500) {
+            // Bulk insert in chunks of 100
+            if (count($translationsToInsert) >= 100) {
                 DB::table('translations')->insert($translationsToInsert);
                 $insertCount += count($translationsToInsert);
                 $translationsToInsert = [];

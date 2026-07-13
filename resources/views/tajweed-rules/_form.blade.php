@@ -73,7 +73,7 @@
                             <input type="text" name="color_code" id="color_code_text" 
                                    class="quran-form-control @error('color_code') is-invalid @enderror" 
                                    value="{{ old('color_code', $tajweedRule->color_code) }}"
-                                   placeholder="#RRGGBB or linear-gradient(...)">
+                                   placeholder="#RRGGBB">
                         </div>
                         @error('color_code')
                         <div class="quran-invalid-feedback">{{ $message }}</div>

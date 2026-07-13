@@ -221,13 +221,32 @@ document.addEventListener('DOMContentLoaded', function() {
     let originalText = previewText ? previewText.getAttribute('data-original') || '' : '';
     let addedSegments = [];
 
+    function parseColor(colorString) {
+        if (!colorString) return '#2ca58d';
+        let color = colorString.trim();
+        if (color.includes('linear-gradient')) {
+            const match = color.match(/#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})/);
+            if (match) {
+                color = match[0];
+            }
+        }
+        const cleaned = color.toLowerCase();
+        if (cleaned === '#000000' || cleaned === '#000' || cleaned === 'black') {
+            return '#333333';
+        }
+        if (cleaned === '#ffffff' || cleaned === '#fff' || cleaned === 'white') {
+            return '#1B7340';
+        }
+        return color;
+    }
+
     function updatePreview() {
         if (!originalText) return;
 
         const start = parseInt(startIndexInput.value);
         const end = parseInt(endIndexInput.value);
         const selectedRuleOption = ruleSelect.options[ruleSelect.selectedIndex];
-        const ruleColor = selectedRuleOption ? selectedRuleOption.getAttribute('data-color') || '#2ca58d' : '#2ca58d';
+        const ruleColor = selectedRuleOption ? parseColor(selectedRuleOption.getAttribute('data-color')) : '#2ca58d';
 
         // Prepare list of segments to draw (both added and current draft)
         let displaySegments = [...addedSegments];
@@ -451,7 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const selectedRuleOption = ruleSelect.options[ruleSelect.selectedIndex];
             const ruleName = selectedRuleOption.text;
-            const ruleColor = selectedRuleOption.getAttribute('data-color') || '#2ca58d';
+            const ruleColor = parseColor(selectedRuleOption.getAttribute('data-color'));
             
             const segment = {
                 tajweed_rule_id: ruleSelect.value,

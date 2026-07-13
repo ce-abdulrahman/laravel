@@ -227,7 +227,7 @@
                         </td>
                         <td>
                             <div class="arabic-text" style="font-size: 18px;">
-                                 <span style="{{ str_starts_with($segment->tajweedRule->color_code ?? '', 'linear-gradient') ? 'background: ' . $segment->tajweedRule->color_code . '; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5);' : 'background-color: ' . $segment->tajweedRule->color_code . '20; color: ' . ($segment->tajweedRule->color_code ?? 'inherit') . ';' }} 
+                                 <span style="background-color: {{ ($segment->tajweedRule->color_code ?? '#1B7340') }}20; color: {{ ($segment->tajweedRule->color_code ?? 'inherit') }}; 
                                               padding: 2px 8px; border-radius: 6px;">
                                     {{ $segment->matched_text }}
                                 </span>

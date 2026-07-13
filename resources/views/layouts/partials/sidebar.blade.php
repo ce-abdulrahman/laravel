@@ -290,13 +290,7 @@
                 <span class="quran-nav-label">{{ __('sidebar.reading_history') }}</span>
             </a>
             
-            <!-- Leaderboard -->
-            <a href="{{ route('leaderboard.index') }}" class="quran-nav-item {{ request()->routeIs('leaderboard.*') ? 'active' : '' }}">
-                <span class="quran-nav-icon">
-                    <i class="bi bi-trophy"></i>
-                </span>
-                <span class="quran-nav-label">{{ __('sidebar.leaderboard') }}</span>
-            </a>
+
         </div>
 
         <!-- Admin Section -->
@@ -603,38 +597,7 @@
                 </div>
             </div>
 
-            <!-- Leaderboard Dropdown -->
 
-            <div class="quran-nav-group">
-                <a href="#leaderboardAdminSubmenu"
-                   class="quran-nav-item has-submenu {{ request()->routeIs('admin.leaderboard.*') ? 'active' : '' }}"
-                   data-bs-toggle="collapse"
-                   aria-expanded="{{ request()->routeIs('admin.leaderboard.*') ? 'true' : 'false' }}">
-                    <div class="quran-nav-icon">
-                        <i class="bi bi-trophy"></i>
-                    </div>
-                    <span class="quran-nav-label">{{ __('sidebar.leaderboard') }}</span>
-                    <i class="bi bi-chevron-down quran-submenu-icon"></i>
-                </a>
-                <div class="quran-submenu collapse {{ request()->routeIs('admin.leaderboard.*') ? 'show' : '' }}" id="leaderboardAdminSubmenu">
-                    <a href="{{ route('admin.leaderboard.overview') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.overview') ? 'active' : '' }}">
-                        <i class="bi bi-grid-fill me-2"></i>
-                        <span>{{ __('leaderboard.tabs.overview') }}</span>
-                    </a>
-                    <a href="{{ route('admin.leaderboard.index') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.index') ? 'active' : '' }}">
-                        <i class="bi bi-list-ol me-2"></i>
-                        <span>{{ __('leaderboard.tabs.standings') }}</span>
-                    </a>
-                    <a href="{{ route('admin.leaderboard.config') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.config') ? 'active' : '' }}">
-                        <i class="bi bi-gear-fill me-2"></i>
-                        <span>{{ __('leaderboard.tabs.config') }}</span>
-                    </a>
-                    <a href="{{ route('admin.leaderboard.analytics') }}" class="quran-submenu-item {{ request()->routeIs('admin.leaderboard.analytics') ? 'active' : '' }}">
-                        <i class="bi bi-graph-up-arrow me-2"></i>
-                        <span>{{ __('leaderboard.tabs.analytics') }}</span>
-                    </a>
-                </div>
-            </div>
 
             <!-- Hadith Dropdown -->
             <div class="quran-nav-group">

@@ -52,16 +52,7 @@
 
         <!-- Right Section -->
         <div class="quran-header-right">
-            <!-- Continue Reading -->
-            @if($lastRead = auth()->user()->readingHistories()->latest()->first())
-                <a href="#" class="quran-continue-reading-btn">
-                    <i class="bi bi-book-half"></i>
-                    <div class="d-none d-md-block">
-                        <small>{{ __('header.continue_reading') }}</small>
-                        <strong>{{ $lastRead->surah->name }} {{ $lastRead->ayah->number }}</strong>
-                    </div>
-                </a>
-            @endif
+
 
             <!-- Audio Player Toggle -->
             <button class="quran-header-icon-btn" id="audioPlayerToggle">
@@ -134,52 +125,7 @@
                 </div>
             </div>
 
-            <!-- User Menu -->
-            <div class="quran-user-menu">
-                <button class="quran-user-menu-btn" id="userMenuBtn">
-                    <img src="{{ auth()->user()->avatar ?? asset('images/default-avatar.png') }}"
-                         alt="User"
-                         class="d-none quran-user-avatar">
-                    <span class="d-none d-md-inline">{{ substr(auth()->user()->name, 0, 4) ?? 'User' }}</span>
-                    <i class="bi bi-chevron-down"></i>
-                </button>
-                <div class="quran-user-dropdown">
-                    <div class="quran-user-dropdown-header">
-                        <div class="quran-user-stats">
-                            <div class="quran-stat-item">
-                                <span class="quran-stat-value">{{ auth()->user()->memorizationPlans()->count() ?? 0 }}</span>
-                                <span class="quran-stat-label">{{ __('sidebar.memorization_plans') }}</span>
-                            </div>
-                            <div class="quran-stat-item">
-                                <span class="quran-stat-value">{{ auth()->user()->bookmarks()->count() ?? 0 }}</span>
-                                <span class="quran-stat-label">{{ __('sidebar.bookmarks') }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="{{ route('profile.edit') }}" class="quran-user-dropdown-item">
-                        <i class="bi bi-person"></i>
-                        <span>{{ __('header.my_profile') }}</span>
-                    </a>
-                    <a href="{{ route('user-ayah-progress.index') }}" class="quran-user-dropdown-item">
-                        <i class="bi bi-graph-up"></i>
-                        <span>{{ __('header.progress') }}</span>
-                    </a>
-                    <a href="{{ route('settings.index') }}" class="quran-user-dropdown-item">
-                        <i class="bi bi-gear"></i>
-                        <span>{{ __('header.settings') }}</span>
-                    </a>
-                    <div class="quran-dropdown-divider"></div>
-                    <a href="{{ route('logout') }}"
-                       class="quran-user-dropdown-item text-danger"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="bi bi-box-arrow-right"></i>
-                        <span>{{ __('common.logout') }}</span>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div>
-            </div>
+
         </div>
     </div>
 

@@ -113,7 +113,7 @@
                     <div class="text-center mb-4">
                         <label class="quran-detail-label d-block mb-2">{{ __('tajweed_segments.fields.matched_text') }}</label>
                         <div class="arabic-text p-4 rounded-3 d-inline-block" 
-                             style="font-size: 30px; {{ str_starts_with($tajweedSegment->tajweedRule->color_code ?? '', 'linear-gradient') ? 'background: ' . $tajweedSegment->tajweedRule->color_code . '; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); border: 2px solid transparent;' : 'background-color: ' . $tajweedSegment->tajweedRule->color_code . '20; color: ' . ($tajweedSegment->tajweedRule->color_code ?? 'inherit') . '; border: 2px solid ' . ($tajweedSegment->tajweedRule->color_code ?? 'transparent') . ';' }} min-width: 200px;">
+                              style="font-size: 30px; background-color: {{ ($tajweedSegment->tajweedRule->color_code ?? '#1B7340') }}20; color: {{ ($tajweedSegment->tajweedRule->color_code ?? 'inherit') }}; border: 2px solid {{ ($tajweedSegment->tajweedRule->color_code ?? 'transparent') }}; min-width: 200px;">
                             {{ $tajweedSegment->matched_text }}
                         </div>
                     </div>

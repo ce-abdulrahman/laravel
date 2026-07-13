@@ -24,18 +24,7 @@ return new class extends Migration
             }
         });
 
-        // Create notes table
-        if (!Schema::hasTable('notes')) {
-            Schema::create('notes', function (Blueprint $table) {
-                $table->id();
-                $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-                $table->string('note_id')->unique();
-                $table->unsignedInteger('surah_number');
-                $table->unsignedInteger('ayah_number');
-                $table->text('content');
-                $table->timestamps();
-            });
-        }
+
     }
 
     /**
@@ -43,7 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notes');
 
         Schema::table('bookmarks', function (Blueprint $table) {
             $table->dropColumn(['bookmark_id', 'surah_number', 'ayah_number']);

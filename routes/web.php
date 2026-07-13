@@ -11,7 +11,7 @@ use App\Http\Controllers\MemorizationReviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QiraatController;
 use App\Http\Controllers\QiraatTextController;
-use App\Http\Controllers\LeaderboardController;
+
 use App\Http\Controllers\ReadingHistoryController;
 use App\Http\Controllers\ReciterController;
 use App\Http\Controllers\SettingController;
@@ -250,12 +250,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('user-achievements/{userAchievement}/revoke', [App\Http\Controllers\AdminUserAchievementController::class, 'revoke'])->name('user-achievements.revoke');
         Route::post('user-achievements/{userAchievement}/reset', [App\Http\Controllers\AdminUserAchievementController::class, 'reset'])->name('user-achievements.reset');
 
-        // ── Leaderboard System ──────────────────────────────────────────────────
-        Route::get('admin/leaderboard/overview', [App\Http\Controllers\LeaderboardAdminController::class, 'overview'])->name('admin.leaderboard.overview');
-        Route::get('admin/leaderboard', [App\Http\Controllers\LeaderboardAdminController::class, 'index'])->name('admin.leaderboard.index');
-        Route::get('admin/leaderboard/config', [App\Http\Controllers\LeaderboardAdminController::class, 'config'])->name('admin.leaderboard.config');
-        Route::post('admin/leaderboard/config/save', [App\Http\Controllers\LeaderboardAdminController::class, 'saveConfig'])->name('admin.leaderboard.config.save');
-        Route::get('admin/leaderboard/analytics', [App\Http\Controllers\LeaderboardAdminController::class, 'analytics'])->name('admin.leaderboard.analytics');
+
 
         // ── Tasbih Sessions System ──────────────────────────────────────────────
         Route::get('admin/sessions/overview', [App\Http\Controllers\TasbihSessionAdminController::class, 'overview'])->name('admin.sessions.overview');
@@ -422,8 +417,7 @@ Route::middleware('auth')->group(function () {
     Route::get('reading-history/continue-reading', [ReadingHistoryController::class, 'continueReading'])
         ->name('reading-history.continue-reading');
 
-    Route::get('leaderboard', [LeaderboardController::class, 'index'])->name('leaderboard.index');
-    Route::post('users/{user}/reset-points', [LeaderboardController::class, 'resetUserPoints'])->name('leaderboard.reset');
+
 
     // ─── Smart Reminders ────────────────────────────────────────────────────────
     Route::get('reminders', [ReminderTemplateController::class, 'index'])->name('reminders.index');

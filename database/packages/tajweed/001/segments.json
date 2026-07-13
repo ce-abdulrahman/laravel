@@ -6,7 +6,7 @@
                 "start_index": 17,
                 "end_index": 18,
                 "rule_id": 23,
-                "color_id": 20,
+                "color_id": 19,
                 "connects_to_left": true,
                 "connects_to_right": false,
                 "text_segment": "ر"
@@ -24,7 +24,7 @@
                 "start_index": 31,
                 "end_index": 32,
                 "rule_id": 23,
-                "color_id": 20,
+                "color_id": 19,
                 "connects_to_left": true,
                 "connects_to_right": false,
                 "text_segment": "ر"
@@ -33,7 +33,7 @@
                 "start_index": 36,
                 "end_index": 37,
                 "rule_id": 13,
-                "color_id": 13,
+                "color_id": 9,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "ي"
@@ -56,7 +56,7 @@
                 "start_index": 35,
                 "end_index": 36,
                 "rule_id": 13,
-                "color_id": 13,
+                "color_id": 9,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "ي"
@@ -70,7 +70,7 @@
                 "start_index": 2,
                 "end_index": 3,
                 "rule_id": 23,
-                "color_id": 20,
+                "color_id": 19,
                 "connects_to_left": true,
                 "connects_to_right": false,
                 "text_segment": "ر"
@@ -88,7 +88,7 @@
                 "start_index": 16,
                 "end_index": 17,
                 "rule_id": 23,
-                "color_id": 20,
+                "color_id": 19,
                 "connects_to_left": true,
                 "connects_to_right": false,
                 "text_segment": "ر"
@@ -97,7 +97,7 @@
                 "start_index": 21,
                 "end_index": 22,
                 "rule_id": 13,
-                "color_id": 13,
+                "color_id": 9,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "ي"
@@ -120,7 +120,7 @@
                 "start_index": 21,
                 "end_index": 22,
                 "rule_id": 14,
-                "color_id": 14,
+                "color_id": 13,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "ي"
@@ -152,7 +152,7 @@
                 "start_index": 37,
                 "end_index": 38,
                 "rule_id": 13,
-                "color_id": 13,
+                "color_id": 9,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "ي"
@@ -166,7 +166,7 @@
                 "start_index": 14,
                 "end_index": 15,
                 "rule_id": 23,
-                "color_id": 20,
+                "color_id": 19,
                 "connects_to_left": true,
                 "connects_to_right": false,
                 "text_segment": "ر"
@@ -184,7 +184,7 @@
                 "start_index": 31,
                 "end_index": 32,
                 "rule_id": 13,
-                "color_id": 13,
+                "color_id": 9,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "ي"
@@ -198,7 +198,7 @@
                 "start_index": 2,
                 "end_index": 3,
                 "rule_id": 23,
-                "color_id": 20,
+                "color_id": 19,
                 "connects_to_left": true,
                 "connects_to_right": false,
                 "text_segment": "ر"
@@ -252,7 +252,7 @@
                 "start_index": 44,
                 "end_index": 45,
                 "rule_id": 22,
-                "color_id": 19,
+                "color_id": 18,
                 "connects_to_left": true,
                 "connects_to_right": false,
                 "text_segment": "ر"
@@ -288,7 +288,7 @@
                 "start_index": 82,
                 "end_index": 84,
                 "rule_id": 15,
-                "color_id": 15,
+                "color_id": 14,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "آ"
@@ -297,7 +297,7 @@
                 "start_index": 87,
                 "end_index": 88,
                 "rule_id": 13,
-                "color_id": 13,
+                "color_id": 9,
                 "connects_to_left": true,
                 "connects_to_right": true,
                 "text_segment": "ي"

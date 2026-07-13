@@ -8,10 +8,6 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\AudioFileController;
 use App\Http\Controllers\Api\V1\AudioTimingController;
 use App\Http\Controllers\Api\V1\AyahController as V1AyahController;
-use App\Http\Controllers\Api\V1\BookmarkController;
-use App\Http\Controllers\Api\V1\FavoriteController;
-use App\Http\Controllers\Api\V1\LastReadController;
-use App\Http\Controllers\Api\V1\LeaderboardController;
 use App\Http\Controllers\Api\V1\MobileSyncController;
 use App\Http\Controllers\Api\V1\MemorizationPlanController;
 use App\Http\Controllers\Api\V1\MemorizationReviewController;
@@ -85,12 +81,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::prefix('v1')->group(function () {
 
-    // Public Routes - Authentication
-    Route::post('auth/login', [AuthController::class, 'login']);
-    Route::post('auth/register', [AuthController::class, 'register']);
-    Route::get('auth/countries', [AuthController::class, 'countries']);
-    Route::get('auth/provinces/{countryId}', [AuthController::class, 'provinces']);
-
     // Public Routes - Quran Data
     Route::get('surahs', [V1SurahController::class, 'index']);
     Route::get('surahs/{id}', [V1SurahController::class, 'show']);
@@ -115,8 +105,7 @@ Route::prefix('v1')->group(function () {
     Route::get('qiraats/{id}', [QiraatController::class, 'show']);
     Route::get('qiraat-texts', [QiraatController::class, 'qiraatTexts']);
     Route::get('settings', [V1SettingController::class, 'index']);
-    Route::get('leaderboard', [LeaderboardController::class, 'index']);
-    Route::get('leaderboard/top', [LeaderboardController::class, 'top']);
+
     Route::get('banners', [V1BannerController::class, 'index']);
     Route::get('adhkars', [V1AdhkarController::class, 'index']);
     Route::get('tasbihs', [V1TasbihController::class, 'index']);
@@ -163,14 +152,7 @@ Route::prefix('v1')->group(function () {
     // Protected Routes
     Route::middleware('auth:sanctum')->group(function () {
 
-        // Auth
-        Route::post('auth/logout', [AuthController::class, 'logout']);
-        Route::post('auth/logout-all', [AuthController::class, 'logoutAllDevices']);
-        Route::get('auth/profile', [AuthController::class, 'profile']);
-        Route::put('auth/profile/update', [AuthController::class, 'updateProfile']);
-        Route::post('auth/change-password', [AuthController::class, 'changePassword']);
-        Route::post('auth/guest-convert', [AuthController::class, 'guestConvert']);
-        Route::delete('auth/account/delete', [AuthController::class, 'deleteAccount']);
+
         Route::post('user/prayer-method', [App\Http\Controllers\Api\V1\PrayerMethodsController::class, 'updateUserMethod']);
 
         // Advanced Search (requires auth)
@@ -184,9 +166,7 @@ Route::prefix('v1')->group(function () {
         Route::get('reading-progress/surah/{surahId}', [LastReadController::class, 'getSurahReadingProgress']);
         Route::get('reading-progress/overall', [LastReadController::class, 'getOverallProgress']);
         Route::get('reading-streaks', [LastReadController::class, 'getReadingStreaks']);
-        Route::get('me/stats', [LeaderboardController::class, 'myStats']);
-        Route::get('leaderboard/me', [LeaderboardController::class, 'me']);
-        Route::post('leaderboard/privacy', [LeaderboardController::class, 'updatePrivacy']);
+
         Route::delete('reading-history', [LastReadController::class, 'clearHistory']);
         Route::delete('reading-history/{id}', [LastReadController::class, 'deleteEntry']);
 
@@ -209,21 +189,6 @@ Route::prefix('v1')->group(function () {
             Route::delete('audio-files/{audioFileId}/timings', [AudioTimingController::class, 'deleteTimings']);
         });
 
-        // Memorization Plans
-        Route::get('memorization-plans/today', [MemorizationPlanController::class, 'today']);
-        Route::post('memorization-plans/sync', [MobileSyncController::class, 'syncMemorizationPlans']);
-        Route::get('memorization-plans/{id}', [MobileSyncController::class, 'showPlan']);
-        Route::apiResource('memorization-plans', MemorizationPlanController::class)
-            ->names('api.v1.memorization-plans');
-        Route::put('memorization-plans/{planId}/items/{itemId}/status', [MemorizationPlanController::class, 'updateItemStatus']);
-
-        // Memorization Reviews
-        Route::get('reviews/due', [MemorizationReviewController::class, 'dueReviews']);
-        Route::get('reviews/weak', [MemorizationReviewController::class, 'weakAyahs']);
-        Route::get('reviews/learning', [MemorizationReviewController::class, 'learningAyahs']);
-        Route::apiResource('memorization-reviews', MemorizationReviewController::class)
-            ->names('api.v1.memorization-reviews');
-
         // User Progress
         Route::get('user-ayah-progress', [UserAyahProgressController::class, 'index']);
         Route::get('user-ayah-progress/dashboard', [UserAyahProgressController::class, 'dashboard']);
@@ -245,7 +210,6 @@ Route::prefix('v1')->group(function () {
         Route::get('sync/last-read', [MobileSyncController::class, 'lastRead']);
         Route::post('sync/last-read', [MobileSyncController::class, 'saveLastRead']);
         Route::post('bookmarks/sync', [MobileSyncController::class, 'syncBookmarks']);
-        Route::post('notes/sync', [MobileSyncController::class, 'syncNotes']);
         Route::get('sync/inbox', [MobileSyncController::class, 'syncInbox']);
 
         // Favorites

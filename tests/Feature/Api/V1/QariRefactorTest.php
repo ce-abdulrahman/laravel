@@ -246,14 +246,14 @@ class QariRefactorTest extends TestCase
         
         // Run once
         $seeder->run();
-        $this->assertEquals(5, Reciter::count());
+        $this->assertEquals(7, Reciter::count());
 
         // Run twice
         $seeder->run();
-        $this->assertEquals(5, Reciter::count());
+        $this->assertEquals(7, Reciter::count());
 
         // Verify Yasser Al Dosari slug exist
-        $dosari = Reciter::where('slug', 'dosari')->first();
+        $dosari = Reciter::where('slug', 'yasser-dosari')->first();
         $this->assertNotNull($dosari);
         $this->assertEquals('Saudi Arabia', $dosari->country);
     }
